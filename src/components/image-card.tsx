@@ -25,6 +25,7 @@ export function ImageCard({caseStudy, locale, priority = false}: Props) {
           fill
           sizes="(min-width:1024px) 360px, 100vw"
           priority={priority}
+          unoptimized
           className="object-cover"
         />
       </div>
