@@ -55,7 +55,8 @@
       "title": "Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing",
       "meta": "JUTIF · Vol 7 No 2 (2026) · hal. 1834–1852 · SINTA 2",
       "summary": "Pengujian dilakukan dari sudut pandang perilaku sistem dan permukaan serangan yang dapat diamati. Sepuluh skenario diuji dan hasilnya dicatat dalam artikel yang dapat diakses melalui DOI.",
-      "doiLabel": "Baca artikel melalui DOI"
+      "doiLabel": "Baca artikel melalui DOI",
+      "scenarios": "skenario serangan yang diuji"
     }
   },
   "achievements": {

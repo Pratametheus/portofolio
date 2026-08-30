@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {getPathname} from '@/i18n/navigation';
+import {GlareCard} from '@/components/motion/glare-card';
 import type {CaseStudy, Locale} from '@/content/types';
 
 type Props = {
@@ -18,16 +19,18 @@ export function ImageCard({caseStudy, locale, priority = false}: Props) {
 
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-surface">
-      <div className="relative aspect-[16/10] bg-surface-2">
-        <Image
-          src={caseStudy.thumbnail.src}
-          alt={caseStudy.thumbnail.alt}
-          fill
-          sizes="(min-width:1024px) 360px, 100vw"
-          priority={priority}
-          className="object-cover"
-        />
-      </div>
+      <GlareCard className="block">
+        <div className="relative aspect-[16/10] bg-surface-2">
+          <Image
+            src={caseStudy.thumbnail.src}
+            alt={caseStudy.thumbnail.alt}
+            fill
+            sizes="(min-width:1024px) 360px, 100vw"
+            priority={priority}
+            className="object-cover"
+          />
+        </div>
+      </GlareCard>
       <div className="p-6">
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="font-display text-xl text-fg">

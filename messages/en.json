@@ -55,7 +55,8 @@
       "title": "Web Application Security Vulnerability Analysis Using Black Box Testing",
       "meta": "JUTIF · Vol 7 No 2 (2026) · pp. 1834–1852 · SINTA 2",
       "summary": "The study treated the application as an observable attack surface rather than trusting its implementation. Ten scenarios were exercised, with the method and results preserved in a DOI-linked paper.",
-      "doiLabel": "Read the published paper"
+      "doiLabel": "Read the published paper",
+      "scenarios": "attack scenarios exercised"
     }
   },
   "achievements": {
