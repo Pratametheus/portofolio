@@ -12,7 +12,7 @@ const VIEWPORT = {once: true, margin: '0px 0px -10% 0px'} as const;
 /** True when a <Stagger> ancestor is driving the reveal timeline. */
 const StaggerContext = createContext(false);
 
-/** Delays mounting the animated node so SSR / no-JS output is the plain, visible element. */
+/** Flips true after the first client render. */
 function useMounted() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -37,11 +37,7 @@ export function Reveal({
   const reduce = usePrefersReducedMotion();
   const mounted = useMounted();
   const inStagger = useContext(StaggerContext);
-
-  if (reduce || !mounted) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
+  const animate = mounted && !reduce;
 
   const MotionTag = motion[as];
   const settleDelay = index != null ? index * STAGGER_STEP : delay;
@@ -54,6 +50,18 @@ export function Reveal({
       transition: {duration: DUR.base, ease: EASE, delay: settleDelay}
     }
   };
+
+  // The element type never changes across renders — it is always `motion[as]`.
+  // Server, pre-mount and reduced-motion just omit the animation props, so the
+  // node renders clean (no opacity:0, no transform) and hydration mutates it in
+  // place instead of replacing or reparenting it.
+  if (!animate) {
+    return (
+      <MotionTag className={className} initial={false}>
+        {children}
+      </MotionTag>
+    );
+  }
 
   // Inside a <Stagger> the parent propagates the "hidden"/"show" labels and the
   // stagger offset; standalone, the element triggers itself on scroll-in.
@@ -85,24 +93,27 @@ export function Stagger({
 }) {
   const reduce = usePrefersReducedMotion();
   const mounted = useMounted();
-
-  if (reduce || !mounted) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
+  const animate = mounted && !reduce;
 
   const MotionTag = motion[as];
+
   return (
     <StaggerContext.Provider value={true}>
-      <MotionTag
-        className={className}
-        initial="hidden"
-        whileInView="show"
-        viewport={VIEWPORT}
-        variants={{hidden: {}, show: {transition: {staggerChildren: STAGGER_STEP}}}}
-      >
-        {children}
-      </MotionTag>
+      {animate ? (
+        <MotionTag
+          className={className}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          variants={{hidden: {}, show: {transition: {staggerChildren: STAGGER_STEP}}}}
+        >
+          {children}
+        </MotionTag>
+      ) : (
+        <MotionTag className={className} initial={false}>
+          {children}
+        </MotionTag>
+      )}
     </StaggerContext.Provider>
   );
 }
