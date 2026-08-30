@@ -3,6 +3,7 @@ import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 import {CaseStudyBody} from '@/components/case-study-body';
+import {ParallaxY} from '@/components/motion/parallax-y.lazy';
 import type {CaseStudy} from '@/content/types';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies, getCaseStudy} from '@/lib/content';
@@ -50,14 +51,16 @@ export default async function CaseStudyPage({
         </header>
 
         <figure className="relative mt-12 aspect-[16/10] overflow-hidden rounded-2xl bg-surface-2">
-          <Image
-            src={caseStudy.thumbnail.src}
-            alt={caseStudy.thumbnail.alt}
-            fill
-            sizes="(min-width: 1024px) 896px, 100vw"
-            priority
-            className="object-cover"
-          />
+          <ParallaxY className="absolute -inset-4">
+            <Image
+              src={caseStudy.thumbnail.src}
+              alt={caseStudy.thumbnail.alt}
+              fill
+              sizes="(min-width: 1024px) 896px, 100vw"
+              priority
+              className="object-cover"
+            />
+          </ParallaxY>
         </figure>
 
         <div className="mt-16">

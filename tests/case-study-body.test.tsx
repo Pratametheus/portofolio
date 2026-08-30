@@ -31,4 +31,9 @@ describe('CaseStudyBody', () => {
     expect(screen.getByText('Sebelum')).toBeInTheDocument();
     expect(screen.getByText('Sesudah')).toBeInTheDocument();
   });
+
+  it('keeps quote text present and visible without scrolling (scale-in reveal is SSR-safe)', () => {
+    render(<CaseStudyBody sections={sections} />);
+    expect(screen.getByText('Dipakai setiap minggu.')).toBeVisible();
+  });
 });

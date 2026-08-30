@@ -1,10 +1,11 @@
 import type {CaseStudySection} from '@/content/types';
+import {Reveal} from '@/components/motion/reveal';
 
 export function CaseStudyBody({sections}: {sections: CaseStudySection[]}) {
   return (
     <div className="space-y-16">
       {sections.map((section) => (
-        <section key={section.heading}>
+        <Reveal key={section.heading} as="section">
           <h2 className="font-display text-3xl text-fg">{section.heading}</h2>
           <div className="mt-6 space-y-5 text-fg-muted">
             {section.blocks.map((block, index) => {
@@ -46,13 +47,15 @@ export function CaseStudyBody({sections}: {sections: CaseStudySection[]}) {
               }
 
               return (
-                <blockquote key={index} className="border-l-2 border-accent pl-5 text-fg">
-                  <p className="whitespace-pre-line leading-7">{block.text}</p>
-                </blockquote>
+                <Reveal key={index} scaleIn>
+                  <blockquote className="border-l-2 border-accent pl-5 text-fg">
+                    <p className="whitespace-pre-line leading-7">{block.text}</p>
+                  </blockquote>
+                </Reveal>
               );
             })}
           </div>
-        </section>
+        </Reveal>
       ))}
     </div>
   );

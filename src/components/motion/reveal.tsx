@@ -24,12 +24,14 @@ export function Reveal({
   as = 'div',
   delay = 0,
   index,
+  scaleIn = false,
   className
 }: {
   children: ReactNode;
   as?: Tag;
   delay?: number;
   index?: number;
+  scaleIn?: boolean;
   className?: string;
 }) {
   const reduce = usePrefersReducedMotion();
@@ -44,8 +46,13 @@ export function Reveal({
   const MotionTag = motion[as];
   const settleDelay = index != null ? index * STAGGER_STEP : delay;
   const variants = {
-    hidden: {opacity: 0.001, y: REVEAL_TRAVEL},
-    show: {opacity: 1, y: 0, transition: {duration: DUR.base, ease: EASE, delay: settleDelay}}
+    hidden: {opacity: 0.001, y: REVEAL_TRAVEL, ...(scaleIn ? {scale: 0.98} : {})},
+    show: {
+      opacity: 1,
+      y: 0,
+      ...(scaleIn ? {scale: 1} : {}),
+      transition: {duration: DUR.base, ease: EASE, delay: settleDelay}
+    }
   };
 
   // Inside a <Stagger> the parent propagates the "hidden"/"show" labels and the
