@@ -6,6 +6,7 @@ import {routing} from '@/i18n/routing';
 import {siteUrl} from '@/lib/site';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
 import Sidebar from '@/components/sidebar';
+import {Noise} from '@/components/motion/noise';
 import {inter, interTight, jetbrainsMono} from '../fonts';
 import '../globals.css';
 
@@ -67,6 +68,7 @@ export default async function LocaleLayout({
     >
       <body>
         <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
+        <Noise />
         <NextIntlClientProvider messages={clientMessages}>
           <div className="lg:grid lg:grid-cols-[280px_1fr]">
             <Sidebar />

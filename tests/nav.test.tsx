@@ -26,4 +26,11 @@ describe('Nav', () => {
     expect(screen.getByRole('link', {name: /Karya/}).getAttribute('aria-current')).toBe('page');
     expect(screen.getByRole('link', {name: /Beranda/}).getAttribute('aria-current')).toBeNull();
   });
+
+  it('renders exactly one sliding indicator, inside the active item', () => {
+    render(<Nav />);
+    const indicators = screen.getAllByTestId('nav-indicator');
+    expect(indicators).toHaveLength(1);
+    expect(screen.getByRole('link', {name: /Karya/})).toContainElement(indicators[0]);
+  });
 });
