@@ -8,9 +8,18 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     include: ['tests/**/*.test.{ts,tsx}'],
-    globals: true
+    globals: true,
+    server: {
+      deps: {
+        inline: ['next-intl']
+      }
+    }
   },
   resolve: {
-    alias: {'@': path.resolve(import.meta.dirname, './src')}
+    alias: {
+      '@': path.resolve(import.meta.dirname, './src'),
+      'next/link': path.resolve(import.meta.dirname, './node_modules/next/link.js'),
+      'next/navigation': path.resolve(import.meta.dirname, './node_modules/next/navigation.js')
+    }
   }
 });

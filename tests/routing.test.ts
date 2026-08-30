@@ -14,3 +14,17 @@ describe('routing locale', () => {
     expect(routing.localePrefix).toBe('always');
   });
 });
+
+describe('localised pathnames', () => {
+  it('maps every nav route for both locales', () => {
+    const p = routing.pathnames as Record<string, {id: string; en: string}>;
+    expect(p['/tentang']).toEqual({id: '/tentang', en: '/about'});
+    expect(p['/karya']).toEqual({id: '/karya', en: '/work'});
+    expect(p['/karya/[slug]']).toEqual({id: '/karya/[slug]', en: '/work/[slug]'});
+    expect(p['/riset']).toEqual({id: '/riset', en: '/research'});
+    expect(p['/pencapaian']).toEqual({id: '/pencapaian', en: '/achievements'});
+    expect(p['/buku-tamu']).toEqual({id: '/buku-tamu', en: '/guestbook'});
+    expect(p['/kontak']).toEqual({id: '/kontak', en: '/contact'});
+    expect(p['/links']).toEqual({id: '/links', en: '/links'});
+  });
+});
