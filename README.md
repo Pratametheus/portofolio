@@ -13,9 +13,16 @@ and publishing security research.
   `--color-*` utility to a `var()` that a `data-theme` swap retints. Night is
   the server-rendered default; light is opt-in via `ThemeToggle`, applied
   before first paint by a tiny inline script (`src/lib/theme.ts`).
+- **Motion** (`motion`, framer-motion v13) — the only animation library. Imported
+  *only* by the shared primitives in `src/components/motion/` (`Reveal`, `Stagger`,
+  `Counter`, `GlareCard`, `MagneticButton`, `Noise`, `ScrollSpin`, `ParallaxY`);
+  pages compose those, never `motion` directly. Every effect is SSR-safe (content
+  renders and is visible with no JS) and no-ops under `prefers-reduced-motion`.
+  Below-the-fold islands (`ScrollSpin`, `Counter`, `MagneticButton`, `ParallaxY`)
+  are `next/dynamic({ssr:false})` to keep `motion` out of the initial bundle.
 - **Vitest** + **Testing Library** — unit tests
 - **Playwright** — end-to-end tests
-- `npm run check:size` — gates initial JS at a fixed gzip budget (run in CI)
+- `npm run check:size` — gates initial JS at a fixed gzip budget (210 KB, run in CI)
 
 > This project runs Next.js 16.3.2, which carries breaking changes from earlier
 > versions. Bundled docs live in `node_modules/next/dist/docs/`. Example: the
@@ -59,6 +66,7 @@ locale-independent so links survive a language switch.
 | `src/app/globals.css` | Two-theme token sets + `@theme inline` map |
 | `src/lib/theme.ts` | Theme constants + the pre-paint init script |
 | `src/components/` | `Sidebar` (rail + mobile drawer), `Nav`/`NavItem`, `ThemeToggle`, `LocaleSwitcher`, `ImageCard`, `CaseStudyBody`, `PillarCard`, `ResearchCard`, `ContactRow`, `Icon` |
+| `src/components/motion/` | The only place `motion` is imported. SSR-safe, reduced-motion-aware primitives + their `.lazy.tsx` (`next/dynamic`) wrappers; `src/lib/motion.ts` holds the shared easing / duration / travel vocabulary |
 | `src/content/case-studies/` | Case-study content as typed data, one file per project, both locales (not Markdown) |
 | `src/lib/` | Content access, JSON-LD builders, site constants |
 | `src/i18n/` | next-intl routing (`pathnames` map), navigation, message loading |

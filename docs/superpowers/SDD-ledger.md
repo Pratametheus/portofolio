@@ -296,4 +296,67 @@ Task 2: complete (commit c69f087) — `motion@^13.1.1`, `src/lib/motion.ts` (EAS
 Tasks 3–8: complete (commits 200d460, 49a4469, 36e83bb, 1f56c10, 3bb4647, 60c9f83) — enam primitif
   TDD, tiap RED = `Failed to resolve import "@/components/motion/*"`. unit 101/101, tsc bersih,
   import-boundary bersih (`motion` hanya di `src/components/motion/*`), build tetap 155.4 KB.
+Fase 2 close-out: commit cf73dfa (docs: catatan dua penyimpangan test-infra).
+Task 9: complete (commit af60cca) — grain overlay di `layout.tsx` + indikator nav geser
+  (`layoutId`). Ruling: `motion.span` TIDAK di `nav-item.tsx` (langgar batas import); dibungkus
+  primitif baru `src/components/motion/nav-indicator.tsx`. unit 102, e2e shell 8/8.
+Task 10: complete (commit 9c41253) — Beranda: hero Stagger/Reveal, ScrollSpin, section reveals,
+  Counter, GlareCard, MagneticButton CTA. Ruling: dua locator verbatim `motion.spec.ts` ambigu
+  (`getByText('Saya membangun…')` → `.first()`; `/riset/i` → `/^riset/i`). `ResearchCard` belum
+  punya angka "10" → ditambah baris statistik + kunci `research.paper.scenarios` (dua locale).
+  Bundle 155.4 → **209.9 KB** (motion masuk graf `/[locale]`).
+Task 11: complete (commit d45c661) — `CaseStudyBody` section Reveal + quote `scaleIn`; primitif
+  `ParallaxY` (cermin `ScrollSpin`, tes sendiri, `.lazy.tsx`) untuk thumbnail detail. `Reveal`
+  dapat prop `scaleIn` (disanksikan plan T11).
+Task 12: complete (commit 1460dbb) — reveal/stagger di tentang/riset/pencapaian/links/karya-list +
+  `[locale]/not-found.tsx`. `<h1>` tetap di LUAR wrapper (satu h1 terlihat, urutan heading utuh).
+  Ruling: `global-not-found.tsx` DIBIARKAN statis — dokumen bare non-lokal yang "bypasses the app's
+  normal rendering entirely"; menaruh island `motion` di sana melawan desainnya, dan ada e2e-nya.
+  `links` di-stagger lewat `<Reveal as="li" index={n}>` (bukan `Stagger as="ul"` — hindari
+  melebarkan union `Tag`).
+
+## Penyempurnaan pasca-review (fix/perf/revert, commit terpisah)
+
+perf lazy-hydrate island (commit ab9a5cb) — `ScrollSpin`/`Counter`/`MagneticButton` lewat
+  `next/dynamic({ssr:false})` dari wrapper `'use client'` (`ssr:false` dilarang di Server Component
+  di Next 16, dikonfirmasi `node_modules/next/dist/docs/01-app/02-guides/lazy-loading.md`).
+  Percobaan `LazyMotion` + `m` DIBUANG lebih dulu — mengukur 211–213 KB (LEBIH besar + gate merah):
+  `motion` v13 sudah tree-shake baik, `LazyMotion` cuma menambah orkestrasi lazy di atasnya.
+  Bundle **209.9 → 203.6 KB**.
+fix stable DOM (commit 04c2854) — Reveal/Stagger/ScrollSpin/ParallaxY tak lagi menukar tipe elemen
+  / nesting saat flag `mounted` membalik. Dulu: elemen polos → `motion.tag` / anak → dibungkus
+  `motion.div` pada hidrasi = node di-REPLACE/REPARENT, melepas ref yang dipegang Playwright (dan
+  scroll/fokus pengguna nyata). Sekarang tipe & nesting konstan; gate cuma memutuskan apakah prop
+  animasi menempel. `motion.tag` + `initial={false}` merender node polos bersih di server & pre-mount.
+fix ScrollSpin rest angle (commit aa7ad5a) — offset `useScroll` `['start end','end start']` →
+  `['start start','end start']`: progres ~0 selama hero di posisi baca (atas viewport).
+fix ScrollSpin drift (commit 5b44e4c) — binding rotate ternyata UTUH; masalahnya `max=18`
+  menuntaskan seluruh sapuan 0→18° dalam ~600px scroll pertama (di desktop langsung mentok, terbaca
+  statis). `max` **18 → 12**. Dibuktikan di `e2e/motion.spec.ts`: rotasi inner figure `<2°` di
+  scrollY=0 dan `4–14°` setelah `scrollTo(0,900)` (12,0° desktop / 6,8° mobile), tetap `0°` di
+  kedua posisi saat `prefers-reduced-motion`.
+
+## Close-out — RENCANA SELESAI (Task 13, commit test: verify motion pass)
+
+Yang dikapalkan: satu pustaka animasi (`motion` v13), di-import hanya oleh 8 primitif +
+`use-reduced-motion` hook di `src/components/motion/*` (percobaan `provider`/`LazyMotion` dibuang).
+Efek: hero stagger + reveal, ScrollSpin scroll-tied (`max=12`),
+section reveals di semua rute, Counter count-up (nilai akhir tanpa JS), GlareCard hover (CSS
+murni), MagneticButton CTA, indikator nav geser (`layoutId`), grain overlay `feTurbulence`
+(opacity 0,035, `mix-blend-soft-light`, statis saat reduced-motion), quote `scaleIn`, thumbnail
+`ParallaxY`. Semua SSR-aman & no-op saat `prefers-reduced-motion`. `motion` hanya di
+`src/components/motion/*` (grep bersih). Island bawah-fold (`ScrollSpin`/`Counter`/
+`MagneticButton`/`ParallaxY`) di-`next/dynamic({ssr:false})`.
+
+Angka akhir (verifikasi controller, bukan klaim):
+- unit **107/107** (27 berkas), e2e **80/80** (chromium + mobile), `tsc --noEmit` bersih
+- `next build` sukses; `npm run check:size` → **204,3 KB / 210,0 KB**
+- before → after bundle `/[locale]`: **155,4 KB → 204,3 KB** (+48,9 KB untuk seluruh motion pass;
+  puncak sementara 209,9 KB sebelum lazy-hydrate menariknya kembali)
+- sapuan reduced-motion (`/id`, `/id/karya/city-courier`): konten penuh terlihat, tanpa transform
+  beranimasi, Counter menampilkan 10, grain statis (`animation-name: none`)
+
+Deferral: tuas "hero Reveal jadi CSS-only" (`@starting-style`/keyframe) TIDAK dipakai — 5,7 KB
+headroom cukup dan Fase berikutnya menyentuh chunk rute lain, bukan `/[locale]`. `global-not-found.tsx`
+sengaja tanpa reveal. `LazyMotion`/`m` ditinggalkan (mengukur regresi bundle 211–213 KB).
 
