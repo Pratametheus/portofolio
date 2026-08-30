@@ -12,6 +12,8 @@ const launchOptions = existsSync(sandboxChromium)
 
 export default defineConfig({
   testDir: './e2e',
+  // Next dev can race while compiling the same cold route for both projects.
+  workers: 1,
   use: {baseURL: 'http://localhost:3000'},
   projects: [
     {name: 'chromium', use: {...devices['Desktop Chrome'], launchOptions}},

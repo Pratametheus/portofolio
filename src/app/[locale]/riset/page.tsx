@@ -1,0 +1,28 @@
+import {notFound} from 'next/navigation';
+import {hasLocale} from 'next-intl';
+import {getTranslations, setRequestLocale} from 'next-intl/server';
+import {ResearchCard} from '@/components/research-card';
+import {routing} from '@/i18n/routing';
+import {buildScholarlyArticleSchema} from '@/lib/jsonld';
+
+export default async function ResearchPage({params}: {params: Promise<{locale: string}>}) {
+  const {locale: requested} = await params;
+  if (!hasLocale(routing.locales, requested)) notFound();
+  const locale = requested;
+  setRequestLocale(locale);
+  const t = await getTranslations({locale, namespace: 'research'});
+  const schema = buildScholarlyArticleSchema();
+
+  return (
+    <main className="mx-auto max-w-4xl px-6 py-20 lg:px-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(schema).replace(/</g, '\\u003c')}}
+      />
+      <h1 className="font-display text-5xl text-fg">{t('title')}</h1>
+      <div className="mt-10">
+        <ResearchCard locale={locale} />
+      </div>
+    </main>
+  );
+}

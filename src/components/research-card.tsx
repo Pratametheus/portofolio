@@ -8,7 +8,7 @@ export function ResearchCard({locale}: {locale: Locale}) {
 
   return (
     <article lang={locale} className="rounded-xl border border-border bg-surface p-6">
-      <h3 className="font-display text-xl text-fg">{t('title')}</h3>
+      <h2 className="font-display text-xl text-fg">{t('title')}</h2>
       <p className="mt-3 font-mono text-xs leading-6 text-accent">{t('meta')}</p>
       <p className="mt-4 leading-7 text-fg-muted">{t('summary')}</p>
       <a
