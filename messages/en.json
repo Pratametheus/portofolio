@@ -1,0 +1,21 @@
+{
+  "nav": {
+    "home": "Home",
+    "work": "Work",
+    "about": "About",
+    "guestbook": "Guestbook"
+  },
+  "home": {
+    "tagline": "I build software for the work I actually do myself.",
+    "selectedWork": "Selected work"
+  },
+  "metadata": {
+    "title": "Ferry Andhika Pratama",
+    "description": "Portfolio of Ferry Andhika Pratama — software built for the work he actually does: teaching, writing, and research."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has moved.",
+    "back": "Back to home"
+  }
+}

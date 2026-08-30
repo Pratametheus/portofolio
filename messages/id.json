@@ -1,0 +1,21 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "work": "Karya",
+    "about": "Tentang",
+    "guestbook": "Buku Tamu"
+  },
+  "home": {
+    "tagline": "Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri.",
+    "selectedWork": "Karya pilihan"
+  },
+  "metadata": {
+    "title": "Ferry Andhika Pratama",
+    "description": "Portofolio Ferry Andhika Pratama — perangkat lunak yang dibangun untuk pekerjaannya sendiri: mengajar, menulis, dan meneliti."
+  },
+  "notFound": {
+    "title": "Halaman tidak ditemukan",
+    "description": "Halaman yang kamu cari tidak ada atau sudah dipindahkan.",
+    "back": "Kembali ke beranda"
+  }
+}
