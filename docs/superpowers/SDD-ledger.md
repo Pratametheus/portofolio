@@ -179,3 +179,49 @@ Verifikasi mandiri controller terhadap keluaran build sungguhan (bukan klaim sub
 - unit 43/43, e2e 26/26, tsc bersih, next build sukses ✓
 
 RENCANA SELESAI — 16 commit, semua task hijau, review akhir bersih.
+
+---
+
+# SDD ledger — plan: docs/superpowers/plans/2026-08-30-ruang-kerja-code.md
+
+Spec: `docs/superpowers/specs/2026-08-30-ruang-kerja-design.md` · Figma: `0bLl0krxjy0mofkU4vCSe5`
+
+Dieksekusi di worktree Orca `Pratametheus/ruang-kerja-code` oleh codex (gpt-5.6-sol),
+di-review per fase oleh controller. 25 commit, TDD penuh.
+
+## Rulings selama eksekusi
+
+**Ruling: `Inter Tight` tidak tersedia — tipografi display tetap `Inter`.**
+— Sudah diputuskan di Plan A; `globals.css` meng-alias `--font-display` ke `var(--font-inter)`.
+
+**Ruling: cacat plan — `<head>` manual di `layout.tsx` mengosongkan `document.title` di dev.**
+— Task 8 plan menaruh `<script>` tema di `<head>` manual. Build produksi tetap benar; `next dev` +
+Playwright melihat `document.title === ''`. Amendment `a543089`: `<script>` jadi anak pertama
+`<body>`, tanpa `<head>`. Ketahuan langsung lewat e2e.
+
+**Ruling: cacat plan — Task 10 "rewrite" `content-parity.test.ts` menghapus ~13 assertion nilai.**
+— Assertion year/stack/featured/title identik, tagline benar-benar diterjemahkan, stack tanpa
+duplikat hilang. `d0aae5c` (controller) mengembalikannya di samping tes parity struktural baru.
+
+**Ruling: cacat plan — Task 15 tidak menyebut ilustrasi hero operator di Beranda (spec §3 wajib).**
+— Ditambahkan bersama Task 18 (`0def842`): dua `<Image>` night/light, di-swap lewat CSS `[data-theme]`.
+
+**Ruling: anggaran JS awal 150 KB → 160 KB (disetujui user 2026-08-30).**
+— Baseline FASE-3 (143,5 KB) diukur saat situs satu halaman statis tanpa JS klien. Rebuild menambah
+`ThemeToggle`, `LocaleSwitcher`, `Nav`, `Sidebar` (drawer), `next/image` — semua load-bearing.
+Total terukur **155,4 KB**. Gate `npm run check:size` memakai 160. Kandidat penghematan bila perlu
+diperketat: ganti wrapper navigasi klien next-intl dengan `next/navigation` mentah di `Nav`/`Sidebar`.
+
+**Ruling: Lighthouse di CI (job `lighthouse`, `treosh/lighthouse-ci-action`).**
+— Tidak ada CLI lokal. `lighthouserc.json`: Accessibility `error` (wajib 100); Performance/SEO/LCP
+`warn` sampai ambang disetel dari run CI nyata.
+
+## Verifikasi akhir controller (bukan klaim codex)
+
+- unit **81/81** (19 berkas), e2e **68/68** (chromium + mobile), `tsc --noEmit` bersih
+- `next build` → **27 halaman statis**, kedua locale, semua rute ter-prerender
+- `npm run check:size` → 155,4 KB / 160,0 KB ✓
+- `.next/server/app/{id,en}.html` → `<title>Ferry Andhika Pratama</title>` ✓
+- 5 e2e old-Beranda yang di-skip di Fase 2 sudah di-un-skip & hijau setelah Task 15
+
+RENCANA SELESAI — siap merge ke `main`.

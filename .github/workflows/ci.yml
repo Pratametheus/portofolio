@@ -21,3 +21,22 @@ jobs:
       - run: npx tsc --noEmit
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # Accessibility is asserted as an error (must be 100). Performance / SEO /
+      # LCP report as warnings until the thresholds are tuned against real CI
+      # runs; flip them to "error" in lighthouserc.json once the numbers settle.
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./lighthouserc.json
+          temporaryPublicStorage: true
