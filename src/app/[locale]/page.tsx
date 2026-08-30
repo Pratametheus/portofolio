@@ -39,7 +39,7 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
           <p className="mt-8 text-2xl leading-9 text-fg">{t('tagline')}</p>
           <p className="mt-4 leading-7 text-fg-muted">{t('statement')}</p>
         </div>
-        <figure className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-surface">
+        <figure className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-surface">
           <Image
             data-hero="night"
             src="/hero/operator-night.webp"
@@ -47,7 +47,7 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
             fill
             sizes="(min-width:1024px) 420px, 100vw"
             priority
-            className="object-cover"
+            className="object-cover object-[center_20%]"
           />
           <Image
             data-hero="light"
@@ -55,7 +55,8 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
             alt={t('heroAlt')}
             fill
             sizes="(min-width:1024px) 420px, 100vw"
-            className="object-cover"
+            priority
+            className="object-cover object-[center_22%]"
           />
         </figure>
       </header>
