@@ -37,20 +37,39 @@ test('judul utama terlihat', async ({page}) => {
 
 test('halaman Indonesia menampilkan tagline Indonesia', async ({page}) => {
   await page.goto('/id');
-  await expect(page.getByText('Saya membangun perangkat lunak')).toBeVisible();
+  await expect(
+    page.getByText('Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri.', {
+      exact: true
+    })
+  ).toBeVisible();
 });
 
-test.skip('halaman Inggris menampilkan tagline Inggris', async ({page}) => {
+test('halaman Inggris menampilkan tagline Inggris', async ({page}) => {
   await page.goto('/en');
-  await expect(page.getByText('I build software')).toBeVisible();
-}); // TODO(task-15): re-enable after Beranda rebuild
+  await expect(
+    page.getByText('I build software for work I genuinely do myself.', {exact: true})
+  ).toBeVisible();
+});
 
-test.skip('ketiga studi kasus tampil di beranda', async ({page}) => {
+test('ketiga studi kasus tampil di beranda', async ({page}) => {
   await page.goto('/id');
-  await expect(page.getByRole('link', {name: /SIAKAD Informatika|City Courier|MochiToon/})).toHaveCount(3);
-}); // TODO(task-15): re-enable after Beranda rebuild
+  for (const title of ['SIAKAD Informatika', 'City Courier', 'MochiToon']) {
+    await expect(page.getByRole('link', {name: title})).toBeVisible();
+  }
+});
 
-test.skip('navigasi keyboard menjangkau kartu pertama dengan focus yang terlihat', async ({page}) => {
+test('ketiga pilar kerja tampil di beranda', async ({page}) => {
+  await page.goto('/id');
+  for (const title of [
+    'Build · Mengembangkan sistem',
+    'Teach · Mengajar & berbagi',
+    'Secure · Menguji keamanan'
+  ]) {
+    await expect(page.getByRole('heading', {name: title})).toBeVisible();
+  }
+});
+
+test('navigasi keyboard menjangkau kartu pertama dengan focus yang terlihat', async ({page}) => {
   await page.goto('/id');
   const firstLink = page.getByRole('link', {name: 'SIAKAD Informatika'});
   for (let attempt = 0; attempt < 20; attempt += 1) {
@@ -65,32 +84,31 @@ test.skip('navigasi keyboard menjangkau kartu pertama dengan focus yang terlihat
   });
   expect(outline.outlineStyle).not.toBe('none');
   expect(parseFloat(outline.outlineWidth)).toBeGreaterThan(0);
-}); // TODO(task-15): re-enable after Beranda rebuild
+});
 
 test.describe('kelengkapan aksesibilitas per halaman', () => {
-  test.skip('halaman id punya <title> dan urutan heading yang benar', async ({page}) => {
+  test('halaman id punya <title> dan urutan heading yang benar', async ({page}) => {
     await page.goto('/id');
     await expect(page).toHaveTitle('Ferry Andhika Pratama');
     await expect(page.locator('html')).toHaveAttribute('lang', 'id');
 
-    // h1 -> h2 -> h3, tanpa lompat level
     await expect(page.getByRole('heading', {level: 1})).toHaveCount(1);
-    const h2 = page.getByRole('heading', {level: 2});
-    await expect(h2).toHaveText('Karya pilihan');
-    await expect(page.getByRole('heading', {level: 3}).first()).toBeVisible();
+    const levels = await page.locator('h1, h2, h3, h4, h5, h6').evaluateAll((headings) =>
+      headings.map((heading) => Number(heading.tagName.slice(1)))
+    );
+    expect(levels[0]).toBe(1);
+    for (let index = 1; index < levels.length; index += 1) {
+      expect(levels[index] - levels[index - 1]).toBeLessThanOrEqual(1);
+    }
+    await expect(page.getByRole('heading', {level: 2, name: 'Karya terpilih'})).toBeVisible();
+  });
 
-    // bagian karya diberi nama lewat h2-nya
-    const sectionId = await h2.getAttribute('id');
-    expect(sectionId).toBeTruthy();
-    await expect(page.locator(`section[aria-labelledby="${sectionId}"]`)).toBeVisible();
-  }); // TODO(task-15): re-enable after Beranda rebuild
-
-  test.skip('halaman en punya <title> berbeda dan judul bagian dalam bahasa Inggris', async ({page}) => {
+  test('halaman en punya <title> dan judul bagian dalam bahasa Inggris', async ({page}) => {
     await page.goto('/en');
     await expect(page).toHaveTitle('Ferry Andhika Pratama');
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByRole('heading', {level: 2})).toHaveText('Selected work');
-  }); // TODO(task-15): re-enable after Beranda rebuild
+    await expect(page.getByRole('heading', {level: 2, name: 'Selected work'})).toBeVisible();
+  });
 });
 
 test.describe('halaman 404', () => {

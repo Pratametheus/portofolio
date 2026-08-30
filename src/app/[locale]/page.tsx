@@ -1,9 +1,14 @@
+import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
-import {setRequestLocale, getTranslations} from 'next-intl/server';
+import {getTranslations, setRequestLocale} from 'next-intl/server';
+import {ContactRow} from '@/components/contact-row';
+import {ImageCard} from '@/components/image-card';
+import {PillarCard} from '@/components/pillar-card';
+import {ResearchCard} from '@/components/research-card';
+import {getPathname} from '@/i18n/navigation';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies} from '@/lib/content';
-import {ImageCard} from '@/components/image-card';
 
 export default async function HomePage({params}: {params: Promise<{locale: string}>}) {
   const {locale: requested} = await params;
@@ -12,19 +17,55 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
   }
   const locale = requested;
   setRequestLocale(locale);
-  const t = await getTranslations('home');
+
+  const [t, sidebar, contact] = await Promise.all([
+    getTranslations({locale, namespace: 'home'}),
+    getTranslations({locale, namespace: 'sidebar'}),
+    getTranslations({locale, namespace: 'contact'})
+  ]);
   const caseStudies = getAllCaseStudies(locale);
+  const contactHref = getPathname({locale, href: '/kontak'});
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24">
-      <h1 className="font-display text-4xl text-fg">Ferry Andhika Pratama</h1>
-      <p className="mt-4 text-lg text-fg-muted">{t('tagline')}</p>
+    <main className="mx-auto max-w-6xl px-6 py-20 lg:px-12">
+      <header className="max-w-4xl">
+        <p className="font-mono text-xs tracking-widest text-accent">{t('eyebrow')}</p>
+        <h1 className="mt-6 font-display text-5xl leading-tight text-fg sm:text-6xl">
+          Ferry Andhika Pratama
+        </h1>
+        <p className="mt-4 font-mono text-sm text-accent">{sidebar('role')}</p>
+        <p className="mt-8 max-w-3xl text-2xl leading-9 text-fg">{t('tagline')}</p>
+        <p className="mt-4 max-w-3xl leading-7 text-fg-muted">{t('statement')}</p>
+      </header>
 
-      <section aria-labelledby="selected-work-heading" className="mt-16">
-        <h2 id="selected-work-heading" className="font-display text-2xl text-fg">
+      <section aria-labelledby="pillars-heading" className="mt-20">
+        <h2 id="pillars-heading" className="font-display text-3xl text-fg">
+          {t('pillarsTitle')}
+        </h2>
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
+          <PillarCard
+            icon="build"
+            title={t('pillars.build.title')}
+            body={t('pillars.build.body')}
+          />
+          <PillarCard
+            icon="teach"
+            title={t('pillars.teach.title')}
+            body={t('pillars.teach.body')}
+          />
+          <PillarCard
+            icon="secure"
+            title={t('pillars.secure.title')}
+            body={t('pillars.secure.body')}
+          />
+        </div>
+      </section>
+
+      <section aria-labelledby="selected-work-heading" className="mt-20">
+        <h2 id="selected-work-heading" className="font-display text-3xl text-fg">
           {t('selectedWork')}
         </h2>
-        <div className="mt-4 grid gap-4">
+        <div className="mt-8 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {caseStudies.map((caseStudy, index) => (
             <ImageCard
               key={caseStudy.slug}
@@ -34,6 +75,35 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
             />
           ))}
         </div>
+      </section>
+
+      <section aria-labelledby="research-heading" className="mt-20">
+        <h2 id="research-heading" className="font-display text-3xl text-fg">
+          {t('researchTitle')}
+        </h2>
+        <div className="mt-8">
+          <ResearchCard locale={locale} />
+        </div>
+      </section>
+
+      <section aria-labelledby="contact-heading" className="mt-20">
+        <h2 id="contact-heading" className="max-w-3xl font-display text-3xl text-fg">
+          {t('contactTitle')}
+        </h2>
+        <div className="mt-8 rounded-xl border border-border bg-surface px-6">
+          <ContactRow label={contact('emailLabel')} value={contact('emailValue')} />
+          <ContactRow
+            label={contact('githubLabel')}
+            value={contact('githubValue')}
+            href="https://github.com/Pratametheus"
+          />
+        </div>
+        <Link
+          href={contactHref}
+          className="mt-6 inline-flex min-h-11 items-center rounded-lg bg-accent px-5 font-medium text-on-accent"
+        >
+          {t('contactCta')}
+        </Link>
       </section>
     </main>
   );
