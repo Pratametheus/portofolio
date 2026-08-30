@@ -57,10 +57,8 @@ export default async function LocaleLayout({
       className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
-      </head>
       <body>
+        <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
         <NextIntlClientProvider>
           <div className="lg:grid lg:grid-cols-[280px_1fr]">
             <Sidebar />
