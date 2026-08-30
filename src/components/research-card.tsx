@@ -1,6 +1,6 @@
 import {useTranslations} from 'next-intl';
 import type {Locale} from '@/content/types';
-import {Counter} from '@/components/motion/counter';
+import {Counter} from '@/components/motion/counter.lazy';
 
 const DOI_URL = 'https://doi.org/10.52436/1.jutif.2026.7.2.5662';
 
