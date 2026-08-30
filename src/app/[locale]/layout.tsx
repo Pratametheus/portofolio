@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import {hasLocale, NextIntlClientProvider} from 'next-intl';
-import {getTranslations, setRequestLocale} from 'next-intl/server';
+import {getMessages, getTranslations, setRequestLocale} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
 import {siteUrl} from '@/lib/site';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
@@ -50,6 +50,14 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
 
+  // Only the sidebar's client components read messages on the client; ship just
+  // those namespaces instead of the whole catalog (keeps initial JS down).
+  const messages = await getMessages();
+  const clientMessages = {
+    nav: messages.nav,
+    sidebar: messages.sidebar
+  };
+
   return (
     <html
       lang={locale}
@@ -59,7 +67,7 @@ export default async function LocaleLayout({
     >
       <body>
         <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={clientMessages}>
           <div className="lg:grid lg:grid-cols-[280px_1fr]">
             <Sidebar />
             <div className="min-w-0">{children}</div>
