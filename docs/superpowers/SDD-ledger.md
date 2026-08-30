@@ -273,8 +273,27 @@ plus efek turunannya (Reveal/Stagger/Counter/GlareCard/MagneticButton/Noise/Scro
 FASE-3 mengizinkan ≤200 KB untuk efek; user menyetujui 210 KB pada 2026-08-31 sebagai plafon keras
 ("Do not exceed 210 without sign-off"). Total nyata diukur ulang setelah Fase 3 dan di akhir.
 
+**Ruling: 2026-08-31 — dua penyimpangan test-infra di Fase 2 (Task 3).**
+— (a) `vitest.setup.ts` menambah stub `IntersectionObserver`. jsdom tidak menyediakannya, dan
+`motion` v13 `whileInView` / `useInView` **melempar** tanpa itu (tidak ada fallback). Stub melapor
+target langsung in-view. Hanya infrastruktur tes — nol kode produksi; suite penuh tetap hijau.
+— (b) Berkas baru `src/components/motion/use-reduced-motion.ts` (berkas ke-7 di direktori itu, tidak
+ada di tabel File Structure plan). `motion` v13 `useReducedMotion()` men-sample setelan sekali per
+proses lewat singleton modul dan tak pernah membaca ulang — basi setelah mount pertama dan tak
+kompatibel dengan swap `matchMedia` per-tes yang dipakai tes verbatim plan. Hook menjaga
+`useReducedMotion()` **dan** menambah langganan `matchMedia('(prefers-reduced-motion: reduce)')`
+langsung; sinyal mana pun true ⇒ tanpa gerak. Dikonsumsi Reveal, Stagger, Counter, MagneticButton,
+ScrollSpin. GlareCard + Noise pakai CSS `motion-safe:` / `motion-reduce:` murni.
+— Biaya kalau salah: (a) satu berkas setup dikembalikan bila jsdom kelak punya IO; (b) hook di-inline
+ per-primitif — identik secara perilaku, hanya lebih banyak duplikasi.
+
 ## Progress
 
 Task 1: complete (commit 284c95c) — `components.json` (2 registry), `src/lib/utils.ts` (`cn`),
   `clsx`+`tailwind-merge`. `globals.css` tak tersentuh, unit 81/81, tsc bersih.
+Task 2: complete (commit c69f087) — `motion@^13.1.1`, `src/lib/motion.ts` (EASE/DUR/REVEAL_TRAVEL/
+  STAGGER_STEP), gate `check:size` 160→210. Build 155.4 KB (motion belum ke-import). unit 85/85.
+Tasks 3–8: complete (commits 200d460, 49a4469, 36e83bb, 1f56c10, 3bb4647, 60c9f83) — enam primitif
+  TDD, tiap RED = `Failed to resolve import "@/components/motion/*"`. unit 101/101, tsc bersih,
+  import-boundary bersih (`motion` hanya di `src/components/motion/*`), build tetap 155.4 KB.
 
