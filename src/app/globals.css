@@ -1,18 +1,67 @@
 @import "tailwindcss";
 
-@theme {
-  --color-bg: #0A0A0B;
-  --color-surface: #131316;
-  --color-border: #26262B;
-  --color-fg: #EDEDEF;
-  --color-fg-muted: #9B9BA3;
-  --color-accent: #4ADE80;
+/* Utilities resolve to vars so a [data-theme] swap retints without a rebuild. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-on-accent: var(--on-accent);
+  --color-ring: var(--accent);
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-display: var(--font-inter-tight), system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Night — default, server-rendered as <html data-theme="night"> */
+:root,
+:root[data-theme="night"] {
+  --bg: #0A0A0B;
+  --surface: #131316;
+  --surface-2: #1B1B1F;
+  --border: #26262B;
+  --fg: #EDEDEF;
+  --fg-muted: #9B9BA3;
+  --accent: #FACC15;
+  --accent-dim: rgb(250 204 21 / 0.13);
+  --on-accent: #0A0A0B;
+  --color-bg: #0A0A0B;
+  --color-surface: #131316;
+  --color-surface-2: #1B1B1F;
+  --color-border: #26262B;
+  --color-fg: #EDEDEF;
+  --color-fg-muted: #9B9BA3;
+  --color-accent: #FACC15;
+  --color-on-accent: #0A0A0B;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #F7F3EC;
+  --surface: #EFE9DE;
+  --surface-2: #E7DFD1;
+  --border: #DED4C2;
+  --fg: #2B2925;
+  --fg-muted: #6B6459;
+  --accent: #8F5F18;
+  --accent-dim: rgb(143 95 24 / 0.14);
+  --on-accent: #F7F3EC;
+  --color-bg: #F7F3EC;
+  --color-surface: #EFE9DE;
+  --color-surface-2: #E7DFD1;
+  --color-border: #DED4C2;
+  --color-fg: #2B2925;
+  --color-fg-muted: #6B6459;
+  --color-accent: #8F5F18;
+  --color-on-accent: #F7F3EC;
+  color-scheme: light;
 }
 
 body {
@@ -20,10 +69,11 @@ body {
   color: var(--color-fg);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s var(--ease-out-expo), color 0.2s var(--ease-out-expo);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-ring);
   outline-offset: 2px;
 }
 
