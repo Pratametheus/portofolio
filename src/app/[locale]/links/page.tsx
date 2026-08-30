@@ -1,6 +1,7 @@
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
+import {Reveal} from '@/components/motion/reveal';
 import {routing} from '@/i18n/routing';
 
 export default async function LinksPage({params}: {params: Promise<{locale: string}>}) {
@@ -13,9 +14,11 @@ export default async function LinksPage({params}: {params: Promise<{locale: stri
   return (
     <main className="mx-auto max-w-4xl px-6 py-20 lg:px-12">
       <h1 className="font-display text-5xl text-fg">{t('title')}</h1>
-      <p className="mt-6 max-w-3xl text-lg leading-8 text-fg-muted">{t('intro')}</p>
+      <Reveal>
+        <p className="mt-6 max-w-3xl text-lg leading-8 text-fg-muted">{t('intro')}</p>
+      </Reveal>
       <ul className="mt-10 space-y-4">
-        <li className="rounded-xl border border-border bg-surface p-6">
+        <Reveal as="li" index={0} className="rounded-xl border border-border bg-surface p-6">
           <a
             href={t('githubUrl')}
             target="_blank"
@@ -25,8 +28,8 @@ export default async function LinksPage({params}: {params: Promise<{locale: stri
             {t('githubLabel')}
           </a>
           <p className="mt-2 leading-7 text-fg-muted">{t('githubDescription')}</p>
-        </li>
-        <li className="rounded-xl border border-border bg-surface p-6">
+        </Reveal>
+        <Reveal as="li" index={1} className="rounded-xl border border-border bg-surface p-6">
           <a
             href={t('journalUrl')}
             target="_blank"
@@ -36,8 +39,8 @@ export default async function LinksPage({params}: {params: Promise<{locale: stri
             {t('journalLabel')}
           </a>
           <p className="mt-2 leading-7 text-fg-muted">{t('journalDescription')}</p>
-        </li>
-        <li className="rounded-xl border border-border bg-surface p-6">
+        </Reveal>
+        <Reveal as="li" index={2} className="rounded-xl border border-border bg-surface p-6">
           <a
             href={t('siakadUrl')}
             target="_blank"
@@ -47,7 +50,7 @@ export default async function LinksPage({params}: {params: Promise<{locale: stri
             {t('siakadLabel')}
           </a>
           <p className="mt-2 leading-7 text-fg-muted">{t('siakadDescription')}</p>
-        </li>
+        </Reveal>
       </ul>
     </main>
   );
