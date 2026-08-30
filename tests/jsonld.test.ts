@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {buildPersonSchema, buildScholarlyArticleSchema} from '@/lib/jsonld';
+import {buildCaseStudyArticleSchema, buildPersonSchema, buildScholarlyArticleSchema} from '@/lib/jsonld';
 
 describe('buildPersonSchema', () => {
   const schema = buildPersonSchema();
@@ -28,5 +28,19 @@ describe('buildScholarlyArticleSchema', () => {
 
   it('menyebut Ferry sebagai penulis pertama', () => {
     expect(schema.author[0].name).toBe('Ferry Andhika Pratama');
+  });
+});
+
+describe('buildCaseStudyArticleSchema', () => {
+  it('builds a valid Article for a known slug', () => {
+    const s = buildCaseStudyArticleSchema('city-courier', 'en');
+    expect(s['@type']).toBe('Article');
+    expect(s.headline).toMatch(/City Courier/);
+    expect(s.inLanguage).toBe('en');
+    expect(s.url).toContain('/en/work/city-courier');
+  });
+
+  it('throws for an unknown slug', () => {
+    expect(() => buildCaseStudyArticleSchema('nope', 'id')).toThrow();
   });
 });

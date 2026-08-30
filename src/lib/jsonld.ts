@@ -1,3 +1,5 @@
+import type {Locale} from '@/content/types';
+import {getCaseStudy} from '@/lib/content';
 import {siteName, siteUrl} from './site';
 
 export function buildPersonSchema() {
@@ -28,5 +30,21 @@ export function buildScholarlyArticleSchema() {
     ],
     isPartOf: {'@type': 'Periodical', name: 'Jurnal Teknik Informatika (JUTIF)'},
     pagination: '1834-1852'
+  };
+}
+
+export function buildCaseStudyArticleSchema(slug: string, locale: Locale) {
+  const caseStudy = getCaseStudy(slug, locale);
+  const route = locale === 'en' ? 'work' : 'karya';
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article' as const,
+    headline: caseStudy.title,
+    about: caseStudy.tagline,
+    datePublished: `${caseStudy.year}-01-01`,
+    author: {'@type': 'Person' as const, name: siteName},
+    inLanguage: locale,
+    url: `${siteUrl}/${locale}/${route}/${caseStudy.slug}`
   };
 }
