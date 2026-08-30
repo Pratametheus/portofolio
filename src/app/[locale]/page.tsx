@@ -3,7 +3,7 @@ import {hasLocale} from 'next-intl';
 import {setRequestLocale, getTranslations} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies} from '@/lib/content';
-import {CaseStudyCard} from '@/components/case-study-card';
+import {ImageCard} from '@/components/image-card';
 
 export default async function HomePage({params}: {params: Promise<{locale: string}>}) {
   const {locale: requested} = await params;
@@ -25,8 +25,13 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
           {t('selectedWork')}
         </h2>
         <div className="mt-4 grid gap-4">
-          {caseStudies.map((caseStudy) => (
-            <CaseStudyCard key={caseStudy.slug} caseStudy={caseStudy} locale={locale} />
+          {caseStudies.map((caseStudy, index) => (
+            <ImageCard
+              key={caseStudy.slug}
+              caseStudy={caseStudy}
+              locale={locale}
+              priority={index === 0}
+            />
           ))}
         </div>
       </section>
