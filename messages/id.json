@@ -1,13 +1,97 @@
 {
   "nav": {
     "home": "Beranda",
-    "work": "Karya",
     "about": "Tentang",
-    "guestbook": "Buku Tamu"
+    "work": "Karya",
+    "research": "Riset",
+    "achievements": "Pencapaian",
+    "guestbook": "Buku Tamu",
+    "contact": "Kontak",
+    "links": "Links"
+  },
+  "sidebar": {
+    "role": "Software Engineer · Guru Informatika",
+    "availability": "Terbuka untuk kolaborasi",
+    "footer": "© 2026 Ferry Andhika Pratama"
   },
   "home": {
+    "eyebrow": "PUBLIC DOSSIER · FA-2026-0830",
     "tagline": "Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri.",
-    "selectedWork": "Karya pilihan"
+    "statement": "Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri — lalu memperbaikinya karena sayalah yang pertama merasakan kalau ada yang salah.",
+    "pillarsTitle": "Tiga cara saya bekerja",
+    "pillars": {
+      "build": {
+        "title": "Build · Mengembangkan sistem",
+        "body": "Produk yang dipakai dalam pekerjaan nyata."
+      },
+      "teach": {
+        "title": "Teach · Mengajar & berbagi",
+        "body": "Materi dan sistem yang tumbuh dari kebutuhan kelas."
+      },
+      "secure": {
+        "title": "Secure · Menguji keamanan",
+        "body": "Eksperimen yang dicatat dan diterbitkan."
+      }
+    },
+    "selectedWork": "Karya terpilih",
+    "researchTitle": "Riset & publikasi",
+    "contactTitle": "Ada proyek, riset, atau kelas yang ingin dibicarakan?",
+    "contactCta": "Hubungi saya"
+  },
+  "work": {
+    "title": "Karya yang dipakai, diuji, atau terus dikerjakan",
+    "intro": "Tiga proyek berikut dipilih karena mewakili konteks penggunaan yang berbeda. Detailnya berfokus pada masalah, kontribusi, keputusan teknis, dan batasannya."
+  },
+  "about": {
+    "title": "Pekerjaan yang membentuk cara saya membangun",
+    "body1": "Saya bekerja di persimpangan pengembangan perangkat lunak, kegiatan belajar-mengajar, dan riset keamanan aplikasi. Halaman ini menjelaskan konteksnya tanpa melebihkan peran.",
+    "body2": "Saya membangun aplikasi web dan mobile yang digunakan dalam alur kerja nyata, lalu mengajar kelas 4–6 dengan materi yang dapat berjalan dalam keterbatasan sekolah.",
+    "body3": "Saya juga menguji autentikasi, mencatat asumsi dan keterbatasan, serta menerbitkan temuan yang bisa diperiksa."
+  },
+  "research": {
+    "title": "Pengujian keamanan yang dicatat dan diterbitkan",
+    "paper": {
+      "title": "Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing",
+      "meta": "JUTIF · Vol 7 No 2 (2026) · hal. 1834–1852 · SINTA 2",
+      "summary": "Pengujian dilakukan dari sudut pandang perilaku sistem dan permukaan serangan yang dapat diamati. Sepuluh skenario diuji dan hasilnya dicatat dalam artikel yang dapat diakses melalui DOI.",
+      "doiLabel": "Baca artikel melalui DOI"
+    }
+  },
+  "achievements": {
+    "title": "Catatan perkembangan dan keluaran yang dapat diperiksa",
+    "intro": "Pencapaian disajikan sebagai garis waktu pekerjaan—bukan daftar gelar. Yang ditonjolkan adalah keluaran, konteks, dan apa yang berubah setelahnya.",
+    "publicationTitle": "Publikasi JUTIF",
+    "publicationBody": "Riset keamanan aplikasi web terbit dengan DOI yang dapat dikutip di jurnal terakreditasi SINTA 2.",
+    "teachingTitle": "Mengajar informatika",
+    "teachingBody": "Menyusun materi dari literasi digital menuju pemrograman teks dan web untuk kelas 4–6.",
+    "productTitle": "SIAKAD Informatika aktif",
+    "productBody": "Sistem akademik ekstrakurikuler digunakan dalam kegiatan mengajar mingguan di SDN Ujung XIII."
+  },
+  "guestbook": {
+    "title": "Catatan singkat dari orang yang pernah melihat atau memakai karya",
+    "empty": "Belum ada pesan yang ditampilkan. Buku tamu akan dibuka pada fase berikutnya."
+  },
+  "contact": {
+    "title": "Mulai dari konteks yang cukup",
+    "intro": "Pesan yang baik tidak perlu panjang. Tujuan, ruang lingkup, tenggat, dan cara terbaik untuk membalas sudah cukup untuk memulai percakapan.",
+    "emailLabel": "Email",
+    "emailValue": "Untuk peluang kerja, kolaborasi produk, atau diskusi riset.",
+    "githubLabel": "GitHub",
+    "githubValue": "github.com/Pratametheus",
+    "availability": "Terbuka untuk kolaborasi yang relevan."
+  },
+  "links": {
+    "title": "Tautan penting dan akses akun",
+    "intro": "Halaman ini mengumpulkan profil, publikasi, dan aplikasi yang dapat dibuka langsung.",
+    "githubLabel": "GitHub",
+    "githubDescription": "Repositori publik, aktivitas pengembangan, dan eksperimen yang dapat dibuka.",
+    "githubUrl": "https://github.com/Pratametheus",
+    "journalLabel": "JUTIF / DOI",
+    "journalDescription": "Artikel keamanan aplikasi web yang terbit di jurnal terakreditasi SINTA 2.",
+    "journalUrl": "https://doi.org/10.52436/1.jutif.2026.7.2.5662",
+    "siakadLabel": "SIAKAD Informatika",
+    "siakadDescription": "Sistem akademik ekstrakurikuler informatika yang digunakan dalam kegiatan mengajar.",
+    "siakadUrl": "https://jurnal-mengajar-blond.vercel.app/"
   },
   "metadata": {
     "title": "Ferry Andhika Pratama",
@@ -17,5 +101,8 @@
     "title": "Halaman tidak ditemukan",
     "description": "Halaman yang kamu cari tidak ada atau sudah dipindahkan.",
     "back": "Kembali ke beranda"
+  },
+  "common": {
+    "visitApp": "Kunjungi aplikasi"
   }
 }

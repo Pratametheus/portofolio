@@ -1,21 +1,108 @@
 {
   "nav": {
     "home": "Home",
-    "work": "Work",
     "about": "About",
-    "guestbook": "Guestbook"
+    "work": "Work",
+    "research": "Research",
+    "achievements": "Achievements",
+    "guestbook": "Guestbook",
+    "contact": "Contact",
+    "links": "Links"
+  },
+  "sidebar": {
+    "role": "Software Engineer · Computing Teacher",
+    "availability": "Open to relevant collaborations",
+    "footer": "© 2026 Ferry Andhika Pratama"
   },
   "home": {
-    "tagline": "I build software for the work I actually do myself.",
-    "selectedWork": "Selected work"
+    "eyebrow": "PUBLIC DOSSIER · FA-2026-0830",
+    "tagline": "I build software for work I genuinely do myself.",
+    "statement": "I build software inside the work itself, then improve it because I am usually the first person to feel where it fails.",
+    "pillarsTitle": "Three ways I work",
+    "pillars": {
+      "build": {
+        "title": "Build · Develop systems",
+        "body": "Products used in real working routines."
+      },
+      "teach": {
+        "title": "Teach · Explain and share",
+        "body": "Curricula and tools shaped by the needs of a classroom."
+      },
+      "secure": {
+        "title": "Secure · Test assumptions",
+        "body": "Security experiments documented well enough to publish."
+      }
+    },
+    "selectedWork": "Selected work",
+    "researchTitle": "Research & publication",
+    "contactTitle": "Have a product, research question, or class worth discussing?",
+    "contactCta": "Start a conversation"
+  },
+  "work": {
+    "title": "Work that is used, tested, or still evolving",
+    "intro": "These three projects represent different kinds of real use. Each case study focuses on the problem, my contribution, the technical decisions, and the limits of the result."
+  },
+  "about": {
+    "title": "The work that shaped how I build",
+    "body1": "My work sits where software development, classroom teaching, and application-security research overlap. This page gives that context without inflating the role I played.",
+    "body2": "I build web and mobile tools that enter real workflows, and I teach years 4–6 with material designed for the constraints of a school environment.",
+    "body3": "I also test authentication systems, document their assumptions and limitations, and publish findings that other people can inspect."
+  },
+  "research": {
+    "title": "Security testing recorded in public",
+    "paper": {
+      "title": "Web Application Security Vulnerability Analysis Using Black Box Testing",
+      "meta": "JUTIF · Vol 7 No 2 (2026) · pp. 1834–1852 · SINTA 2",
+      "summary": "The study treated the application as an observable attack surface rather than trusting its implementation. Ten scenarios were exercised, with the method and results preserved in a DOI-linked paper.",
+      "doiLabel": "Read the published paper"
+    }
+  },
+  "achievements": {
+    "title": "Progress and outputs that can be checked",
+    "intro": "This is a working timeline, not a trophy cabinet. The emphasis is on concrete outputs, their context, and what changed after they shipped.",
+    "publicationTitle": "JUTIF publication",
+    "publicationBody": "Application-security research was published with a citable DOI in a SINTA 2 accredited journal.",
+    "teachingTitle": "Teaching computing",
+    "teachingBody": "Designed a year 4–6 path from digital literacy through visual programming to text-based web development.",
+    "productTitle": "SIAKAD Informatika in active use",
+    "productBody": "The extracurricular academic system supports weekly teaching at SDN Ujung XIII."
+  },
+  "guestbook": {
+    "title": "Notes from people who have seen or used the work",
+    "empty": "There are no public notes yet. Guestbook submissions will open in a later phase."
+  },
+  "contact": {
+    "title": "Start with enough context",
+    "intro": "A useful message does not need to be long. A goal, scope, deadline, and preferred way to reply are enough to begin.",
+    "emailLabel": "Email",
+    "emailValue": "For roles, product collaboration, or research discussions.",
+    "githubLabel": "GitHub",
+    "githubValue": "github.com/Pratametheus",
+    "availability": "Open to relevant collaborations."
+  },
+  "links": {
+    "title": "Important links and public access",
+    "intro": "A compact index of profiles, published research, and applications you can open directly.",
+    "githubLabel": "GitHub",
+    "githubDescription": "Public repositories, development activity, and experiments that can be inspected.",
+    "githubUrl": "https://github.com/Pratametheus",
+    "journalLabel": "JUTIF / DOI",
+    "journalDescription": "Published web-application security research in a SINTA 2 accredited journal.",
+    "journalUrl": "https://doi.org/10.52436/1.jutif.2026.7.2.5662",
+    "siakadLabel": "SIAKAD Informatika",
+    "siakadDescription": "The extracurricular computing academic system used in weekly teaching.",
+    "siakadUrl": "https://jurnal-mengajar-blond.vercel.app/"
   },
   "metadata": {
     "title": "Ferry Andhika Pratama",
-    "description": "Portfolio of Ferry Andhika Pratama — software built for the work he actually does: teaching, writing, and research."
+    "description": "Ferry Andhika Pratama’s portfolio — software built from direct experience in teaching, writing, and security research."
   },
   "notFound": {
     "title": "Page not found",
-    "description": "The page you're looking for doesn't exist or has moved.",
+    "description": "The page you requested does not exist or has moved.",
     "back": "Back to home"
+  },
+  "common": {
+    "visitApp": "Visit application"
   }
 }

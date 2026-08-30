@@ -38,4 +38,36 @@ describe('kelengkapan terjemahan', () => {
       .map(([path]) => path);
     expect(empty).toEqual([]);
   });
+
+  it('memuat seluruh kontrak katalog Ruang Kerja', () => {
+    const requiredKeys = [
+      'nav.home', 'nav.about', 'nav.work', 'nav.research', 'nav.achievements',
+      'nav.guestbook', 'nav.contact', 'nav.links',
+      'sidebar.role', 'sidebar.availability', 'sidebar.footer',
+      'home.eyebrow', 'home.tagline', 'home.statement', 'home.pillarsTitle',
+      'home.pillars.build.title', 'home.pillars.build.body',
+      'home.pillars.teach.title', 'home.pillars.teach.body',
+      'home.pillars.secure.title', 'home.pillars.secure.body',
+      'home.selectedWork', 'home.researchTitle', 'home.contactTitle', 'home.contactCta',
+      'work.title', 'work.intro',
+      'about.title', 'about.body1', 'about.body2', 'about.body3',
+      'research.title', 'research.paper.title', 'research.paper.meta',
+      'research.paper.summary', 'research.paper.doiLabel',
+      'achievements.title', 'achievements.intro',
+      'achievements.publicationTitle', 'achievements.publicationBody',
+      'achievements.teachingTitle', 'achievements.teachingBody',
+      'achievements.productTitle', 'achievements.productBody',
+      'guestbook.title', 'guestbook.empty',
+      'contact.title', 'contact.intro', 'contact.emailLabel', 'contact.emailValue',
+      'contact.githubLabel', 'contact.githubValue', 'contact.availability',
+      'links.title', 'links.intro', 'links.githubLabel', 'links.githubDescription',
+      'links.githubUrl', 'links.journalLabel', 'links.journalDescription',
+      'links.journalUrl', 'links.siakadLabel', 'links.siakadDescription',
+      'links.siakadUrl', 'metadata.title', 'metadata.description',
+      'notFound.title', 'notFound.description', 'notFound.back', 'common.visitApp'
+    ];
+
+    expect(idKeys).toEqual(expect.arrayContaining(requiredKeys));
+    expect(enKeys).toEqual(expect.arrayContaining(requiredKeys));
+  });
 });
