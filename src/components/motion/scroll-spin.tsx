@@ -37,7 +37,9 @@ export function ScrollSpin({
 
   return (
     <div ref={ref} className={className}>
-      <motion.div style={{rotate}}>{children}</motion.div>
+      <motion.div className="relative h-full w-full" style={{rotate}}>
+        {children}
+      </motion.div>
     </div>
   );
 }

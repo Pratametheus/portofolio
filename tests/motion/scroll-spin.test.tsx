@@ -20,6 +20,15 @@ describe('ScrollSpin', () => {
     expect(screen.getByText('art')).toBeVisible();
   });
 
+  it('gives the rotating layer a filled, positioned box so wrapped media can size to it', () => {
+    const {container} = render(
+      <ScrollSpin>
+        <span>art</span>
+      </ScrollSpin>
+    );
+    expect(container.querySelector('.relative.h-full.w-full')).not.toBeNull();
+  });
+
   it('under prefers-reduced-motion applies no rotate transform', () => {
     mockReducedMotion(true);
     const {container} = render(
