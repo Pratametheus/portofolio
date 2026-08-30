@@ -225,3 +225,56 @@ diperketat: ganti wrapper navigasi klien next-intl dengan `next/navigation` ment
 - 5 e2e old-Beranda yang di-skip di Fase 2 sudah di-un-skip & hijau setelah Task 15
 
 RENCANA SELESAI — siap merge ke `main`.
+
+---
+
+# SDD ledger — plan: docs/superpowers/plans/2026-08-31-ruang-kerja-motion.md
+
+Spec: kesepakatan chat 2026-08-31 (rencana ini adalah rekamannya). Konteks: `docs/superpowers/specs/2026-08-30-ruang-kerja-design.md`.
+
+Dieksekusi di worktree Orca `Pratametheus/ruang-kerja-motion` oleh claude (codex di batas kuota).
+
+## Rulings selama eksekusi
+
+**Ruling: 2026-08-31 — cacat plan, `shadcn init` CLI sudah berganti antarmuka.**
+— Task 1 Step 1 memanggil `npx shadcn@latest init --base-color neutral --css-variables --yes`.
+shadcn CLI kini `4.19.0`: `--base-color` dihapus, init berbasis preset (Nova/Vega/...), dan `-y`
+tetap membuka prompt preset interaktif. Menjalankan `init -d` (preset `base-nova`) menulis
+`components.json` + `src/lib/utils.ts` (bagus) tapi juga menyuntik seluruh sistem token oklch
+shadcn + varian `.dark` + `@layer base` ke `globals.css`, dan menambah `@base-ui/react`,
+`lucide-react`, `class-variance-authority`, `tw-animate-css`, `shadcn` (sebagai runtime dep),
+plus `src/components/ui/button.tsx`.
+— Tindakan: `git checkout` `globals.css`/`package.json`/`package-lock.json`, hapus `src/components/ui/`,
+pertahankan `components.json` + `src/lib/utils.ts`, `npm i clsx tailwind-merge` (dua-duanya nol-dep)
+supaya `cn()` hidup. `components.json` `registries` di-set manual ke `@react-bits` + `@componentry`.
+Ini persis jalur yang plan Step 1 sanksikan ("revert any colour/token changes shadcn makes").
+— Verifikasi: `git diff src/app/globals.css` kosong; `npx shadcn view @react-bits/CountUp-TS-CSS`
+dan `@componentry/border-beam` sama-sama mengembalikan JSON registry-item (wiring dua registry OK).
+Perintah literal plan `shadcn view @react-bits @componentry` (namespace telanjang) tidak lagi
+didukung CLI 4.19 — persyaratan sebenarnya (registry terdaftar & resolvable) tetap terbukti.
+— Catatan Fase 2: nama item tebakan plan (`count-up`, `glare-hover`, `magnet`, `noise`) mengembalikan
+HTML fallback SPA; nama nyata react-bits berpola `CountUp-TS-CSS` (PascalCase + `-TS-CSS`). Plan
+Self-Review sudah mengantisipasi ("if a name 404s, hand-roll from the interface").
+— Biaya kalau salah: nihil — hasil akhir identik dengan maksud plan, satu berkas cruft dihapus.
+
+**Ruling: 2026-08-31 — `npm i motion` me-resolve v13, bukan v12.**
+— Global Constraints menyebut "`motion` (framer-motion v12)"; Task 2 Step 3 memerintah `npm i motion`
+telanjang dan "record the resolved version". Yang ter-resolve: **`motion@13.1.1`** (pin `^13.1.1`).
+Plan menunda ke versi yang ter-resolve, jadi ini yang dipakai. API yang dipakai primitif plan
+(`whileInView`, `useReducedMotion`, `useScroll`, `useTransform`, `useMotionValue`, `animate`,
+`useInView`, `layoutId`) stabil v11→v13, dan Fase 1 belum meng-import `motion` di mana pun —
+risiko API ditunda ke Fase 2.
+— Biaya kalau salah: satu pin diturunkan ke `^12`, ketahuan saat primitif pertama dikompilasi.
+
+**Ruling: anggaran JS 160 KB → 210 KB (disetujui user 2026-08-31).**
+— Gate `npm run check:size` naik dari `160` ke `210` (Task 2 Step 5). Alasan: motion pass menambah
+satu pustaka animasi (`motion` v13) yang di-import oleh primitif bersama di `src/components/motion/*`
+plus efek turunannya (Reveal/Stagger/Counter/GlareCard/MagneticButton/Noise/ScrollSpin). Preseden
+FASE-3 mengizinkan ≤200 KB untuk efek; user menyetujui 210 KB pada 2026-08-31 sebagai plafon keras
+("Do not exceed 210 without sign-off"). Total nyata diukur ulang setelah Fase 3 dan di akhir.
+
+## Progress
+
+Task 1: complete (commit 284c95c) — `components.json` (2 registry), `src/lib/utils.ts` (`cn`),
+  `clsx`+`tailwind-merge`. `globals.css` tak tersentuh, unit 81/81, tsc bersih.
+
