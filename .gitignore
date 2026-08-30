@@ -57,3 +57,7 @@ design-qa.md
 # transient QA artifacts
 /qa-*.png
 /_to_delete/
+
+# Figma-revision working area (raw exports, Canva rasters, before/after shots).
+# Final optimized assets live in public/ and are committed there.
+/assets/
