@@ -38,3 +38,14 @@ describe('getCaseStudy', () => {
     expect(() => getCaseStudy('tidak-ada', 'id')).toThrow('Studi kasus tidak ditemukan: tidak-ada');
   });
 });
+
+describe('case study shape', () => {
+  it.each(['id', 'en'] as const)('%s: every study has a thumbnail and eight sections', (locale) => {
+    for (const cs of getAllCaseStudies(locale)) {
+      expect(cs.thumbnail.src).toMatch(/^\/karya\//);
+      expect(cs.thumbnail.alt.length).toBeGreaterThan(8);
+      expect(cs.sections).toHaveLength(8);
+      for (const s of cs.sections) expect(s.blocks.length).toBeGreaterThan(0);
+    }
+  });
+});
