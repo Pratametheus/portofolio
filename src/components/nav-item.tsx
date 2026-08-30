@@ -1,5 +1,5 @@
 import {Link} from '@/i18n/navigation';
-import type {AppPathname} from '@/i18n/routing';
+import type {NavPathname} from '@/i18n/routing';
 
 export function NavItem({
   href,
@@ -7,7 +7,7 @@ export function NavItem({
   label,
   active
 }: {
-  href: AppPathname;
+  href: NavPathname;
   index: string;
   label: string;
   active: boolean;

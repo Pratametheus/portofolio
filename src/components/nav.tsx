@@ -2,10 +2,10 @@
 
 import {useTranslations} from 'next-intl';
 import {usePathname} from '@/i18n/navigation';
-import type {AppPathname} from '@/i18n/routing';
+import type {NavPathname} from '@/i18n/routing';
 import {NavItem} from './nav-item';
 
-export const NAV_ITEMS: ReadonlyArray<{href: AppPathname; key: string}> = [
+export const NAV_ITEMS: ReadonlyArray<{href: NavPathname; key: string}> = [
   {href: '/', key: 'home'},
   {href: '/tentang', key: 'about'},
   {href: '/karya', key: 'work'},
@@ -18,7 +18,9 @@ export const NAV_ITEMS: ReadonlyArray<{href: AppPathname; key: string}> = [
 
 export default function Nav() {
   const pathname = usePathname();
-  const t = useTranslations('nav');
+  const t = useTranslations('nav') as unknown as ((key: string) => string) & {
+    has?: (key: string) => boolean;
+  };
 
   return (
     <nav aria-label="Navigasi utama">
@@ -31,7 +33,7 @@ export default function Nav() {
               <NavItem
                 href={href}
                 index={String(index + 1).padStart(2, '0')}
-                label={t(key)}
+                label={!t.has || t.has(key) ? t(key) : key}
                 active={active}
               />
             </li>

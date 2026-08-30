@@ -17,7 +17,7 @@ describe('routing locale', () => {
 
 describe('localised pathnames', () => {
   it('maps every nav route for both locales', () => {
-    const p = routing.pathnames as Record<string, {id: string; en: string}>;
+    const p = routing.pathnames as unknown as Record<string, {id: string; en: string}>;
     expect(p['/tentang']).toEqual({id: '/tentang', en: '/about'});
     expect(p['/karya']).toEqual({id: '/karya', en: '/work'});
     expect(p['/karya/[slug]']).toEqual({id: '/karya/[slug]', en: '/work/[slug]'});
