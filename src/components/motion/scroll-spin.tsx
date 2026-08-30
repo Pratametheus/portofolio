@@ -12,7 +12,7 @@ import {usePrefersReducedMotion} from './use-reduced-motion';
  */
 export function ScrollSpin({
   children,
-  max = 18,
+  max = 12,
   className
 }: {
   children: ReactNode;
