@@ -36,7 +36,8 @@
     "selectedWork": "Selected work",
     "researchTitle": "Research & publication",
     "contactTitle": "Have a product, research question, or class worth discussing?",
-    "contactCta": "Start a conversation"
+    "contactCta": "Start a conversation",
+    "heroAlt": "Illustration: a figure at a terminal ringed by slowly rotating cryptographic keys"
   },
   "work": {
     "title": "Work that is used, tested, or still evolving",

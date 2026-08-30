@@ -85,3 +85,11 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Operator hero: night art by default, light art when the light theme is active. */
+:root[data-theme="light"] [data-hero="night"] {
+  display: none;
+}
+:root:not([data-theme="light"]) [data-hero="light"] {
+  display: none;
+}

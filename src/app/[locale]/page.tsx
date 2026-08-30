@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
@@ -28,14 +29,35 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-20 lg:px-12">
-      <header className="max-w-4xl">
-        <p className="font-mono text-xs tracking-widest text-accent">{t('eyebrow')}</p>
-        <h1 className="mt-6 font-display text-5xl leading-tight text-fg sm:text-6xl">
-          Ferry Andhika Pratama
-        </h1>
-        <p className="mt-4 font-mono text-sm text-accent">{sidebar('role')}</p>
-        <p className="mt-8 max-w-3xl text-2xl leading-9 text-fg">{t('tagline')}</p>
-        <p className="mt-4 max-w-3xl leading-7 text-fg-muted">{t('statement')}</p>
+      <header className="grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,420px)]">
+        <div className="max-w-2xl">
+          <p className="font-mono text-xs tracking-widest text-accent">{t('eyebrow')}</p>
+          <h1 className="mt-6 font-display text-5xl leading-tight text-fg sm:text-6xl">
+            Ferry Andhika Pratama
+          </h1>
+          <p className="mt-4 font-mono text-sm text-accent">{sidebar('role')}</p>
+          <p className="mt-8 text-2xl leading-9 text-fg">{t('tagline')}</p>
+          <p className="mt-4 leading-7 text-fg-muted">{t('statement')}</p>
+        </div>
+        <figure className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-surface">
+          <Image
+            data-hero="night"
+            src="/hero/operator-night.webp"
+            alt={t('heroAlt')}
+            fill
+            sizes="(min-width:1024px) 420px, 100vw"
+            priority
+            className="object-cover"
+          />
+          <Image
+            data-hero="light"
+            src="/hero/operator-light.webp"
+            alt={t('heroAlt')}
+            fill
+            sizes="(min-width:1024px) 420px, 100vw"
+            className="object-cover"
+          />
+        </figure>
       </header>
 
       <section aria-labelledby="pillars-heading" className="mt-20">
