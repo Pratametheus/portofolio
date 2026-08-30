@@ -11,9 +11,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), selec
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const t = useTranslations() as unknown as ((key: string) => string) & {
-    has?: (key: string) => boolean;
-  };
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLElement>(null);
@@ -99,9 +97,7 @@ export default function Sidebar() {
           </div>
           <div>
             <p className="font-display text-sm font-semibold text-fg">Ferry Andhika Pratama</p>
-            <p className="text-xs text-fg-muted">
-              {!t.has || t.has('sidebar.role') ? t('sidebar.role') : 'Software Engineer · Guru Informatika'}
-            </p>
+            <p className="text-xs text-fg-muted">{t('sidebar.role')}</p>
           </div>
         </div>
 
