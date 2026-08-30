@@ -47,13 +47,16 @@ test('halaman Inggris menampilkan tagline Inggris', async ({page}) => {
 
 test('ketiga studi kasus tampil di beranda', async ({page}) => {
   await page.goto('/id');
-  await expect(page.getByRole('link')).toHaveCount(3);
+  await expect(page.getByRole('link', {name: /SIAKAD Informatika|City Courier|MochiToon/})).toHaveCount(3);
 });
 
 test('navigasi keyboard menjangkau kartu pertama dengan focus yang terlihat', async ({page}) => {
   await page.goto('/id');
-  await page.keyboard.press('Tab');
-  const firstLink = page.getByRole('link').first();
+  const firstLink = page.getByRole('link', {name: 'SIAKAD Informatika'});
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    await page.keyboard.press('Tab');
+    if (await firstLink.evaluate((element) => document.activeElement === element)) break;
+  }
   await expect(firstLink).toBeFocused();
 
   const outline = await firstLink.evaluate((el) => {

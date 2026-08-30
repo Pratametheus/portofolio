@@ -17,8 +17,11 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLElement>(null);
+  const previousPathnameRef = useRef(pathname);
 
   useEffect(() => {
+    if (previousPathnameRef.current === pathname) return;
+    previousPathnameRef.current = pathname;
     setOpen(false);
   }, [pathname]);
 

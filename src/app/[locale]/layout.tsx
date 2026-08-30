@@ -4,6 +4,8 @@ import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
 import {siteUrl} from '@/lib/site';
+import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
+import Sidebar from '@/components/sidebar';
 import {inter, interTight, jetbrainsMono} from '../fonts';
 import '../globals.css';
 
@@ -51,10 +53,20 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
+      data-theme={DEFAULT_THEME}
       className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
+      </head>
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <div className="lg:grid lg:grid-cols-[280px_1fr]">
+            <Sidebar />
+            <div className="min-w-0">{children}</div>
+          </div>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
