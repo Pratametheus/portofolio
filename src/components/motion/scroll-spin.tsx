@@ -25,7 +25,10 @@ export function ScrollSpin({
   const animate = mounted && !reduce;
 
   const ref = useRef<HTMLDivElement>(null);
-  const {scrollYProgress} = useScroll({target: ref, offset: ['start end', 'end start']});
+  // Progress is ~0 while the hero sits at its natural reading position (top of
+  // the viewport) and ramps to 1 as the section scrolls up out of view — so the
+  // art rests at 0deg and only drifts on the way out.
+  const {scrollYProgress} = useScroll({target: ref, offset: ['start start', 'end start']});
   const rotate = useTransform(scrollYProgress, [0, 1], [0, max]);
 
   // Stable structure: the wrapper + inner layer always render the same way; the
