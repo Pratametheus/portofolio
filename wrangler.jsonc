@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "portofolio",
+  "account_id": "06d5d4ba7c6c2dcbbd02ceb7133e0163",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-31",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "images": {"binding": "IMAGES"},
+  "services": [
+    {"binding": "WORKER_SELF_REFERENCE", "service": "portofolio"}
+  ],
+  "observability": {"enabled": true},
+  "env": {
+    "staging": {
+      "name": "portofolio-staging",
+      "assets": {
+        "directory": ".open-next/assets",
+        "binding": "ASSETS"
+      },
+      "images": {"binding": "IMAGES"},
+      "services": [
+        {"binding": "WORKER_SELF_REFERENCE", "service": "portofolio-staging"}
+      ]
+    }
+  }
+}

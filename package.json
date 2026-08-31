@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=20.11"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -12,12 +12,19 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "check:size": "node scripts/check-bundle-size.mjs 210"
+    "check:size": "node scripts/check-bundle-size.mjs 210",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
+    "cf:check": "npm run cf:build && wrangler deploy --dry-run --env= && wrangler deploy --dry-run --env staging",
+    "cf:deploy": "npm run cf:build && opennextjs-cloudflare deploy --env=",
+    "cf:deploy:staging": "opennextjs-cloudflare build --env staging && opennextjs-cloudflare deploy --env staging",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "1.20.4",
     "clsx": "^2.1.1",
     "motion": "^13.1.1",
-    "next": "16.3.2",
+    "next": "16.3.3",
     "next-intl": "^4.13.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",
@@ -33,9 +40,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.1.0",
+    "esbuild": "0.28.2",
     "jsdom": "^30.0.1",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "wrangler": "4.127.1"
   }
 }

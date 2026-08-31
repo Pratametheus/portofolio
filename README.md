@@ -6,7 +6,7 @@ and publishing security research.
 
 ## Stack
 
-- **Next.js 16.3.2** (App Router) + **React 19**
+- **Next.js 16.3.3** (App Router) + **React 19**
 - **next-intl** — bilingual routing with localised pathnames (`id` default →
   `/karya`, `en` → `/work`)
 - **Tailwind CSS v4** — two-theme token system: `@theme inline` maps every
@@ -24,7 +24,7 @@ and publishing security research.
 - **Playwright** — end-to-end tests
 - `npm run check:size` — gates initial JS at a fixed gzip budget (210 KB, run in CI)
 
-> This project runs Next.js 16.3.2, which carries breaking changes from earlier
+> This project runs Next.js 16.3.3, which carries breaking changes from earlier
 > versions. Bundled docs live in `node_modules/next/dist/docs/`. Example: the
 > `middleware.ts` convention is deprecated here in favour of `proxy.ts`.
 
@@ -37,6 +37,13 @@ npm test             # unit
 npm run test:e2e     # end-to-end
 npm run build && npm run check:size   # production build + bundle-size gate
 ```
+
+## Cloudflare deployment
+
+Cloudflare Workers + Static Assets is configured through OpenNext. Run
+`npm run cf:check` for a build and deployment dry run, or `npm run cf:preview`
+to test in the Workers runtime. See [the deployment guide](docs/cloudflare.md)
+for account setup, staging, production, and the MCP inspection results.
 
 ## Routes
 

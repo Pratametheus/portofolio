@@ -51,6 +51,7 @@ next-env.d.ts
 # agent-local tooling & transient run state
 .claude/
 .codex/
+.agents/
 figma-portfolio-state.json
 design-qa.md
 
@@ -61,3 +62,9 @@ design-qa.md
 # Figma-revision working area (raw exports, Canva rasters, before/after shots).
 # Final optimized assets live in public/ and are committed there.
 /assets/
+
+# Cloudflare build output, generated types, local state and secrets
+/.open-next/
+/.wrangler/
+/cloudflare-env.d.ts
+.dev.vars*
