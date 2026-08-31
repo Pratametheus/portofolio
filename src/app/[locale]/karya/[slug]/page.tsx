@@ -1,3 +1,4 @@
+import type {Metadata} from 'next';
 import Image from 'next/image';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
@@ -8,10 +9,33 @@ import type {CaseStudy} from '@/content/types';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies, getCaseStudy} from '@/lib/content';
 import {buildCaseStudyArticleSchema} from '@/lib/jsonld';
+import {pageMetadata} from '@/lib/page-metadata';
 
 export function generateStaticParams() {
   const slugs = getAllCaseStudies('id').map((caseStudy) => caseStudy.slug);
   return routing.locales.flatMap((locale) => slugs.map((slug) => ({locale, slug})));
+}
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{locale: string; slug: string}>;
+}): Promise<Metadata> {
+  const {locale, slug} = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+  let caseStudy: CaseStudy;
+  try {
+    caseStudy = getCaseStudy(slug, locale);
+  } catch {
+    return {};
+  }
+  return pageMetadata({
+    locale,
+    href: {pathname: '/karya/[slug]', params: {slug}},
+    title: caseStudy.title,
+    description: caseStudy.tagline,
+    images: [caseStudy.thumbnail.src]
+  });
 }
 
 export default async function CaseStudyPage({

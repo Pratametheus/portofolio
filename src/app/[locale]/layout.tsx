@@ -3,7 +3,7 @@ import {notFound} from 'next/navigation';
 import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import {getMessages, getTranslations, setRequestLocale} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
-import {siteUrl} from '@/lib/site';
+import {siteName, siteUrl} from '@/lib/site';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
 import Sidebar from '@/components/sidebar';
 import {Noise} from '@/components/motion/noise';
@@ -24,16 +24,40 @@ export async function generateMetadata({
     notFound();
   }
   const t = await getTranslations({locale, namespace: 'metadata'});
+  const title = t('title');
+  const description = t('description');
+  const homeUrl = `${siteUrl}/${locale}`;
 
   return {
     metadataBase: new URL(siteUrl),
-    title: t('title'),
-    description: t('description'),
+    title: {
+      default: title,
+      template: `%s · ${title}`
+    },
+    description,
+    applicationName: siteName,
+    authors: [{name: siteName, url: siteUrl}],
+    creator: siteName,
     alternates: {
+      canonical: homeUrl,
       languages: {
-        id: '/id',
-        en: '/en'
+        id: `${siteUrl}/id`,
+        en: `${siteUrl}/en`,
+        'x-default': `${siteUrl}/id`
       }
+    },
+    openGraph: {
+      type: 'website',
+      siteName,
+      locale,
+      url: homeUrl,
+      title,
+      description
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description
     }
   };
 }

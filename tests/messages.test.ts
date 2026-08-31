@@ -64,6 +64,9 @@ describe('kelengkapan terjemahan', () => {
       'links.githubUrl', 'links.journalLabel', 'links.journalDescription',
       'links.journalUrl', 'links.siakadLabel', 'links.siakadDescription',
       'links.siakadUrl', 'metadata.title', 'metadata.description',
+      'about.meta.description', 'work.meta.description', 'research.meta.description',
+      'achievements.meta.description', 'guestbook.meta.description',
+      'contact.meta.description', 'links.meta.description',
       'notFound.title', 'notFound.description', 'notFound.back', 'common.visitApp'
     ];
 

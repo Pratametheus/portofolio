@@ -41,13 +41,19 @@
   },
   "work": {
     "title": "Karya yang dipakai, diuji, atau terus dikerjakan",
-    "intro": "Tiga proyek berikut dipilih karena mewakili konteks penggunaan yang berbeda. Detailnya berfokus pada masalah, kontribusi, keputusan teknis, dan batasannya."
+    "intro": "Tiga proyek berikut dipilih karena mewakili konteks penggunaan yang berbeda. Detailnya berfokus pada masalah, kontribusi, keputusan teknis, dan batasannya.",
+    "meta": {
+      "description": "Studi kasus terpilih — City Courier, MochiToon, dan SIAKAD Informatika — dengan fokus pada masalah, kontribusi, keputusan teknis, dan batasannya."
+    }
   },
   "about": {
     "title": "Pekerjaan yang membentuk cara saya membangun",
     "body1": "Saya bekerja di persimpangan pengembangan perangkat lunak, kegiatan belajar-mengajar, dan riset keamanan aplikasi. Halaman ini menjelaskan konteksnya tanpa melebihkan peran.",
     "body2": "Saya membangun aplikasi web dan mobile yang digunakan dalam alur kerja nyata, lalu mengajar kelas 4–6 dengan materi yang dapat berjalan dalam keterbatasan sekolah.",
-    "body3": "Saya juga menguji autentikasi, mencatat asumsi dan keterbatasan, serta menerbitkan temuan yang bisa diperiksa."
+    "body3": "Saya juga menguji autentikasi, mencatat asumsi dan keterbatasan, serta menerbitkan temuan yang bisa diperiksa.",
+    "meta": {
+      "description": "Konteks pekerjaan Ferry Andhika Pratama di persimpangan pengembangan perangkat lunak, mengajar, dan riset keamanan aplikasi."
+    }
   },
   "research": {
     "title": "Pengujian keamanan yang dicatat dan diterbitkan",
@@ -57,6 +63,9 @@
       "summary": "Pengujian dilakukan dari sudut pandang perilaku sistem dan permukaan serangan yang dapat diamati. Sepuluh skenario diuji dan hasilnya dicatat dalam artikel yang dapat diakses melalui DOI.",
       "doiLabel": "Baca artikel melalui DOI",
       "scenarios": "skenario serangan yang diuji"
+    },
+    "meta": {
+      "description": "Analisis kerentanan keamanan aplikasi web dengan metode black box testing, terbit ber-DOI di JUTIF (SINTA 2)."
     }
   },
   "achievements": {
@@ -67,11 +76,17 @@
     "teachingTitle": "Mengajar informatika",
     "teachingBody": "Menyusun materi dari literasi digital menuju pemrograman teks dan web untuk kelas 4–6.",
     "productTitle": "SIAKAD Informatika aktif",
-    "productBody": "Sistem akademik ekstrakurikuler digunakan dalam kegiatan mengajar mingguan di SDN Ujung XIII."
+    "productBody": "Sistem akademik ekstrakurikuler digunakan dalam kegiatan mengajar mingguan di SDN Ujung XIII.",
+    "meta": {
+      "description": "Garis waktu keluaran yang dapat diperiksa: publikasi JUTIF, materi ajar informatika kelas 4–6, dan SIAKAD Informatika yang aktif dipakai."
+    }
   },
   "guestbook": {
     "title": "Catatan singkat dari orang yang pernah melihat atau memakai karya",
-    "empty": "Belum ada pesan yang ditampilkan. Buku tamu akan dibuka pada fase berikutnya."
+    "empty": "Belum ada pesan yang ditampilkan. Buku tamu akan dibuka pada fase berikutnya.",
+    "meta": {
+      "description": "Catatan singkat dari orang yang pernah melihat atau memakai karya. Buku tamu dibuka pada fase berikutnya."
+    }
   },
   "contact": {
     "title": "Mulai dari konteks yang cukup",
@@ -80,7 +95,10 @@
     "emailValue": "Untuk peluang kerja, kolaborasi produk, atau diskusi riset.",
     "githubLabel": "GitHub",
     "githubValue": "github.com/Pratametheus",
-    "availability": "Terbuka untuk kolaborasi yang relevan."
+    "availability": "Terbuka untuk kolaborasi yang relevan.",
+    "meta": {
+      "description": "Cara menghubungi Ferry Andhika Pratama untuk peluang kerja, kolaborasi produk, atau diskusi riset."
+    }
   },
   "links": {
     "title": "Tautan penting dan akses akun",
@@ -93,7 +111,10 @@
     "journalUrl": "https://doi.org/10.52436/1.jutif.2026.7.2.5662",
     "siakadLabel": "SIAKAD Informatika",
     "siakadDescription": "Sistem akademik ekstrakurikuler informatika yang digunakan dalam kegiatan mengajar.",
-    "siakadUrl": "https://jurnal-mengajar-blond.vercel.app/"
+    "siakadUrl": "https://jurnal-mengajar-blond.vercel.app/",
+    "meta": {
+      "description": "Indeks ringkas profil, publikasi, dan aplikasi Ferry Andhika Pratama yang dapat dibuka langsung."
+    }
   },
   "metadata": {
     "title": "Ferry Andhika Pratama",

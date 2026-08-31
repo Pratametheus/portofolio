@@ -1,3 +1,4 @@
+import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
@@ -5,6 +6,26 @@ import {ImageCard} from '@/components/image-card';
 import {Reveal, Stagger} from '@/components/motion/reveal';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies} from '@/lib/content';
+import {pageMetadata} from '@/lib/page-metadata';
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{locale: string}>;
+}): Promise<Metadata> {
+  const {locale} = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+  const [nav, t] = await Promise.all([
+    getTranslations({locale, namespace: 'nav'}),
+    getTranslations({locale, namespace: 'work'})
+  ]);
+  return pageMetadata({
+    locale,
+    href: '/karya',
+    title: nav('work'),
+    description: t('meta.description')
+  });
+}
 
 export default async function WorkPage({params}: {params: Promise<{locale: string}>}) {
   const {locale: requested} = await params;

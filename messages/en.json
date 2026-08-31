@@ -41,13 +41,19 @@
   },
   "work": {
     "title": "Work that is used, tested, or still evolving",
-    "intro": "These three projects represent different kinds of real use. Each case study focuses on the problem, my contribution, the technical decisions, and the limits of the result."
+    "intro": "These three projects represent different kinds of real use. Each case study focuses on the problem, my contribution, the technical decisions, and the limits of the result.",
+    "meta": {
+      "description": "Selected case studies — City Courier, MochiToon, and SIAKAD Informatika — focused on the problem, contribution, technical decisions, and limits."
+    }
   },
   "about": {
     "title": "The work that shaped how I build",
     "body1": "My work sits where software development, classroom teaching, and application-security research overlap. This page gives that context without inflating the role I played.",
     "body2": "I build web and mobile tools that enter real workflows, and I teach years 4–6 with material designed for the constraints of a school environment.",
-    "body3": "I also test authentication systems, document their assumptions and limitations, and publish findings that other people can inspect."
+    "body3": "I also test authentication systems, document their assumptions and limitations, and publish findings that other people can inspect.",
+    "meta": {
+      "description": "Context for Ferry Andhika Pratama's work across software development, classroom teaching, and application-security research."
+    }
   },
   "research": {
     "title": "Security testing recorded in public",
@@ -57,6 +63,9 @@
       "summary": "The study treated the application as an observable attack surface rather than trusting its implementation. Ten scenarios were exercised, with the method and results preserved in a DOI-linked paper.",
       "doiLabel": "Read the published paper",
       "scenarios": "attack scenarios exercised"
+    },
+    "meta": {
+      "description": "Web application security vulnerability analysis using black box testing, published with a citable DOI in JUTIF (SINTA 2)."
     }
   },
   "achievements": {
@@ -67,11 +76,17 @@
     "teachingTitle": "Teaching computing",
     "teachingBody": "Designed a year 4–6 path from digital literacy through visual programming to text-based web development.",
     "productTitle": "SIAKAD Informatika in active use",
-    "productBody": "The extracurricular academic system supports weekly teaching at SDN Ujung XIII."
+    "productBody": "The extracurricular academic system supports weekly teaching at SDN Ujung XIII.",
+    "meta": {
+      "description": "A working timeline of checkable outputs: the JUTIF publication, a year 4–6 computing curriculum, and SIAKAD Informatika in active use."
+    }
   },
   "guestbook": {
     "title": "Notes from people who have seen or used the work",
-    "empty": "There are no public notes yet. Guestbook submissions will open in a later phase."
+    "empty": "There are no public notes yet. Guestbook submissions will open in a later phase.",
+    "meta": {
+      "description": "Short notes from people who have seen or used the work. Guestbook submissions open in a later phase."
+    }
   },
   "contact": {
     "title": "Start with enough context",
@@ -80,7 +95,10 @@
     "emailValue": "For roles, product collaboration, or research discussions.",
     "githubLabel": "GitHub",
     "githubValue": "github.com/Pratametheus",
-    "availability": "Open to relevant collaborations."
+    "availability": "Open to relevant collaborations.",
+    "meta": {
+      "description": "How to reach Ferry Andhika Pratama about roles, product collaboration, or research discussions."
+    }
   },
   "links": {
     "title": "Important links and public access",
@@ -93,7 +111,10 @@
     "journalUrl": "https://doi.org/10.52436/1.jutif.2026.7.2.5662",
     "siakadLabel": "SIAKAD Informatika",
     "siakadDescription": "The extracurricular computing academic system used in weekly teaching.",
-    "siakadUrl": "https://jurnal-mengajar-blond.vercel.app/"
+    "siakadUrl": "https://jurnal-mengajar-blond.vercel.app/",
+    "meta": {
+      "description": "A compact index of Ferry Andhika Pratama's profiles, published research, and applications you can open directly."
+    }
   },
   "metadata": {
     "title": "Ferry Andhika Pratama",
