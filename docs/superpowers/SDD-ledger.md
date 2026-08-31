@@ -360,3 +360,43 @@ Deferral: tuas "hero Reveal jadi CSS-only" (`@starting-style`/keyframe) TIDAK di
 headroom cukup dan Fase berikutnya menyentuh chunk rute lain, bukan `/[locale]`. `global-not-found.tsx`
 sengaja tanpa reveal. `LazyMotion`/`m` ditinggalkan (mengukur regresi bundle 211–213 KB).
 
+
+---
+
+## Deploy + SEO pass (2026-08-31, di luar Plan A/B/C) — commit 5f7d77c, 6418677
+
+**Cloudflare (5f7d77c).** Scaffold OpenNext yang sudah ada di working tree (dikerjakan
+agen lain, tervalidasi lokal: 107 unit, 2 dry-run wrangler, 13 cek HTTP di Workers
+preview) — di-*commit* apa adanya. `.agents/` (dump skill mp-*) di-gitignore, bukan
+di-commit. `.mcp.json` (server `shadcn` saja) di-commit. CI ganti `build` →
+`cf:typegen` + `cf:check`, Node 20 → 24. **Belum ada deploy live**: `wrangler login`
+dan `cf:deploy` diserahkan ke manusia. Zone `ferryandhikapratama.com` ada di akun
+`06d5d4ba…` tapi 0 DNS record; belum ada Worker/subdomain workers.dev. Detail di
+`docs/cloudflare.md`.
+
+**SEO (6418677).**
+- `app/sitemap.ts` / `robots.ts` / `manifest.ts` — file-convention route handler,
+  semua `○ (Static)` di build. Sitemap: 8 rute + 3 studi kasus, `alternates.languages`
+  id/en dengan path Inggris terlokalisasi (`/karya` → `/work`).
+- `[locale]/opengraph-image.tsx` + `twitter-image.tsx` — kartu 1200×630 via `next/og`,
+  **tanpa font kustom** (Satori built-in cukup; PNG ~48 KB ter-generate saat `next build`
+  di Node, OpenNext tinggal menyajikan sebagai aset). Ditaruh di bawah `[locale]` —
+  bukan root `app/` — supaya tag `og:image` resolve terhadap `metadataBase` milik
+  layout locale; di root memicu warning `metadataBase … using "http://localhost:3000"`.
+  `generateStaticParams` mengembalikan kedua locale.
+- `lib/page-metadata.ts` — helper canonical + hreflang (id/en/x-default) + blok
+  OG/Twitter yang cocok. **Wajib mendeklarasikan ulang `images`**: `openGraph`/`twitter`
+  dari segmen anak MENGGANTI milik induk secara wholesale (shallow merge), jadi gambar
+  sosial auto-inject dari layout hilang di sub-halaman kalau tidak diulang. Halaman
+  studi kasus memakai thumbnail-nya sendiri, sisanya fallback ke kartu per-locale.
+- `[locale]/layout.tsx` — `title` jadi `{default, template: '%s · Ferry Andhika Pratama'}`
+  (home tetap "Ferry Andhika Pratama" lewat `default`; e2e `toHaveTitle` home aman).
+  Tiap `page.tsx` rute dapat `generateMetadata`.
+- `messages/*` — `meta.description` per section (id + en); `tests/messages.test.ts`
+  `requiredKeys` ditambah 7 kunci itu.
+- `tests/seo.test.ts` baru (12 test: sitemap coverage/host/dedupe/hreflang, robots,
+  manifest, pageMetadata canonical/hreflang/OG-fallback).
+
+Angka akhir (verifikasi controller): unit **119/119** (28 berkas), e2e **80/80**,
+`tsc --noEmit` bersih, `next build` **34 halaman statis** tanpa warning,
+`check:size` **204,6 KB / 210,0 KB**. Dua commit ada di `main` lokal — **belum di-push**.
