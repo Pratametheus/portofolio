@@ -44,9 +44,16 @@ describe('sitemap', () => {
 
 describe('robots', () => {
   const result = robots();
+  const rules = Array.isArray(result.rules) ? result.rules : [result.rules];
 
-  it('allows every crawler', () => {
-    expect(result.rules).toMatchObject({userAgent: '*', allow: '/'});
+  it('still allows general crawlers', () => {
+    expect(rules).toContainEqual({userAgent: '*', allow: '/'});
+  });
+
+  it('turns away known aggressive AI and SEO scrapers', () => {
+    for (const ua of ['GPTBot', 'CCBot', 'ClaudeBot', 'Bytespider', 'AhrefsBot', 'SemrushBot']) {
+      expect(rules).toContainEqual({userAgent: ua, disallow: '/'});
+    }
   });
 
   it('points at the sitemap', () => {
