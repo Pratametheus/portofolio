@@ -43,7 +43,7 @@ describe('kelengkapan terjemahan', () => {
     const requiredKeys = [
       'nav.home', 'nav.about', 'nav.work', 'nav.research', 'nav.achievements',
       'nav.guestbook', 'nav.contact', 'nav.links',
-      'sidebar.role', 'sidebar.availability', 'sidebar.footer',
+      'sidebar.name', 'sidebar.role', 'sidebar.availability', 'sidebar.railNote', 'sidebar.footer',
       'home.eyebrow', 'home.tagline', 'home.statement', 'home.pillarsTitle',
       'home.pillars.build.title', 'home.pillars.build.body',
       'home.pillars.teach.title', 'home.pillars.teach.body',

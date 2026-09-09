@@ -12,9 +12,12 @@ vi.mock('@/i18n/navigation', () => ({
 
 vi.mock('next-intl', () => ({
   useLocale: () => 'id',
-  useTranslations: (namespace: string) => (key: string) => {
+  useTranslations: (namespace?: string) => (key: string) => {
     const messages: Record<string, string> = {
+      'sidebar.name': 'Ferry Andhika Pratama',
       'sidebar.role': 'Software Engineer · Guru Informatika',
+      'sidebar.availability': 'Terbuka untuk kolaborasi',
+      'sidebar.railNote': 'Membangun · Mengajar · Menguji',
       'nav.home': 'Beranda',
       'nav.about': 'Tentang',
       'nav.work': 'Karya',
@@ -24,7 +27,7 @@ vi.mock('next-intl', () => ({
       'nav.contact': 'Kontak',
       'nav.links': 'Links'
     };
-    return messages[`${namespace}.${key}`] ?? key;
+    return messages[namespace ? `${namespace}.${key}` : key] ?? key;
   }
 }));
 
@@ -36,6 +39,18 @@ describe('Sidebar', () => {
     expect(screen.getByRole('navigation', {name: 'Navigasi utama'})).toBeInTheDocument();
     expect(screen.getByRole('group', {name: 'Tema'})).toBeInTheDocument();
     expect(screen.getByRole('group', {name: 'Bahasa'})).toBeInTheDocument();
+  });
+
+  it('renders the rail identity, availability, github link and note', () => {
+    render(<Sidebar />);
+    expect(screen.getByText('Ferry Andhika Pratama')).toBeInTheDocument();
+    expect(screen.getByRole('link', {name: /Terbuka untuk kolaborasi/})).toHaveAttribute(
+      'href',
+      expect.stringContaining('/kontak')
+    );
+    const gh = screen.getByRole('link', {name: /Pratametheus/});
+    expect(gh).toHaveAttribute('href', 'https://github.com/Pratametheus');
+    expect(screen.getByText('Membangun · Mengajar · Menguji')).toBeInTheDocument();
   });
 
   it('opens the mobile drawer and closes it with Escape', async () => {

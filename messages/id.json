@@ -10,8 +10,10 @@
     "links": "Links"
   },
   "sidebar": {
+    "name": "Ferry Andhika Pratama",
     "role": "Software Engineer · Guru Informatika",
     "availability": "Terbuka untuk kolaborasi",
+    "railNote": "Membangun · Mengajar · Menguji",
     "footer": "© 2026 Ferry Andhika Pratama"
   },
   "home": {

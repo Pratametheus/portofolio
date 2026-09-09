@@ -3,6 +3,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {useTranslations} from 'next-intl';
 import {Link, usePathname} from '@/i18n/navigation';
+import {Icon} from './icon';
 import LocaleSwitcher from './locale-switcher';
 import Nav from './nav';
 import ThemeToggle from './theme-toggle';
@@ -95,26 +96,48 @@ export default function Sidebar() {
         aria-label="Menu"
         className={`${open ? 'flex' : 'hidden'} absolute right-4 top-20 z-50 max-h-[calc(100dvh-96px)] w-[min(440px,calc(100vw-32px))] flex-col overflow-y-auto rounded-2xl border border-border bg-bg p-6 shadow-xl lg:static lg:flex lg:max-h-full lg:w-auto lg:rounded-none lg:border-0 lg:p-0 lg:shadow-none`}
       >
-        <div className="mb-6 flex flex-col items-start gap-4 pt-3">
-          <div className="grid size-16 place-items-center rounded-full border border-accent/40 bg-accent-dim text-xl font-semibold text-accent">
-            FA
+        <div className="mb-4 flex flex-col items-start gap-3 pt-3 lg:pt-0">
+          <div
+            aria-label={t('sidebar.name')}
+            className="relative grid size-[68px] place-content-center rounded-[20px] border border-accent/40 bg-surface font-display text-[28px] font-semibold lowercase text-accent"
+          >
+            fa
+            <span className="absolute bottom-3 right-4 text-accent">.</span>
           </div>
           <div>
-            <p className="font-display text-lg font-semibold text-fg">Ferry Andhika Pratama</p>
+            <p className="font-display text-[19px] font-semibold leading-tight text-fg">
+              {t('sidebar.name')}
+            </p>
             <p className="mt-1 text-sm leading-5 text-fg-muted">{t('sidebar.role')}</p>
           </div>
+          <Link
+            href="/kontak"
+            className="border-b border-accent/50 pb-0.5 text-xs text-accent transition-colors hover:text-fg"
+          >
+            {t('sidebar.availability')}
+          </Link>
         </div>
 
-        <div className="mb-6 flex items-center justify-between gap-2">
+        <div className="border-y border-border py-3">
+          <Nav />
+        </div>
+
+        <a
+          href="https://github.com/Pratametheus"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 flex items-center gap-2.5 px-2 py-3 text-xs text-fg-muted transition-colors hover:text-fg"
+        >
+          <Icon name="code" className="size-4" />
+          Pratametheus <span aria-hidden="true">↗</span>
+        </a>
+
+        <p className="px-2 text-[10px] text-fg-muted">{t('sidebar.railNote')}</p>
+
+        <div className="mt-6 flex items-center justify-between gap-2 lg:mt-8">
           <ThemeToggle />
           <LocaleSwitcher />
         </div>
-
-        <Nav />
-
-        <footer className="mt-8 border-t border-border pt-4 text-xs text-fg-muted">
-          © 2026 Ferry Andhika Pratama
-        </footer>
       </div>
     </header>
   );
