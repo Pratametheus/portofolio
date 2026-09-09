@@ -5,11 +5,17 @@ test('no theme flash: <html data-theme> is set before first paint', async ({page
   await expect(page.locator('html')).toHaveAttribute('data-theme', /night|light/);
 });
 
-test('desktop shows the profile navigation with visible route links', async ({page}) => {
+test('desktop shows the rail with identity and route links', async ({page}) => {
   await page.setViewportSize({width: 1280, height: 900});
   await page.goto('/id');
-  await expect(page.getByRole('navigation', {name: 'Navigasi utama'})).toBeVisible();
-  await expect(page.getByRole('navigation').getByRole('link', {name: /Beranda/})).toBeVisible();
+  // availability link is unique to the rail (the page <h1> also carries the name)
+  await expect(page.getByRole('link', {name: /Terbuka untuk kolaborasi/})).toBeVisible();
+  await expect(
+    page.getByRole('navigation', {name: 'Navigasi utama'}).getByRole('link', {name: /Beranda/})
+  ).toBeVisible();
+  await expect(
+    page.getByRole('navigation', {name: 'Navigasi utama'}).getByRole('link', {name: /Karya/})
+  ).toContainText('3');
 });
 
 test('mobile opens the navigation panel and restores focus on Escape', async ({page}) => {
