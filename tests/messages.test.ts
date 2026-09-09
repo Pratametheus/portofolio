@@ -79,7 +79,15 @@ describe('kelengkapan terjemahan', () => {
       'work.empty.title', 'work.empty.body',
       'about.career.title', 'about.career.description', 'about.career.detailSummary',
       'about.education.title', 'about.education.description',
-      'about.education.emptyTitle', 'about.education.emptyBody'
+      'about.education.emptyTitle', 'about.education.emptyBody',
+      'achievements.filters.searchLabel', 'achievements.filters.searchPlaceholder',
+      'achievements.filters.typeLabel', 'achievements.filters.type.semua',
+      'achievements.filters.type.publikasi', 'achievements.filters.type.sertifikat',
+      'achievements.filters.categoryLabel', 'achievements.filters.category.semua',
+      'achievements.filters.category.keamanan', 'achievements.filters.category.pendidikan',
+      'achievements.filters.category.pengembangan', 'achievements.total',
+      'achievements.empty.title', 'achievements.empty.body', 'achievements.reset',
+      'achievements.dataNote', 'achievements.detailSummary'
     ];
 
     expect(idKeys).toEqual(expect.arrayContaining(requiredKeys));

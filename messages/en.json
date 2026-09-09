@@ -113,6 +113,31 @@
     "teachingBody": "Designed a year 4–6 path from digital literacy through visual programming to text-based web development.",
     "productTitle": "SIAKAD Informatika in active use",
     "productBody": "The extracurricular academic system supports weekly teaching at SDN Ujung XIII.",
+    "filters": {
+      "searchLabel": "Search achievements",
+      "searchPlaceholder": "Search title or publisher…",
+      "typeLabel": "Type",
+      "type": {
+        "semua": "All types",
+        "publikasi": "Publication",
+        "sertifikat": "Certificate"
+      },
+      "categoryLabel": "Category",
+      "category": {
+        "semua": "All categories",
+        "keamanan": "Security",
+        "pendidikan": "Education",
+        "pengembangan": "Development"
+      }
+    },
+    "total": "Total: {n}",
+    "empty": {
+      "title": "No matching results",
+      "body": "Try another keyword or clear the filters."
+    },
+    "reset": "Clear filters",
+    "dataNote": "Certificates will appear once the documents and issuer details are added.",
+    "detailSummary": "Publication details",
     "meta": {
       "description": "A working timeline of checkable outputs: the JUTIF publication, a year 4–6 computing curriculum, and SIAKAD Informatika in active use."
     }

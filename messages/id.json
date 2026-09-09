@@ -113,6 +113,31 @@
     "teachingBody": "Menyusun materi dari literasi digital menuju pemrograman teks dan web untuk kelas 4–6.",
     "productTitle": "SIAKAD Informatika aktif",
     "productBody": "Sistem akademik ekstrakurikuler digunakan dalam kegiatan mengajar mingguan di SDN Ujung XIII.",
+    "filters": {
+      "searchLabel": "Cari pencapaian",
+      "searchPlaceholder": "Cari judul atau penerbit…",
+      "typeLabel": "Jenis",
+      "type": {
+        "semua": "Semua jenis",
+        "publikasi": "Publikasi",
+        "sertifikat": "Sertifikat"
+      },
+      "categoryLabel": "Kategori",
+      "category": {
+        "semua": "Semua kategori",
+        "keamanan": "Keamanan",
+        "pendidikan": "Pendidikan",
+        "pengembangan": "Pengembangan"
+      }
+    },
+    "total": "Total: {n}",
+    "empty": {
+      "title": "Tidak ada hasil yang cocok",
+      "body": "Coba kata kunci lain atau hapus filter."
+    },
+    "reset": "Hapus filter",
+    "dataNote": "Sertifikat akan ditampilkan setelah dokumen dan detail penerbitnya ditambahkan.",
+    "detailSummary": "Detail publikasi",
     "meta": {
       "description": "Garis waktu keluaran yang dapat diperiksa: publikasi JUTIF, materi ajar informatika kelas 4–6, dan SIAKAD Informatika yang aktif dipakai."
     }
