@@ -12,9 +12,9 @@ export function PillarCard({
   body: string;
 }) {
   return (
-    <article className="border-t border-border py-6 pr-6">
+    <article className="rounded-xl border border-border bg-surface p-6">
       <Icon name={icon} className="text-accent" />
-      <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-fg">{title}</h3>
+      <h3 className="mt-5 font-display text-lg text-fg">{title}</h3>
       <p className="mt-2 leading-7 text-fg-muted">{body}</p>
     </article>
   );

@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState} from 'react';
 import {useTranslations} from 'next-intl';
-import {Link, usePathname} from '@/i18n/navigation';
+import {usePathname} from '@/i18n/navigation';
 import LocaleSwitcher from './locale-switcher';
 import Nav from './nav';
 import ThemeToggle from './theme-toggle';
@@ -14,7 +14,7 @@ export default function Sidebar() {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const drawerRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
   const previousPathnameRef = useRef(pathname);
 
   useEffect(() => {
@@ -61,11 +61,8 @@ export default function Sidebar() {
   }
 
   return (
-    <header className="relative z-50 lg:sticky lg:top-8 lg:h-[calc(100dvh-64px)]">
-      <div className="flex min-h-16 items-center justify-between border-b border-border px-6 lg:hidden">
-        <Link href="/" aria-label={t('nav.home')} className="font-display text-xl font-semibold tracking-tight text-fg">
-          ferry<span className="text-accent">.</span>
-        </Link>
+    <div className="lg:w-[280px]">
+      <div className="flex min-h-14 items-center border-b border-border bg-surface px-4 lg:hidden">
         <button
           ref={triggerRef}
           type="button"
@@ -73,10 +70,9 @@ export default function Sidebar() {
           aria-controls="sidebar-drawer"
           aria-label="Buka menu"
           onClick={() => setOpen((current) => !current)}
-          className="inline-flex min-h-11 items-center gap-3 rounded-full border border-border px-5 text-sm text-fg transition-colors hover:bg-surface"
+          className="min-h-11 rounded-lg px-3 font-mono text-sm text-fg"
         >
           Menu
-          <span aria-hidden="true">{open ? '−' : '+'}</span>
         </button>
       </div>
 
@@ -85,23 +81,23 @@ export default function Sidebar() {
           type="button"
           aria-label="Tutup navigasi"
           onClick={closeDrawer}
-          className="fixed inset-0 top-20 z-40 bg-bg/70 backdrop-blur-sm"
+          className="fixed inset-0 z-40 bg-bg/70 lg:hidden"
         />
       ) : null}
 
-      <div
+      <aside
         ref={drawerRef}
         id="sidebar-drawer"
-        aria-label="Menu"
-        className={`${open ? 'flex' : 'hidden'} absolute right-4 top-20 z-50 max-h-[calc(100dvh-96px)] w-[min(440px,calc(100vw-32px))] flex-col overflow-y-auto rounded-2xl border border-border bg-bg p-6 shadow-xl lg:static lg:flex lg:max-h-full lg:w-auto lg:rounded-none lg:border-0 lg:p-0 lg:shadow-none`}
+        aria-label="Sidebar"
+        className={`${open ? 'flex' : 'hidden'} fixed inset-y-0 left-0 z-50 w-[280px] flex-col border-r border-border bg-surface p-6 lg:flex lg:w-[280px]`}
       >
-        <div className="mb-6 flex flex-col items-start gap-4 pt-3">
-          <div className="grid size-16 place-items-center rounded-full border border-accent/40 bg-accent-dim text-xl font-semibold text-accent">
+        <div className="mb-6 flex items-center gap-3">
+          <div className="grid size-11 place-items-center rounded-xl bg-accent text-sm font-semibold text-on-accent">
             FA
           </div>
           <div>
-            <p className="font-display text-lg font-semibold text-fg">Ferry Andhika Pratama</p>
-            <p className="mt-1 text-sm leading-5 text-fg-muted">{t('sidebar.role')}</p>
+            <p className="font-display text-sm font-semibold text-fg">Ferry Andhika Pratama</p>
+            <p className="text-xs text-fg-muted">{t('sidebar.role')}</p>
           </div>
         </div>
 
@@ -112,10 +108,10 @@ export default function Sidebar() {
 
         <Nav />
 
-        <footer className="mt-8 border-t border-border pt-4 text-xs text-fg-muted">
+        <footer className="mt-auto border-t border-border pt-4 font-mono text-xs text-fg-muted">
           © 2026 Ferry Andhika Pratama
         </footer>
-      </div>
-    </header>
+      </aside>
+    </div>
   );
 }

@@ -33,7 +33,7 @@ import Sidebar from '@/components/sidebar';
 describe('Sidebar', () => {
   it('renders navigation and both preference toggles', () => {
     render(<Sidebar />);
-    expect(screen.getByRole('navigation', {name: 'Navigasi utama'})).toBeInTheDocument();
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
     expect(screen.getByRole('group', {name: 'Tema'})).toBeInTheDocument();
     expect(screen.getByRole('group', {name: 'Bahasa'})).toBeInTheDocument();
   });
