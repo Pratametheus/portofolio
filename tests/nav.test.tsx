@@ -33,4 +33,16 @@ describe('Nav', () => {
     expect(indicators).toHaveLength(1);
     expect(screen.getByRole('link', {name: /Karya/})).toContainElement(indicators[0]);
   });
+
+  it('shows a case-study count on the Karya item only', () => {
+    render(<Nav />);
+    expect(screen.getByRole('link', {name: /Karya/})).toHaveTextContent('3');
+    expect(screen.getByRole('link', {name: /Riset/})).not.toHaveTextContent('3');
+  });
+
+  it('adds a directional marker to the active item only', () => {
+    render(<Nav />); // mock pathname '/karya' -> Karya active
+    expect(screen.getByRole('link', {name: /Karya/})).toHaveTextContent('→');
+    expect(screen.getByRole('link', {name: /Beranda/})).not.toHaveTextContent('→');
+  });
 });

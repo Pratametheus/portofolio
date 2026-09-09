@@ -8,13 +8,15 @@ export function NavItem({
   index,
   label,
   active,
-  icon
+  icon,
+  count
 }: {
   href: NavPathname;
   index: string;
   label: string;
   active: boolean;
   icon?: IconName;
+  count?: number;
 }) {
   return (
     <Link
@@ -27,6 +29,9 @@ export function NavItem({
       ) : null}
       {icon ? <Icon name={icon} className="size-[18px] shrink-0" /> : <span className="font-mono text-xs">{index}</span>}
       <span>{label}</span>
+      {count != null ? (
+        <span className="ml-1 rounded border border-border px-1.5 text-[10px] text-fg-muted">{count}</span>
+      ) : null}
       {active ? <span aria-hidden="true" className="ml-auto text-accent">→</span> : null}
     </Link>
   );
