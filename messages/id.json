@@ -46,6 +46,21 @@
     "intro": "Tiga proyek berikut dipilih karena mewakili konteks penggunaan yang berbeda. Detailnya berfokus pada masalah, kontribusi, keputusan teknis, dan batasannya.",
     "meta": {
       "description": "Studi kasus terpilih — City Courier, MochiToon, dan SIAKAD Informatika — dengan fokus pada masalah, kontribusi, keputusan teknis, dan batasannya."
+    },
+    "filters": {
+      "typeLabel": "Tipe",
+      "type": {
+        "semua": "Semua",
+        "web": "Web",
+        "mobile": "Mobile"
+      },
+      "categoryLabel": "Kategori",
+      "category": {
+        "semua": "Semua",
+        "pendidikan": "Pendidikan",
+        "keamanan": "Keamanan",
+        "penulisan": "Penulisan"
+      }
     }
   },
   "about": {

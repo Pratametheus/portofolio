@@ -46,6 +46,21 @@
     "intro": "These three projects represent different kinds of real use. Each case study focuses on the problem, my contribution, the technical decisions, and the limits of the result.",
     "meta": {
       "description": "Selected case studies — City Courier, MochiToon, and SIAKAD Informatika — focused on the problem, contribution, technical decisions, and limits."
+    },
+    "filters": {
+      "typeLabel": "Type",
+      "type": {
+        "semua": "All",
+        "web": "Web",
+        "mobile": "Mobile"
+      },
+      "categoryLabel": "Category",
+      "category": {
+        "semua": "All",
+        "pendidikan": "Education",
+        "keamanan": "Security",
+        "penulisan": "Writing"
+      }
     }
   },
   "about": {

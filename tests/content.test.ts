@@ -1,6 +1,24 @@
 import {describe, expect, it} from 'vitest';
 import {getAllCaseStudies, getCaseStudy} from '@/lib/content';
 
+describe('case study taxonomy', () => {
+  it('every case study has a valid type and topic in both locales', () => {
+    for (const locale of ['id', 'en'] as const) {
+      for (const cs of getAllCaseStudies(locale)) {
+        expect(['Web', 'Mobile']).toContain(cs.type);
+        expect(['Pendidikan', 'Keamanan', 'Penulisan']).toContain(cs.topic);
+      }
+    }
+  });
+
+  it('assigns the documented taxonomy', () => {
+    const bySlug = Object.fromEntries(getAllCaseStudies('id').map((c) => [c.slug, c]));
+    expect(bySlug['siakad-informatika']).toMatchObject({type: 'Web', topic: 'Pendidikan'});
+    expect(bySlug['city-courier']).toMatchObject({type: 'Mobile', topic: 'Keamanan'});
+    expect(bySlug['mochitoon']).toMatchObject({type: 'Web', topic: 'Penulisan'});
+  });
+});
+
 describe('getAllCaseStudies', () => {
   it('mengembalikan tiga studi kasus', () => {
     expect(getAllCaseStudies('id')).toHaveLength(3);

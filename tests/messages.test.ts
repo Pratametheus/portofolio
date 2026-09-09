@@ -69,7 +69,11 @@ describe('kelengkapan terjemahan', () => {
       'contact.meta.description', 'links.meta.description',
       'notFound.title', 'notFound.description', 'notFound.back', 'common.visitApp',
       'skills.groups.semua', 'skills.groups.frontend', 'skills.groups.backend',
-      'skills.groups.mobile', 'skills.groups.database', 'skills.groups.tools'
+      'skills.groups.mobile', 'skills.groups.database', 'skills.groups.tools',
+      'work.filters.typeLabel', 'work.filters.type.semua', 'work.filters.type.web',
+      'work.filters.type.mobile', 'work.filters.categoryLabel',
+      'work.filters.category.semua', 'work.filters.category.pendidikan',
+      'work.filters.category.keamanan', 'work.filters.category.penulisan'
     ];
 
     expect(idKeys).toEqual(expect.arrayContaining(requiredKeys));

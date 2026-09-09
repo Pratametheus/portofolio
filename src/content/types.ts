@@ -10,10 +10,15 @@ export type CaseStudySection = {
   >;
 };
 
+export type CaseStudyType = 'Web' | 'Mobile';
+export type CaseStudyTopic = 'Pendidikan' | 'Keamanan' | 'Penulisan';
+
 export type CaseStudy = {
   slug: 'siakad-informatika' | 'city-courier' | 'mochitoon';
   title: string;
   tagline: string;
+  type: CaseStudyType;
+  topic: CaseStudyTopic;
   scope?: string;
   year: number;
   stack: string[];
