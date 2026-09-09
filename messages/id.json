@@ -129,5 +129,15 @@
   },
   "common": {
     "visitApp": "Kunjungi aplikasi"
+  },
+  "skills": {
+    "groups": {
+      "semua": "Semua",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "mobile": "Mobile",
+      "database": "Basis Data",
+      "tools": "Perkakas"
+    }
   }
 }

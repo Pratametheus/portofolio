@@ -67,7 +67,9 @@ describe('kelengkapan terjemahan', () => {
       'about.meta.description', 'work.meta.description', 'research.meta.description',
       'achievements.meta.description', 'guestbook.meta.description',
       'contact.meta.description', 'links.meta.description',
-      'notFound.title', 'notFound.description', 'notFound.back', 'common.visitApp'
+      'notFound.title', 'notFound.description', 'notFound.back', 'common.visitApp',
+      'skills.groups.semua', 'skills.groups.frontend', 'skills.groups.backend',
+      'skills.groups.mobile', 'skills.groups.database', 'skills.groups.tools'
     ];
 
     expect(idKeys).toEqual(expect.arrayContaining(requiredKeys));
