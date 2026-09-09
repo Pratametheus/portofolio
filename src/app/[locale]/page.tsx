@@ -30,28 +30,25 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
   const contactHref = getPathname({locale, href: '/kontak'});
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-20 lg:px-12">
-      <header className="grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,420px)]">
+    <main className="mx-auto max-w-6xl px-6 py-10 lg:px-0 lg:py-12">
+      <header className="grid items-center gap-8 border-b border-border pb-10 sm:grid-cols-[1fr_160px]">
         <Stagger className="max-w-2xl">
           <Reveal>
-            <p className="font-mono text-xs tracking-widest text-accent">{t('eyebrow')}</p>
+            <p className="text-base text-fg-muted">{sidebar('role')}</p>
           </Reveal>
           <Reveal>
-            <h1 className="mt-6 font-display text-5xl leading-tight text-fg sm:text-6xl">
+            <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-fg sm:text-4xl">
               Ferry Andhika Pratama
             </h1>
           </Reveal>
           <Reveal>
-            <p className="mt-4 font-mono text-sm text-accent">{sidebar('role')}</p>
+            <p className="mt-8 max-w-lg text-xl leading-8 text-fg sm:text-2xl">{t('tagline')}</p>
           </Reveal>
           <Reveal>
-            <p className="mt-8 text-2xl leading-9 text-fg">{t('tagline')}</p>
-          </Reveal>
-          <Reveal>
-            <p className="mt-4 leading-7 text-fg-muted">{t('statement')}</p>
+            <a href="#selected-work-heading" className="mt-6 inline-block border-b border-accent pb-1 text-lg text-accent transition-colors hover:text-fg">{t('selectedWork')}</a>
           </Reveal>
         </Stagger>
-        <figure className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-surface">
+        <figure className="relative h-48 overflow-hidden rounded-lg bg-surface sm:h-56">
           <ScrollSpin className="absolute inset-0">
             <Image
               data-hero="night"
@@ -60,7 +57,7 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
               fill
               sizes="(min-width:1024px) 420px, 100vw"
               priority
-              className="object-cover object-[center_20%]"
+              className="object-cover object-center"
             />
             <Image
               data-hero="light"
@@ -69,13 +66,13 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
               fill
               sizes="(min-width:1024px) 420px, 100vw"
               priority
-              className="object-cover object-[center_22%]"
+              className="object-cover object-center"
             />
           </ScrollSpin>
         </figure>
       </header>
 
-      <section aria-labelledby="pillars-heading" className="mt-20">
+      <section aria-labelledby="pillars-heading" className="mt-10">
         <Reveal>
           <h2 id="pillars-heading" className="font-display text-3xl text-fg">
             {t('pillarsTitle')}

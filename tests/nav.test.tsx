@@ -15,11 +15,11 @@ vi.mock('next-intl', () => ({
 import Nav from '@/components/nav';
 
 describe('Nav', () => {
-  it('renders eight numbered items', () => {
+  it('renders eight routes with text labels', () => {
     render(<Nav />);
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(8);
-    expect(within(links[0]).getByText('01')).toBeInTheDocument();
+    expect(within(links[0]).getByText('Beranda')).toBeInTheDocument();
   });
   it('marks the active route with aria-current', () => {
     render(<Nav />);

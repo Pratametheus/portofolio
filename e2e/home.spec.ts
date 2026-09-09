@@ -2,8 +2,8 @@ import {expect, test} from '@playwright/test';
 
 test.describe('deteksi bahasa peramban di akar', () => {
   // Each case opens its own browser context (not the shared `page` fixture)
-  // so that the `NEXT_LOCALE` cookie one case may cause next-intl to set
-  // can never leak into another case, regardless of run order.
+  // so per-locale state can never leak between cases. `localeCookie` is
+  // disabled in routing config, so `/` detects locale from Accept-Language.
 
   test('peramban berbahasa Indonesia dialihkan ke /id', async ({browser}) => {
     const context = await browser.newContext({locale: 'id-ID'});

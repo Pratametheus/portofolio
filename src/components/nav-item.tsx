@@ -1,17 +1,20 @@
 import {Link} from '@/i18n/navigation';
 import type {NavPathname} from '@/i18n/routing';
 import {NavIndicator} from '@/components/motion/nav-indicator';
+import {Icon, type IconName} from './icon';
 
 export function NavItem({
   href,
   index,
   label,
-  active
+  active,
+  icon
 }: {
   href: NavPathname;
   index: string;
   label: string;
   active: boolean;
+  icon?: IconName;
 }) {
   return (
     <Link
@@ -22,8 +25,9 @@ export function NavItem({
       {active ? (
         <NavIndicator className="absolute inset-0 -z-10 rounded-lg bg-accent-dim" />
       ) : null}
-      <span className="font-mono text-xs">{index}</span>
+      {icon ? <Icon name={icon} className="size-[18px] shrink-0" /> : <span className="font-mono text-xs">{index}</span>}
       <span>{label}</span>
+      {active ? <span aria-hidden="true" className="ml-auto text-accent">→</span> : null}
     </Link>
   );
 }
