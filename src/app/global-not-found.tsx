@@ -9,7 +9,7 @@
 // un-localized fallback, in the site's default language (id).
 import type {Metadata} from 'next';
 import {siteUrl} from '@/lib/site';
-import {inter, interTight, jetbrainsMono} from './fonts';
+import {bodyFont, jetbrainsMono} from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function GlobalNotFound() {
   return (
     <html
       lang="id"
-      className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
+      className={`${bodyFont.variable} ${jetbrainsMono.variable}`}
     >
       <body>
         <main className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center px-6 text-center">

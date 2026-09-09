@@ -7,7 +7,7 @@ import {siteName, siteUrl} from '@/lib/site';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
 import Sidebar from '@/components/sidebar';
 import {Noise} from '@/components/motion/noise';
-import {inter, interTight, jetbrainsMono} from '../fonts';
+import {bodyFont, jetbrainsMono} from '../fonts';
 import '../globals.css';
 
 export function generateStaticParams() {
@@ -87,14 +87,14 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       data-theme={DEFAULT_THEME}
-      className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
+      className={`${bodyFont.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <body>
         <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
         <Noise />
         <NextIntlClientProvider messages={clientMessages}>
-          <div className="lg:grid lg:grid-cols-[280px_1fr]">
+          <div className="mx-auto max-w-[1180px] lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-12 lg:px-8">
             <Sidebar />
             <div className="min-w-0">{children}</div>
           </div>

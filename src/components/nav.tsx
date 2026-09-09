@@ -36,6 +36,7 @@ export default function Nav() {
                   href={href}
                   index={String(index + 1).padStart(2, '0')}
                   label={t(key)}
+                  icon={key}
                   active={active}
                 />
               </li>
