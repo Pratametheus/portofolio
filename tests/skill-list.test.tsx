@@ -4,7 +4,17 @@ import {describe, expect, it, vi} from 'vitest';
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (k: string) =>
-    ({'skills.title': 'Keahlian', 'skills.description': 'Teknologi', 'skills.filterLabel': 'Filter kategori keahlian'}[k] ?? k)
+    ({
+      'skills.title': 'Keahlian',
+      'skills.description': 'Teknologi',
+      'skills.filterLabel': 'Filter kategori keahlian',
+      'skills.groups.semua': 'Semua',
+      'skills.groups.frontend': 'Frontend',
+      'skills.groups.backend': 'Backend',
+      'skills.groups.mobile': 'Mobile',
+      'skills.groups.database': 'Database',
+      'skills.groups.tools': 'Tools'
+    }[k] ?? k)
 }));
 
 import {SkillList} from '@/components/skill-list';

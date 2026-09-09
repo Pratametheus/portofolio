@@ -5,6 +5,15 @@ import {useTranslations} from 'next-intl';
 import {SectionHead} from './section-head';
 import {SKILLS, SKILL_GROUPS, type SkillGroupFilter} from '@/lib/skills';
 
+const GROUP_LABEL_KEY = {
+  Semua: 'skills.groups.semua',
+  Frontend: 'skills.groups.frontend',
+  Backend: 'skills.groups.backend',
+  Mobile: 'skills.groups.mobile',
+  Database: 'skills.groups.database',
+  Tools: 'skills.groups.tools'
+} as const;
+
 function countFor(group: SkillGroupFilter) {
   return group === 'Semua'
     ? SKILLS.length
@@ -41,7 +50,7 @@ export function SkillList() {
                 : 'border-border text-fg-muted'
             }`}
           >
-            {group}
+            {t(GROUP_LABEL_KEY[group])}
             <span>{countFor(group)}</span>
           </button>
         ))}
