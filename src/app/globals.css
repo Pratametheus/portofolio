@@ -20,47 +20,51 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Night — default, server-rendered as <html data-theme="night"> */
+/* Night — default, server-rendered as <html data-theme="night">.
+   Redesign palette (spec 2026-09-09 §3). Contrast:
+   fg/bg 16.39 · fg-muted/bg 7.76 · fg-muted/surface 6.94 · on-accent/accent 12.82 — all >= 4.5. */
 :root,
 :root[data-theme="night"] {
-  --bg: #0A0A0B;
-  --surface: #131316;
-  --surface-2: #1B1B1F;
-  --border: #26262B;
-  --fg: #EDEDEF;
-  --fg-muted: #9B9BA3;
-  --accent: #FACC15;
-  --accent-dim: rgb(250 204 21 / 0.13);
-  --on-accent: #0A0A0B;
-  --color-bg: #0A0A0B;
-  --color-surface: #131316;
-  --color-surface-2: #1B1B1F;
-  --color-border: #26262B;
-  --color-fg: #EDEDEF;
-  --color-fg-muted: #9B9BA3;
-  --color-accent: #FACC15;
-  --color-on-accent: #0A0A0B;
+  --bg: #101112;
+  --surface: #1b1d1e;
+  --surface-2: #232427;
+  --border: #33383b;
+  --fg: #eeefed;
+  --fg-muted: #a1a7a9;
+  --accent: #efd45d;
+  --accent-dim: rgb(239 212 93 / 0.14);
+  --on-accent: #101112;
+  --color-bg: #101112;
+  --color-surface: #1b1d1e;
+  --color-surface-2: #232427;
+  --color-border: #33383b;
+  --color-fg: #eeefed;
+  --color-fg-muted: #a1a7a9;
+  --color-accent: #efd45d;
+  --color-on-accent: #101112;
   color-scheme: dark;
 }
 
+/* Light — warm paper + ochre, adapted from the dark-only sandbox. Contrast:
+   fg/bg 13.55 · fg-muted/bg 5.35 · fg-muted/surface 4.90 · on-accent/accent 4.97 — all >= 4.5. */
 :root[data-theme="light"] {
-  --bg: #F7F3EC;
-  --surface: #EFE9DE;
-  --surface-2: #E7DFD1;
-  --border: #DED4C2;
-  --fg: #2B2925;
-  --fg-muted: #6B6459;
-  --accent: #8F5F18;
+  --bg: #f7f3ec;
+  --surface: #efe9dd;
+  --surface-2: #e6ddca;
+  --border: #ddd4c3;
+  --fg: #2b2620;
+  --fg-muted: #6b6357;
+  --accent: #8f5f18;
   --accent-dim: rgb(143 95 24 / 0.14);
-  --on-accent: #F7F3EC;
-  --color-bg: #F7F3EC;
-  --color-surface: #EFE9DE;
-  --color-surface-2: #E7DFD1;
-  --color-border: #DED4C2;
-  --color-fg: #2B2925;
-  --color-fg-muted: #6B6459;
-  --color-accent: #8F5F18;
-  --color-on-accent: #F7F3EC;
+  --on-accent: #f7f3ec;
+  --color-bg: #f7f3ec;
+  --color-surface: #efe9dd;
+  --color-surface-2: #e6ddca;
+  --color-border: #ddd4c3;
+  --color-fg: #2b2620;
+  --color-fg-muted: #6b6357;
+  --color-accent: #8f5f18;
+  --color-on-accent: #f7f3ec;
   color-scheme: light;
 }
 
