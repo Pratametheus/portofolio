@@ -70,6 +70,17 @@
     "body3": "Saya juga menguji autentikasi, mencatat asumsi dan keterbatasan, serta menerbitkan temuan yang bisa diperiksa.",
     "meta": {
       "description": "Konteks pekerjaan Ferry Andhika Pratama di persimpangan pengembangan perangkat lunak, mengajar, dan riset keamanan aplikasi."
+    },
+    "career": {
+      "title": "Karier",
+      "description": "Pengalaman yang membentuk cara saya bekerja.",
+      "detailSummary": "Tampilkan detail"
+    },
+    "education": {
+      "title": "Pendidikan",
+      "description": "Perjalanan pendidikan saya.",
+      "emptyTitle": "Riwayat pendidikan belum ditambahkan",
+      "emptyBody": "Nama institusi, program studi, dan tahun pendidikan akan tampil di sini setelah datanya dilengkapi."
     }
   },
   "research": {

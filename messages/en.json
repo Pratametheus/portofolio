@@ -70,6 +70,17 @@
     "body3": "I also test authentication systems, document their assumptions and limitations, and publish findings that other people can inspect.",
     "meta": {
       "description": "Context for Ferry Andhika Pratama's work across software development, classroom teaching, and application-security research."
+    },
+    "career": {
+      "title": "Career",
+      "description": "Experience that shaped how I work.",
+      "detailSummary": "Show detail"
+    },
+    "education": {
+      "title": "Education",
+      "description": "My education so far.",
+      "emptyTitle": "No education history yet",
+      "emptyBody": "Institution, programme and years will appear here once the data is filled in."
     }
   },
   "research": {
