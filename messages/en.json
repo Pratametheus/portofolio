@@ -157,6 +157,9 @@
     "visitApp": "Visit application"
   },
   "skills": {
+    "title": "Skills",
+    "description": "Technology used across my work.",
+    "filterLabel": "Filter skills by category",
     "groups": {
       "semua": "All",
       "frontend": "Frontend",

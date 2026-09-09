@@ -68,6 +68,7 @@ describe('kelengkapan terjemahan', () => {
       'achievements.meta.description', 'guestbook.meta.description',
       'contact.meta.description', 'links.meta.description',
       'notFound.title', 'notFound.description', 'notFound.back', 'common.visitApp',
+      'skills.title', 'skills.description', 'skills.filterLabel',
       'skills.groups.semua', 'skills.groups.frontend', 'skills.groups.backend',
       'skills.groups.mobile', 'skills.groups.database', 'skills.groups.tools',
       'work.filters.typeLabel', 'work.filters.type.semua', 'work.filters.type.web',

@@ -157,6 +157,9 @@
     "visitApp": "Kunjungi aplikasi"
   },
   "skills": {
+    "title": "Keahlian",
+    "description": "Teknologi yang digunakan dalam karya saya.",
+    "filterLabel": "Filter kategori keahlian",
     "groups": {
       "semua": "Semua",
       "frontend": "Frontend",
