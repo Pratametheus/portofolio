@@ -59,6 +59,9 @@ design-qa.md
 /qa-*.png
 /_to_delete/
 
+# Redesign reference sandbox — kept locally, never shipped
+/public/design-preview/
+
 # Figma-revision working area (raw exports, Canva rasters, before/after shots).
 # Final optimized assets live in public/ and are committed there.
 /assets/
