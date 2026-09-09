@@ -44,6 +44,14 @@
   "work": {
     "title": "Work that is used, tested, or still evolving",
     "intro": "These three projects represent different kinds of real use. Each case study focuses on the problem, my contribution, the technical decisions, and the limits of the result.",
+    "cardCta": "The story behind it",
+    "coverAction": "View details ↗",
+    "count": "{n} projects",
+    "featuredLabel": "Featured",
+    "empty": {
+      "title": "No projects in this combination",
+      "body": "Choose All for type or category."
+    },
     "meta": {
       "description": "Selected case studies — City Courier, MochiToon, and SIAKAD Informatika — focused on the problem, contribution, technical decisions, and limits."
     },

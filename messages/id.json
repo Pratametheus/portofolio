@@ -44,6 +44,14 @@
   "work": {
     "title": "Karya yang dipakai, diuji, atau terus dikerjakan",
     "intro": "Tiga proyek berikut dipilih karena mewakili konteks penggunaan yang berbeda. Detailnya berfokus pada masalah, kontribusi, keputusan teknis, dan batasannya.",
+    "cardCta": "Cerita di balik proyek",
+    "coverAction": "Lihat detail ↗",
+    "count": "{n} karya",
+    "featuredLabel": "Pilihan",
+    "empty": {
+      "title": "Belum ada karya dalam kombinasi ini",
+      "body": "Pilih Semua pada tipe atau kategori."
+    },
     "meta": {
       "description": "Studi kasus terpilih — City Courier, MochiToon, dan SIAKAD Informatika — dengan fokus pada masalah, kontribusi, keputusan teknis, dan batasannya."
     },
