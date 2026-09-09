@@ -3,6 +3,7 @@ import {notFound} from 'next/navigation';
 import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import {getMessages, getTranslations, setRequestLocale} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
+import {getAllCaseStudies} from '@/lib/content';
 import {siteName, siteUrl} from '@/lib/site';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
 import Sidebar from '@/components/sidebar';
@@ -94,8 +95,8 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
         <Noise />
         <NextIntlClientProvider messages={clientMessages}>
-          <div className="mx-auto max-w-[1180px] lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-12 lg:px-8">
-            <Sidebar />
+          <div className="mx-auto max-w-[1190px] px-6 lg:grid lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-12">
+            <Sidebar workCount={getAllCaseStudies(routing.defaultLocale).length} />
             <div className="min-w-0">{children}</div>
           </div>
         </NextIntlClientProvider>

@@ -3,14 +3,10 @@
 import {useTranslations} from 'next-intl';
 import {usePathname} from '@/i18n/navigation';
 import type {NavPathname} from '@/i18n/routing';
-import {routing} from '@/i18n/routing';
-import {getAllCaseStudies} from '@/lib/content';
 import {NavIndicatorGroup} from '@/components/motion/nav-indicator';
 import {NavItem} from './nav-item';
 
 type NavKey = 'home' | 'about' | 'work' | 'research' | 'achievements' | 'guestbook' | 'contact' | 'links';
-
-const WORK_COUNT = getAllCaseStudies(routing.defaultLocale).length;
 
 export const NAV_ITEMS: ReadonlyArray<{href: NavPathname; key: NavKey}> = [
   {href: '/', key: 'home'},
@@ -23,7 +19,7 @@ export const NAV_ITEMS: ReadonlyArray<{href: NavPathname; key: NavKey}> = [
   {href: '/links', key: 'links'}
 ];
 
-export default function Nav() {
+export default function Nav({workCount}: {workCount?: number}) {
   const pathname = usePathname();
   const t = useTranslations('nav');
 
@@ -41,7 +37,7 @@ export default function Nav() {
                   index={String(index + 1).padStart(2, '0')}
                   label={t(key)}
                   icon={key}
-                  count={key === 'work' ? WORK_COUNT : undefined}
+                  count={key === 'work' ? workCount : undefined}
                   active={active}
                 />
               </li>

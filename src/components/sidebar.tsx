@@ -10,7 +10,7 @@ import ThemeToggle from './theme-toggle';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export default function Sidebar() {
+export default function Sidebar({workCount}: {workCount?: number}) {
   const pathname = usePathname();
   const t = useTranslations();
   const [open, setOpen] = useState(false);
@@ -119,7 +119,7 @@ export default function Sidebar() {
         </div>
 
         <div className="border-y border-border py-3">
-          <Nav />
+          <Nav workCount={workCount} />
         </div>
 
         <a
