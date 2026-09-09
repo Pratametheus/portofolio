@@ -400,3 +400,48 @@ dan `cf:deploy` diserahkan ke manusia. Zone `ferryandhikapratama.com` ada di aku
 Angka akhir (verifikasi controller): unit **119/119** (28 berkas), e2e **80/80**,
 `tsc --noEmit` bersih, `next build` **34 halaman statis** tanpa warning,
 `check:size` **204,6 KB / 210,0 KB**. Dua commit ada di `main` lokal — **belum di-push**.
+
+---
+
+## Redesign "Personal" — Phase 1: Foundation (2026-09-09)
+
+Spec: `docs/superpowers/specs/2026-09-09-ruang-kerja-personal-redesign.md`.
+Plan: `docs/superpowers/plans/2026-09-09-ruang-kerja-redesign-p1-foundation.md`.
+Executed inline on branch `Pratametheus/ruang-kerja-code`, on top of codex's
+uncommitted redesign WIP (`page.tsx` + `pillar-card.tsx` left uncommitted for P3/P5).
+
+- **Type family:** Inter + Inter Tight → **Source Sans 3** (`--font-body`); `--font-sans`
+  and `--font-display` both resolve to it. JetBrains Mono kept for `--font-mono`.
+- **Tokens retuned** (`globals.css`). Night: `--bg #101112`, `--surface #1b1d1e`,
+  `--fg #eeefed`, `--fg-muted #a1a7a9`, `--border #33383b`, `--accent #efd45d`,
+  `--on-accent #101112`. Light (warm paper + ochre): `--bg #f7f3ec`, `--surface #efe9dd`,
+  `--fg #2b2620`, `--fg-muted #6b6357`, `--border #ddd4c3`, `--accent #8f5f18`.
+  Contrast (fg/bg · muted/bg · muted/surface · on-accent/accent): night
+  **16.4 · 7.8 · 6.9 · 12.8**, light **13.6 · 5.4 · 4.9 · 5.0** — all ≥ 4.5:1.
+  `tests/tokens.test.ts` updated to assert the new values + `--color-*` mirroring.
+- **Shell:** `[locale]/layout.tsx` → centred `max-w-[1190px] px-6`, desktop grid
+  `lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-12`.
+- **Rail** (`sidebar.tsx`): `<header>`, sticky on desktop. Contents: `fa.` mark (68px,
+  radius 20, accent dot), name (`sidebar.name`), role, availability link → `/kontak`,
+  `<Nav>` in a `border-y` band, GitHub link (`code` icon + "Pratametheus ↗"), rail note
+  (`sidebar.railNote`), then `ThemeToggle` + `LocaleSwitcher`. Mobile form unchanged
+  (floating panel, focus trap, `Esc` restores focus). Old `<footer>© 2026` dropped from
+  the rail.
+- **Nav:** icon per route (`icon={key}`), `Karya` count badge, active `aria-current` +
+  trailing `→`. Count is computed in the **server layout** and threaded
+  `layout → Sidebar → Nav` as `workCount` — importing `getAllCaseStudies` into the
+  `'use client'` Nav pulled the 53 KB case-studies data into the client bundle.
+- **Icons** (`icon.tsx`): added `dashboard` (2×2) + `code` (`</>`); stroke 1.75 → 1.6.
+- `messages/{id,en}.json`: `sidebar.name`, `sidebar.railNote` added; `tests/messages.test.ts`
+  `requiredKeys` updated.
+- `public/design-preview/` gitignored (kept locally as the build reference; deleted in the
+  final cleanup after P6).
+
+Final numbers: `tsc --noEmit` clean · unit **127/127** (28 files) · e2e **80/80** ·
+`next build` **34 static pages**, no warnings · `check:size` **206.0 / 210.0 KB**
+(clean build; +1.4 KB vs the 204.6 baseline — 4 KB headroom, watch during P2's client
+components; lazy-load filters per spec §10 if it tightens).
+
+Commits: `a2e2f67` (foundation WIP subset) · `3c74ab0` (gitignore sandbox) ·
+`9d4dca9` (token retune) · `ad46cbb` (icons) · `af87dc2` (rail) · `d025cf8` (count + marker) ·
+`71fea6a` (e2e) · `89faffa` (count via server prop).
