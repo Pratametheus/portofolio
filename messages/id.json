@@ -151,6 +151,10 @@
       "description": "Garis waktu keluaran yang dapat diperiksa: publikasi JUTIF, materi ajar informatika kelas 4–6, dan SIAKAD Informatika yang aktif dipakai."
     }
   },
+  "dashboard": {
+    "notConnected": "Belum terhubung",
+    "statValueLabel": "Belum tersedia"
+  },
   "guestbook": {
     "title": "Catatan singkat dari orang yang pernah melihat atau memakai karya",
     "empty": "Belum ada pesan yang ditampilkan. Buku tamu akan dibuka pada fase berikutnya.",

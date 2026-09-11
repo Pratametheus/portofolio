@@ -151,6 +151,10 @@
       "description": "A working timeline of checkable outputs: the JUTIF publication, a year 4–6 computing curriculum, and SIAKAD Informatika in active use."
     }
   },
+  "dashboard": {
+    "notConnected": "Not connected",
+    "statValueLabel": "Not available"
+  },
   "guestbook": {
     "title": "Notes from people who have seen or used the work",
     "empty": "There are no public notes yet. Guestbook submissions will open in a later phase.",
