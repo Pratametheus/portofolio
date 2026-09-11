@@ -166,6 +166,27 @@
     "githubLabel": "GitHub",
     "githubValue": "github.com/Pratametheus",
     "availability": "Open to relevant collaborations.",
+    "connectTitle": "Let's connect",
+    "github": {
+      "title": "See what I'm building.",
+      "body": "My code and public projects live at Pratametheus.",
+      "cta": "Open GitHub"
+    },
+    "email": {
+      "title": "Start with a message.",
+      "body": "An email address hasn't been added yet. You can still prepare and copy a message below.",
+      "status": "Not connected"
+    },
+    "form": {
+      "prepareTitle": "Prepare a message",
+      "note": "This form copies a draft — it does not send an email.",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Copy message draft",
+      "statusOk": "Draft copied. Nothing was sent.",
+      "statusFail": "Clipboard blocked by the browser. Copy the message manually."
+    },
     "meta": {
       "description": "How to reach Ferry Andhika Pratama about roles, product collaboration, or research discussions."
     }

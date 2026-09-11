@@ -89,7 +89,11 @@ describe('kelengkapan terjemahan', () => {
       'achievements.filters.category.keamanan', 'achievements.filters.category.pendidikan',
       'achievements.filters.category.pengembangan', 'achievements.total',
       'achievements.empty.title', 'achievements.empty.body', 'achievements.reset',
-      'achievements.dataNote', 'achievements.detailSummary'
+      'achievements.dataNote', 'achievements.detailSummary',
+      'contact.connectTitle', 'contact.github.title', 'contact.github.body', 'contact.github.cta',
+      'contact.email.title', 'contact.email.body', 'contact.email.status',
+      'contact.form.prepareTitle', 'contact.form.note', 'contact.form.name', 'contact.form.email',
+      'contact.form.message', 'contact.form.submit', 'contact.form.statusOk', 'contact.form.statusFail'
     ];
 
     expect(idKeys).toEqual(expect.arrayContaining(requiredKeys));

@@ -166,6 +166,27 @@
     "githubLabel": "GitHub",
     "githubValue": "github.com/Pratametheus",
     "availability": "Terbuka untuk kolaborasi yang relevan.",
+    "connectTitle": "Mari terhubung",
+    "github": {
+      "title": "Lihat apa yang saya bangun.",
+      "body": "Kode dan proyek publik saya ada di Pratametheus.",
+      "cta": "Buka GitHub"
+    },
+    "email": {
+      "title": "Mulai dari sebuah pesan.",
+      "body": "Alamat email belum ditambahkan. Kamu tetap bisa menyiapkan dan menyalin pesan di bawah.",
+      "status": "Belum terhubung"
+    },
+    "form": {
+      "prepareTitle": "Siapkan pesan",
+      "note": "Form ini menyalin draf, bukan mengirim email.",
+      "name": "Nama",
+      "email": "Email",
+      "message": "Pesan",
+      "submit": "Salin draf pesan",
+      "statusOk": "Draf disalin. Belum ada pesan yang dikirim.",
+      "statusFail": "Browser tidak mengizinkan akses clipboard. Salin pesan secara manual."
+    },
     "meta": {
       "description": "Cara menghubungi Ferry Andhika Pratama untuk peluang kerja, kolaborasi produk, atau diskusi riset."
     }
