@@ -31,14 +31,26 @@ the user did not select them for this round.
    account already hosting the Worker — no new external service, no new account to manage.
    Content volume is small (tens of rows), so D1's free tier and edge replication are
    more than sufficient.
-5. **Public pages move from fully static to statically-cached-with-revalidation** for the
-   three routes this touches — Tentang, Pencapaian, **and Riset** (Riset renders
+5. **Public pages move from fully static to plain SSR (dynamic rendering)** for the three
+   routes this touches — Tentang, Pencapaian, **and Riset** (Riset renders
    `ACHIEVEMENTS[locale][0]` as its featured publication — missed in the first pass of
    this spec; caught while writing the implementation plan). Every other route — Home,
    Karya, Dasbor, Kontak, Links, Buku Tamu, 404 — stays exactly as static as it is today.
-   This is the path `docs/cloudflare.md` already flagged: *"Before introducing ISR,
-   revalidatePath, revalidateTag, or cached server fetches, replace that cache with a
-   writable backend."* D1 is that backend.
+   **Revised 2026-09-11, while writing the implementation plan:** the spec originally
+   called for "static-cached-with-`revalidatePath`" per `docs/cloudflare.md`'s note about
+   replacing the read-only Static Assets cache with a writable backend. Researching
+   OpenNext's actual Cloudflare adapter behavior (`opennext.js.org/cloudflare/caching`)
+   found that on-demand revalidation needs *more* than a data backend — it needs an
+   Incremental Cache (R2 or KV) **and** a Tag Cache (D1 or Durable-Object-sharded) **and**,
+   for time-based revalidation, a Durable-Object queue, none of which exist in this
+   project. Without them, `revalidatePath` would likely not work correctly (an
+   undocumented, silent failure mode — worse than not having the feature). The same docs
+   state plainly: *"SSR route will work out of the box without any caching config."*
+   Three low-traffic personal-site pages going fully dynamic (rendered fresh from D1 on
+   every request, no edge-cache hit for just these three) is a far smaller, better-
+   documented change than standing up OpenNext's full ISR stack for content that changes
+   rarely. `export const dynamic = 'force-dynamic'` on exactly these three page files
+   replaces every `revalidatePath` call in this spec's earlier draft.
 6. **Existing hard-coded content becomes the D1 seed data**, then the source of truth
    moves to D1 permanently. `src/content/career.ts` and `src/content/achievements.ts` are
    retired once the migration seed lands (their types move to the data-access layer).
@@ -59,17 +71,18 @@ the user did not select them for this round.
 ## 2. Architecture
 
 ```
-Visitor request
-  → Cloudflare edge cache (HTML, until revalidated)
-    → Worker (OpenNext) → Next.js → D1 read (only on cache miss / after revalidation)
+Visitor request to /tentang, /pencapaian, /riset (force-dynamic)
+  → Worker (OpenNext) → Next.js → D1 read, fresh every request
+
+Visitor request to any other route
+  → Cloudflare edge cache (HTML, static — unchanged by this feature)
 
 Admin request to /admin/*
   → Cloudflare Access (edge, before the Worker is invoked)
       - not the owner's email → 403 at the edge, Worker never runs
       - the owner's email → request passes through, carrying an Access JWT header
   → Worker (OpenNext) → Next.js admin route
-      → D1 write (Server Action)
-      → revalidatePath() for the affected public routes
+      → D1 write (Server Action) → redirect back to the admin list
 ```
 
 Cloudflare Access is configured once in the Cloudflare Zero Trust dashboard (a policy on
@@ -174,19 +187,21 @@ one new repository function, `getFeaturedPublication(locale)` (first non-deleted
 `achievements` row where `type = 'Publikasi'`, ordered by `sort_order`) — more precise
 than today's implicit "index 0" assumption, and correct once Sertifikat rows exist too.
 Every public-facing query filters `WHERE deleted_at IS NULL` (see §3's soft-delete
-mechanics) — a Trashed row never reaches a visitor. Reads use Next's `fetch`/data cache
-semantics so the rendered HTML is still edge-cacheable exactly as today, until a write
-calls `revalidatePath` for the six affected URLs (`/id/tentang`, `/en/about`,
-`/id/pencapaian`, `/en/achievements`, `/id/riset`, `/en/research`). Every other route's
-data loading is untouched.
+mechanics) — a Trashed row never reaches a visitor.
 
-**Free-plan request cost:** this doesn't change how the *static* routes are served, and it
-doesn't make Tentang/Pencapaian hit the Worker on every request either — Cloudflare still
-serves the cached HTML for those two routes between edits, identically to today. Only a
-`revalidatePath` call (i.e., an admin save) forces the next visitor request to regenerate
-that one page from D1; after that it's cached again. No new "one Worker invocation per
-visit" pattern is introduced — the concern that made `localeCookie: false` necessary
-earlier is not reintroduced by this design.
+All three pages add `export const dynamic = 'force-dynamic'` (see the revised decision 5
+above) — each request re-reads D1 fresh, so an admin save is visible on the very next
+visitor request with no revalidation step of any kind. There is no `revalidatePath` call
+anywhere in this feature.
+
+**Free-plan request cost:** this doesn't change how the fully-*static* routes are served —
+Home, Karya, Dasbor, Kontak, Links, Buku Tamu, 404 stay exactly as edge-cached as today,
+untouched by this feature. Tentang, Pencapaian, and Riset specifically do now invoke the
+Worker on every visitor request (no edge-cache hit for these three) — an honest, accepted
+cost, not an oversight: these are three low-traffic pages on a personal portfolio, nowhere
+near the Free plan's 100k requests/day, and the alternative (ISR with R2/KV + D1 tag cache
++ a Durable-Object queue) is materially more infrastructure for content that changes on
+the order of "the owner remembered to add a certificate," not per-visit.
 
 ## 5. Admin UI
 
@@ -254,19 +269,19 @@ Matches the project's existing TDD convention:
 
 ## 8. Open risks / follow-ups (not blocking, noted for the plan)
 
-- **D1 binding in local dev vs. production:** `wrangler.jsonc` needs a `d1_databases`
-  block; the plan should confirm whether `next dev` (plain Node, no Workers runtime) can
-  reach D1 at all, or whether admin development/testing has to happen through
-  `cf:preview` (Workers runtime locally) instead. This is an implementation detail to
-  resolve in the plan, not a design blocker — worst case, admin pages are only
-  dev-testable via `cf:preview`, which already exists as a documented command.
-  `getCloudflareContext()` from `@opennextjs/cloudflare` is the documented way to reach
-  the binding from Next.js server code either way.
+- **D1 binding in local dev — resolved in the plan.** `next dev` reaches D1 by calling
+  `initOpenNextCloudflareForDev()` once in `next.config.ts` (documented OpenNext API,
+  confirmed present in the installed `@opennextjs/cloudflare@1.20.4`) — it wires `next dev`
+  to the same local Miniflare-backed bindings `wrangler`/`cf:preview` already use, so no
+  separate dev workflow is needed for admin pages. Tests use `getPlatformProxy` from
+  `wrangler` directly (also already installed) for the same local D1, independent of the
+  Next.js runtime — no new dev dependency either way.
 - **Cloudflare Access setup is a manual, one-time dashboard step** (Zero Trust policy on
   `ferryandhikapratama.com/admin*`), outside this repository and outside what an agent can
   configure — the plan should call this out explicitly as a step for the user to do
   themselves before `/admin` is safe to rely on in production.
 - Reordering entries: a numeric `sort_order` input is the v1 mechanism (simplest to build
   and test); drag-and-drop is explicitly deferred as unnecessary for a handful of rows.
-- No draft/preview state — a save is live immediately (after revalidation). Acceptable for
-  a single-owner personal site; noted here in case it ever stops being acceptable.
+- No draft/preview state — a save is live immediately on the next request (the affected
+  pages are fully dynamic, so there is nothing to invalidate). Acceptable for a
+  single-owner personal site; noted here in case it ever stops being acceptable.
