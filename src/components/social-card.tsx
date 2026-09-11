@@ -10,7 +10,7 @@ export function SocialCard({variant}: {variant: 'github' | 'email'}) {
         href="https://github.com/Pratametheus"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex flex-col gap-4 rounded-2xl border border-border bg-surface-2 p-6 transition-colors hover:border-accent"
+        className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent"
       >
         <span className="flex items-center gap-2 text-xs text-fg-muted">
           <Icon name="code" className="size-4 text-accent" />
@@ -26,7 +26,7 @@ export function SocialCard({variant}: {variant: 'github' | 'email'}) {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface-2 p-6">
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6">
       <span className="flex items-center gap-2 text-xs text-fg-muted">
         <Icon name="contact" className="size-4 text-accent" />
         Email

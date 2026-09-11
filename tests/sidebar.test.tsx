@@ -34,6 +34,11 @@ vi.mock('next-intl', () => ({
 import Sidebar from '@/components/sidebar';
 
 describe('Sidebar', () => {
+  it('includes the visible wordmark in the mobile home link accessible name', () => {
+    render(<Sidebar />);
+    expect(screen.getByRole('link', {name: 'ferry. — Beranda'})).toHaveAttribute('href', '/');
+  });
+
   it('renders navigation and both preference toggles', () => {
     render(<Sidebar />);
     expect(screen.getByRole('navigation', {name: 'Navigasi utama'})).toBeInTheDocument();

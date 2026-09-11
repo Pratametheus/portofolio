@@ -64,7 +64,7 @@ export default function Sidebar({workCount}: {workCount?: number}) {
   return (
     <header className="relative z-50 lg:sticky lg:top-8 lg:h-[calc(100dvh-64px)]">
       <div className="flex min-h-16 items-center justify-between border-b border-border px-6 lg:hidden">
-        <Link href="/" aria-label={t('nav.home')} className="font-display text-xl font-semibold tracking-tight text-fg">
+        <Link href="/" aria-label={`ferry. — ${t('nav.home')}`} className="font-display text-xl font-semibold tracking-tight text-fg">
           ferry<span className="text-accent">.</span>
         </Link>
         <button

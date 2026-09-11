@@ -6,7 +6,7 @@
 export function PublicationCover({size = 'grid'}: {size?: 'grid' | 'list'}) {
   return (
     <div
-      className={`flex flex-col items-start border-b-4 border-accent bg-surface-2 p-6 text-fg ${
+      className={`flex flex-col items-start border-b-4 border-accent bg-surface p-6 text-fg ${
         size === 'list' ? 'h-60' : 'h-52'
       }`}
     >
