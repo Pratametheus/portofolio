@@ -91,6 +91,7 @@ describe('kelengkapan terjemahan', () => {
       'achievements.filters.category.pengembangan', 'achievements.total',
       'achievements.empty.title', 'achievements.empty.body', 'achievements.reset',
       'achievements.dataNote', 'achievements.detailSummary', 'achievements.coverLabel',
+      'achievements.publishedYear',
       'dashboard.intro', 'dashboard.meta.description', 'dashboard.github.title',
       'dashboard.github.link', 'dashboard.github.stats.followers',
       'dashboard.github.stats.repositories', 'dashboard.github.stats.stars',

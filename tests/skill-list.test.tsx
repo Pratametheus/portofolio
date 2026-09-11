@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {describe, expect, it, vi} from 'vitest';
 
@@ -37,5 +37,15 @@ describe('SkillList', () => {
     render(<SkillList />);
     const react = screen.getByText('React').closest('li');
     expect(react?.querySelector('img')).toHaveAttribute('src', '/tech/react.svg');
+  });
+
+  it('falls back to a ◈ marker when a brand icon fails to load', () => {
+    render(<SkillList />);
+    const react = screen.getByText('React').closest('li');
+    const img = react?.querySelector('img');
+    expect(img).toBeTruthy();
+    fireEvent.error(img as HTMLImageElement);
+    expect(react?.querySelector('img')).toBeNull();
+    expect(react).toHaveTextContent('◈');
   });
 });

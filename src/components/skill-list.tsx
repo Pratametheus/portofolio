@@ -20,6 +20,29 @@ function countFor(group: SkillGroupFilter) {
     : SKILLS.filter((s) => s.group === group).length;
 }
 
+function SkillIcon({slug}: {slug: string}) {
+  const [broken, setBroken] = useState(false);
+
+  if (broken) {
+    return (
+      <span aria-hidden="true" className="text-xs leading-none">
+        ◈
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={`/tech/${slug}.svg`}
+      alt=""
+      width={19}
+      height={19}
+      loading="lazy"
+      onError={() => setBroken(true)}
+    />
+  );
+}
+
 export function SkillList() {
   const t = useTranslations();
   const [active, setActive] = useState<SkillGroupFilter>('Semua');
@@ -70,13 +93,7 @@ export function SkillList() {
             }
             className="inline-flex items-center gap-2 rounded-3xl border px-3 py-1.5 text-sm text-fg"
           >
-            <img
-              src={`/tech/${s.slug}.svg`}
-              alt=""
-              width={19}
-              height={19}
-              loading="lazy"
-            />
+            <SkillIcon slug={s.slug} />
             {s.name}
           </li>
         ))}

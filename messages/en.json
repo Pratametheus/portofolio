@@ -150,6 +150,7 @@
     "dataNote": "Certificates will appear once the documents and issuer details are added.",
     "detailSummary": "Publication details",
     "coverLabel": "Research article",
+    "publishedYear": "Published {year}",
     "meta": {
       "description": "A working timeline of checkable outputs: the JUTIF publication, a year 4–6 computing curriculum, and SIAKAD Informatika in active use."
     }

@@ -14,7 +14,7 @@ export function SocialCard({variant}: {variant: 'github' | 'email'}) {
       >
         <span className="flex items-center gap-2 text-xs text-fg-muted">
           <Icon name="code" className="size-4 text-accent" />
-          GitHub
+          {t('contact.githubLabel')}
         </span>
         <h3 className="font-display text-xl text-fg">{t('contact.github.title')}</h3>
         <p className="text-sm leading-7 text-fg-muted">{t('contact.github.body')}</p>
@@ -29,7 +29,7 @@ export function SocialCard({variant}: {variant: 'github' | 'email'}) {
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6">
       <span className="flex items-center gap-2 text-xs text-fg-muted">
         <Icon name="contact" className="size-4 text-accent" />
-        Email
+        {t('contact.emailLabel')}
       </span>
       <h3 className="font-display text-xl text-fg">{t('contact.email.title')}</h3>
       <p className="text-sm leading-7 text-fg-muted">{t('contact.email.body')}</p>

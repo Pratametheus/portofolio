@@ -27,7 +27,7 @@ export function AchievementCard({item}: {item: Achievement}) {
           ]}
         />
         <div className="mt-4 flex justify-between border-y border-border py-3 text-[11px] text-fg-muted">
-          <span>{item.year}</span>
+          <span>{t('achievements.publishedYear', {year: item.year})}</span>
           {item.url ? (
             <a
               href={item.url}

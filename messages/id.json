@@ -150,6 +150,7 @@
     "dataNote": "Sertifikat akan ditampilkan setelah dokumen dan detail penerbitnya ditambahkan.",
     "detailSummary": "Detail publikasi",
     "coverLabel": "Artikel penelitian",
+    "publishedYear": "Terbit {year}",
     "meta": {
       "description": "Garis waktu keluaran yang dapat diperiksa: publikasi JUTIF, materi ajar informatika kelas 4–6, dan SIAKAD Informatika yang aktif dipakai."
     }

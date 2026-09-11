@@ -15,6 +15,41 @@ type TopicFilter = (typeof TOPIC_OPTIONS)[number];
 
 const PILL_BASE = 'min-h-11 rounded-full border px-4 py-1.5 text-xs';
 
+function FilterRow<T extends string>({
+  label,
+  options,
+  labelFor,
+  value,
+  onChange
+}: {
+  label: string;
+  options: readonly T[];
+  labelFor: (option: T) => string;
+  value: T;
+  onChange: (option: T) => void;
+}) {
+  return (
+    <div role="group" aria-label={label} className="mb-3 flex flex-wrap items-center gap-2">
+      <span className="w-16 text-xs text-fg-muted">{label}</span>
+      {options.map((opt) => (
+        <button
+          key={opt}
+          type="button"
+          aria-pressed={value === opt}
+          onClick={() => onChange(opt)}
+          className={`${PILL_BASE} ${
+            value === opt
+              ? 'bg-accent text-on-accent border-accent'
+              : 'border-border text-fg-muted'
+          }`}
+        >
+          {labelFor(opt)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function WorkFilters({
   caseStudies,
   locale
@@ -34,50 +69,20 @@ export function WorkFilters({
 
   return (
     <div>
-      <div
-        role="group"
-        aria-label={t('work.filters.typeLabel')}
-        className="mb-3 flex flex-wrap items-center gap-2"
-      >
-        <span className="w-16 text-xs text-fg-muted">{t('work.filters.typeLabel')}</span>
-        {TYPE_OPTIONS.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            aria-pressed={type === opt}
-            onClick={() => setType(opt)}
-            className={`${PILL_BASE} ${
-              type === opt
-                ? 'bg-accent text-on-accent border-accent'
-                : 'border-border text-fg-muted'
-            }`}
-          >
-            {t(WORK_TYPE_LABEL_KEY[opt])}
-          </button>
-        ))}
-      </div>
-      <div
-        role="group"
-        aria-label={t('work.filters.categoryLabel')}
-        className="mb-3 flex flex-wrap items-center gap-2"
-      >
-        <span className="w-16 text-xs text-fg-muted">{t('work.filters.categoryLabel')}</span>
-        {TOPIC_OPTIONS.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            aria-pressed={topic === opt}
-            onClick={() => setTopic(opt)}
-            className={`${PILL_BASE} ${
-              topic === opt
-                ? 'bg-accent text-on-accent border-accent'
-                : 'border-border text-fg-muted'
-            }`}
-          >
-            {t(WORK_TOPIC_LABEL_KEY[opt])}
-          </button>
-        ))}
-      </div>
+      <FilterRow
+        label={t('work.filters.typeLabel')}
+        options={TYPE_OPTIONS}
+        labelFor={(opt) => t(WORK_TYPE_LABEL_KEY[opt])}
+        value={type}
+        onChange={setType}
+      />
+      <FilterRow
+        label={t('work.filters.categoryLabel')}
+        options={TOPIC_OPTIONS}
+        labelFor={(opt) => t(WORK_TOPIC_LABEL_KEY[opt])}
+        value={topic}
+        onChange={setTopic}
+      />
 
       <p role="status" className="my-4 text-sm text-fg-muted">
         {t('work.count', {n: filtered.length})}
