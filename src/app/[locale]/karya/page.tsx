@@ -2,8 +2,8 @@ import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
-import {ImageCard} from '@/components/image-card';
-import {Reveal, Stagger} from '@/components/motion/reveal';
+import {PageHeading} from '@/components/page-heading';
+import {WorkFilters} from '@/components/work-filters';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies} from '@/lib/content';
 import {pageMetadata} from '@/lib/page-metadata';
@@ -34,19 +34,13 @@ export default async function WorkPage({params}: {params: Promise<{locale: strin
   }
   const locale = requested;
   setRequestLocale(locale);
-  const t = await getTranslations({locale, namespace: 'nav'});
+  const t = await getTranslations({locale, namespace: 'work'});
   const caseStudies = getAllCaseStudies(locale);
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-20 lg:px-12">
-      <h1 className="font-display text-5xl text-fg">{t('work')}</h1>
-      <Stagger className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {caseStudies.map((caseStudy, index) => (
-          <Reveal key={caseStudy.slug}>
-            <ImageCard caseStudy={caseStudy} locale={locale} priority={index === 0} />
-          </Reveal>
-        ))}
-      </Stagger>
+    <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
+      <PageHeading title={t('title')} description={t('intro')} />
+      <WorkFilters caseStudies={caseStudies} locale={locale} />
     </main>
   );
 }
