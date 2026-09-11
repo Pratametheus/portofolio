@@ -76,13 +76,7 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
 
-  // Only the sidebar's client components read messages on the client; ship just
-  // those namespaces instead of the whole catalog (keeps initial JS down).
   const messages = await getMessages();
-  const clientMessages = {
-    nav: messages.nav,
-    sidebar: messages.sidebar
-  };
 
   return (
     <html
@@ -94,7 +88,7 @@ export default async function LocaleLayout({
       <body>
         <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
         <Noise />
-        <NextIntlClientProvider messages={clientMessages}>
+        <NextIntlClientProvider messages={messages}>
           <div className="mx-auto max-w-[1190px] px-6 lg:grid lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-12">
             <Sidebar workCount={getAllCaseStudies(routing.defaultLocale).length} />
             <div className="min-w-0">{children}</div>

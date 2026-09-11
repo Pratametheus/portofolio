@@ -14,6 +14,6 @@ test('research stat reaches its final value', async ({page}) => {
 test('selected-work cards are all present and linked', async ({page}) => {
   await page.goto('/id');
   for (const name of ['SIAKAD Informatika', 'City Courier']) {
-    await expect(page.getByRole('link', {name})).toBeVisible();
+    await expect(page.getByRole('link', {name, exact: true})).toBeVisible();
   }
 });

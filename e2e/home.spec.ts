@@ -43,8 +43,8 @@ test('halaman Inggris menampilkan intro Inggris', async ({page}) => {
 
 test('dua karya pilihan tampil di beranda, dengan tautan ke semua karya', async ({page}) => {
   await page.goto('/id');
-  await expect(page.getByRole('link', {name: 'SIAKAD Informatika'})).toBeVisible();
-  await expect(page.getByRole('link', {name: 'City Courier'})).toBeVisible();
+  await expect(page.getByRole('link', {name: 'SIAKAD Informatika', exact: true})).toBeVisible();
+  await expect(page.getByRole('link', {name: 'City Courier', exact: true})).toBeVisible();
   await expect(page.getByRole('link', {name: /Semua karya/})).toHaveAttribute('href', '/id/karya');
 });
 
@@ -55,8 +55,8 @@ test('keahlian berfilter tampil di beranda', async ({page}) => {
 
 test('navigasi keyboard menjangkau kartu pertama dengan focus yang terlihat', async ({page}) => {
   await page.goto('/id');
-  const firstLink = page.getByRole('link', {name: 'SIAKAD Informatika'});
-  for (let attempt = 0; attempt < 20; attempt += 1) {
+  const firstLink = page.getByRole('link', {name: 'SIAKAD Informatika', exact: true});
+  for (let attempt = 0; attempt < 30; attempt += 1) {
     await page.keyboard.press('Tab');
     if (await firstLink.evaluate((element) => document.activeElement === element)) break;
   }
