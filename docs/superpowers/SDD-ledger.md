@@ -513,3 +513,35 @@ code from the bundler's point of view until Phase 3 imports it).
 Not merged to `main` yet (Phase 1 is; `main` = `5a04d66`). Branch `Pratametheus/ruang-kerja-code`
 head after Phase 2: see the plan's task list — 11 feature/data commits + this ledger entry.
 Phase 3 (wiring Beranda + Tentang) is next.
+
+**Final whole-branch review (2026-09-11):** dispatched on the most capable model, scoped to
+main→Phase 2 head (14 commits). Found 1 Important + 5 Minor. Fixed in one fix wave
+(commit `b40f2ec`, re-reviewed clean):
+- Important: `WorkCard`/`AchievementCard`/`PublicationListCard` rendered raw Indonesian
+  `type`/`topic`/`category` literals untranslated on the `en` locale, right next to filter
+  pills showing the same values already translated (same class of bug as the Task 5 fix).
+  Fixed via a new shared `src/lib/taxonomy-labels.ts` (4 label-key maps) consumed by all 5
+  affected components.
+- Minor: `AchievementCard` + `PublicationListCard` had duplicated tag-pill JSX — extracted
+  to `src/components/record-tags.tsx`.
+- Minor: `PaperStory`'s `locale` prop defaulted to `'id'`, risking a silent EN-locale bug
+  once wired — made required.
+- Minor: `min-h-11` touch target added to the contact form `<textarea>` and two
+  `<summary>` elements (`career-card.tsx`, `achievement-card.tsx`).
+
+**Still deferred (no functional impact, revisit opportunistically):**
+- `work-card.tsx` cover-hover scrim `bg-black/60 text-white` — intentional, theme-independent.
+- `work-filters.tsx` two filter-row JSX blocks remain structurally duplicated (only the
+  label-key *data* was deduped) — a generic `FilterRow` would finish the job.
+- `achievement-filters.tsx` search predicate's `.trim()` — harmless improvement over spec.
+- `AchievementCard`/`PublicationListCard` render the JUTIF cover + "SINTA 2" tag
+  unconditionally — correct while only one publication exists; revisit once a certificate
+  entry is added (Phase 5+).
+- `SocialCard` hardcodes "GitHub"/"Email" eyebrow text instead of the existing
+  `contact.githubLabel`/`emailLabel` keys — zero visible difference (same value both locales).
+- `SkillList` has no `◈` broken-icon-fallback (spec §5 literal); `AchievementCard`'s year
+  renders bare instead of "Terbit {year}" (spec §5 literal). Cosmetic.
+
+Final numbers after the fix wave: tsc clean · unit **163/163** (46 files) · check:size
+**206.0/210.0 KB**. Phase 2 complete: 12 plan tasks + 1 fix wave, commits `0020be7..b40f2ec`.
+Not yet merged to `main` (`main` = `5a04d66`, Phase 1).
