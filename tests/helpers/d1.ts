@@ -20,7 +20,10 @@ export async function createTestDb(): Promise<{
   if (!db) {
     throw new Error('D1 binding "DB" not found — check wrangler.jsonc d1_databases config');
   }
-  // Normalize line endings and remove comments, then split by semicolons
+  // Custom SQL statement splitter: normalize line endings, split by semicolons, remove full-line
+  // `--` comments. Assumes: no `;` inside string/CHECK literals, no inline or block comments
+  // beyond full-line `--` comments, no multi-statement trigger bodies. Revisit if a future
+  // migration needs any of these patterns.
   const normalized = MIGRATION_SQL.replace(/\r\n/g, '\n');
   const statements = normalized
     .split(';')
