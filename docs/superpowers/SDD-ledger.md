@@ -718,3 +718,28 @@ integration were added.
 P5 and P6 complete. All changes remain on `Pratametheus/ruang-kerja-code`; `main` has not
 been merged or pushed by this continuation. Local QA evidence remains ignored under
 `.superpowers/sdd/2026-09-11-ruang-kerja-redesign-p5-p6-completion/`.
+
+---
+
+## Post-P6 controller review — i18n fix (2026-09-11, commit `a1ee590`)
+
+Manual browser smoke-check of the completed tree (`/en/*` routes, both themes) surfaced
+two label leaks the automated review passes missed:
+
+- `ThemeToggle` / `LocaleSwitcher` rendered hardcoded Indonesian button text and
+  `aria-label`s ("Malam"/"Terang"/"Tema"/"Bahasa") on every page regardless of locale.
+  Pre-existing since `2ac33c3` (FASE-3), predates the Personal redesign, but affects all
+  34+ pages including the newly wired English ones.
+- `PublicationCover`'s "Artikel penelitian" label was hardcoded, leaking onto
+  `/en/achievements`. Introduced in Phase 2 (`19c17c9`) — a genuine redesign regression
+  of the exact taxonomy-label class already called out once in Phase 2's own review.
+
+Fixed via four new message keys (`sidebar.themeGroupLabel/themeNight/themeLight/
+localeGroupLabel`, `achievements.coverLabel`) consumed through `useTranslations`;
+`PublicationCover` stays hookless-on-the-server-safe pattern (isomorphic `useTranslations`,
+no `'use client'`), matching `AchievementCard`'s existing convention.
+
+Re-verified after the fix: `tsc --noEmit` clean · unit **161/161** (44 files, +1 new
+assertion) · e2e **98/98** · `check:size` unchanged **197.4/210.0 KB** · manual re-check
+of `/en/work/city-courier` and `/en/achievements` confirms "Night"/"Light" and "Research
+article" render correctly, `/id/pencapaian` unchanged ("Artikel penelitian").
