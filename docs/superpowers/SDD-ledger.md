@@ -626,3 +626,95 @@ Phase 5 decision); the test and the assets retire together then.
 
 Not merged to `main` yet (`main` = `5a04d66`, Phase 1 only). Phase 4 (Karya + Karya/[slug])
 is next.
+
+---
+
+## Redesign "Personal" — Phase 4 baseline reconciliation (2026-09-11)
+
+The user confirmed Phase 4 was already implemented, committed, tested with TDD and
+reviewed before this continuation. Its implementation commits are `26d5f8d`
+(Karya filters/list) and `0bf8606` (case-study detail). The earlier ledger stopped at
+Phase 3; that omission did not mean Phase 4 needed to be repeated. The new verification
+below includes the inherited work pages. No historical Phase-4 test counts are invented.
+
+## Redesign "Personal" — Phases 5 and 6 (2026-09-11)
+
+Plan: `docs/superpowers/plans/2026-09-11-ruang-kerja-redesign-p5-p6-completion.md`.
+Baseline: `0bf8606`, current branch `Pratametheus/ruang-kerja-code`.
+
+**P5:** Riset now presents the real publication count/card and an in-page PaperStory
+anchor, preserving ScholarlyArticle JSON-LD, the ten-scenario account and localized
+City Courier link. Pencapaian uses the existing search/type/category filters and real
+publication record, with the pending-certificate note. Kontak uses the GitHub/inert-email
+cards and clipboard-only draft form. Links retains the three existing destinations;
+Buku Tamu uses DataEmpty and remains display-only. All five pages use PageHeading and
+SiteFooter. DataEmpty accepts an optional h2 heading for the standalone guestbook empty
+state; its existing callers retain h3. Pencapaian has a labelled section with h2 so both
+results and empty-state headings follow h1 without a skip.
+
+**P6:** `/id/dasbor` and `/en/dashboard` are wired through routing, nav, metadata and
+sitemap (yearly, priority 0.5, localized alternate). GitHub, WakaTime and Monkeytype each
+show three unavailable stat tiles. The contribution calendar has an honest connection
+placeholder; RepoGrid links the three existing case studies. No statistics are fetched
+or fabricated. Nav order is now Beranda, Tentang, Pencapaian, Karya, Riset, Dasbor,
+Kontak, Links, Buku Tamu, matching the locked spec.
+
+**TDD/reviews:** Baseline units 165/165. P5 browser integration initially failed 4/4 on
+the old pages; heading checks then caught h1-to-h3 skips on achievements/guestbook.
+P6 routing/nav/SEO tests initially failed four assertions for the missing dashboard.
+The P6 implementer reached its usage limit after writing files; the controller completed
+and verified the changes, including a next-intl type error fixed by using literal full
+stat keys instead of a template-key cross-product. P5 review identified the English
+clipboard prefix: a real-provider ID/EN unit test reproduced `Dari:` instead of `From:`.
+The prefix is now translated through `contact.form.from` (ID remains `Dari`).
+
+Final static review by gpt-6-astra approved P5/P6 and the clipboard correction with no
+material findings. Production Lighthouse subsequently caught muted-label contrast on
+light `surface-2` (4.38:1) in PublicationCover/SocialCard. Those cards now use the existing
+`surface` token (muted contrast 4.90:1 light / 6.94:1 night; light accent 4.55:1).
+The mobile home link also now includes its visible `ferry.` wordmark in its accessible
+name, verified with a failing-then-passing unit test. Scoped re-review approved these
+fixes without new material findings.
+
+**Cleanup:** Removed confirmed orphan PillarCard, ImageCard, ResearchCard, ContactRow,
+ScrollSpin and its lazy wrapper, exclusive tests, and the two unused hero WebPs. Other
+motion primitives remain per spec section 9; no new effects were added. Retired home keys
+were already absent. README now describes the Personal architecture and routes.
+Automatic approval review rejected recursive deletion of `public/design-preview`
+("blocked by policy"). A reversible move to the ignored local directory
+`.superpowers/personal-design-reference-2026-09-11` succeeded. The reference is preserved
+outside `public` and is absent from the generated Cloudflare assets.
+
+Implementation commits: `231d0bf`, `bb3acc6`, `9b5e535`, `fee3c9a`, `afb2318`, `12ba635`.
+The old deferred cosmetic/component-generalization items remain as previously recorded;
+no certificates, education data, email delivery, guestbook backend or live dashboard
+integration were added.
+
+**Final controller verification on the completed tree:**
+- `npm test`: **160/160**, 44 files. Count decreases from baseline because tests for
+  deleted, unused components/assets were retired; live behavior coverage was retained.
+- `npx tsc --noEmit`: clean, including generated Cloudflare types.
+- `npm run build`: **36 static pages**, no Next build warnings.
+- `npm run cf:typegen` and `npm run cf:check`: pass; OpenNext bundle plus both production
+  and staging Wrangler dry runs succeed. OpenNext prints its existing Windows-support
+  and experimental Node-middleware notices; no deployment was performed.
+- `npm run check:size`: **197.4 / 210.0 KB gzip** for home. An additional scan using
+  the same manifest/chunk-gzip method across every page finds a maximum **202.7 KB**
+  on case-study detail; dashboard is **195.7 KB**. These numbers measure JS only.
+- Full Playwright suite against the final production server: **98/98**, Chromium and
+  Pixel 5 projects (54 seconds). The earlier development-server run also passed 98/98.
+- **48** page/locale/theme/viewport checks: six new page types, ID/EN, night/light,
+  390/1280px; no page or console errors, heading skips, horizontal overflow or broken
+  loaded images. Representative screenshots visually inspected.
+- Native browser clipboard write/read confirms the expected draft. Windows normalizes
+  clipboard line endings to CRLF; the probe compares normalized LF. No message is sent.
+- Lighthouse **13.4.1 Accessibility 100** on `/id`, `/id/karya/city-courier`, `/id/riset`,
+  `/en/achievements`, `/id/kontak`, `/en/links`, `/id/buku-tamu`, `/en/dashboard`, with no
+  failing audits. The initial CLI audit hit Windows temporary-profile cleanup EPERM;
+  rerunning through a controller-owned Chromium/CDP session completed successfully.
+- `public/design-preview` and `.open-next/assets/design-preview` are absent. The source
+  reference is preserved in the ignored archive named above.
+
+P5 and P6 complete. All changes remain on `Pratametheus/ruang-kerja-code`; `main` has not
+been merged or pushed by this continuation. Local QA evidence remains ignored under
+`.superpowers/sdd/2026-09-11-ruang-kerja-redesign-p5-p6-completion/`.

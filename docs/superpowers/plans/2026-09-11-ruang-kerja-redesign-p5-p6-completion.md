@@ -1,5 +1,8 @@
 # Personal redesign — P5 and P6 completion
 
+Status: Completed and verified, 2026-09-11. See `docs/superpowers/SDD-ledger.md` for
+results and the reversible preview-archive decision made during cleanup.
+
 Spec: `docs/superpowers/specs/2026-09-09-ruang-kerja-personal-redesign.md`.
 Baseline: `0bf8606`; P1–P4 accepted as complete by the user.
 

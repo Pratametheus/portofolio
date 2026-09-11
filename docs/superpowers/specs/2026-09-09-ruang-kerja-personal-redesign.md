@@ -1,7 +1,7 @@
 # "Ruang Kerja" — Personal Redesign (Option A)
 
 **Date:** 2026-09-09
-**Status:** Draft for review
+**Status:** Approved; P1–P6 implemented (2026-09-11). Final verification and implementation decisions are recorded in `docs/superpowers/SDD-ledger.md`.
 **Design source:** `public/design-preview/` sandbox (Option A "Personal"), reviewed and
 approved with codex. Screenshots: `public/design-preview/review-*.png`.
 **Supersedes visual rules in:** `docs/superpowers/specs/2026-08-30-ruang-kerja-design.md`
