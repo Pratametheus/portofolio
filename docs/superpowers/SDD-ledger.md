@@ -545,3 +545,67 @@ main→Phase 2 head (14 commits). Found 1 Important + 5 Minor. Fixed in one fix 
 Final numbers after the fix wave: tsc clean · unit **163/163** (46 files) · check:size
 **206.0/210.0 KB**. Phase 2 complete: 12 plan tasks + 1 fix wave, commits `0020be7..b40f2ec`.
 Not yet merged to `main` (`main` = `5a04d66`, Phase 1).
+
+---
+
+## Redesign "Personal" — Phase 3: Beranda + Tentang wired (2026-09-11)
+
+Spec: `docs/superpowers/specs/2026-09-09-ruang-kerja-personal-redesign.md`.
+Plan: `docs/superpowers/plans/2026-09-11-ruang-kerja-redesign-p3-home-about.md`.
+Executed via subagent-driven-development on branch `Pratametheus/ruang-kerja-code`.
+First phase where Phase 2's components are actually wired into a live page.
+
+**Beranda (`/` `/en`):** hello (eyebrow + `<h1>` "Halo, saya Ferry." + 2 intro paragraphs +
+"Sedikit tentang saya →" to `/tentang`) → filterable `SkillList` → "Karya pilihan"
+(`SectionHead` + "Semua karya →" to `/karya`, `WorkCard` grid of the **2 featured** case
+studies — siakad-informatika + city-courier, not mochitoon) → Riset callout (icon +
+eyebrow/headline/summary + "Jelajahi riset →" to `/riset`) → new shared `SiteFooter`.
+Drops the illustrated hero (`ScrollSpin`, `hero/*.webp`), `PillarCard`, `ImageCard`,
+`ContactRow`, `MagneticButton` from the route — **files kept, orphaned**, a Phase 5
+decision per spec §9. `pillar-card.tsx`'s stale pre-Phase-1 WIP edit was discarded (clean
+revert to its last committed state, not built on).
+
+**Tentang (`/tentang` `/en/about`):** `PageHeading` (`<h1>` = `about.title`) → 4 biography
+paragraphs + signoff → Karier (`SectionHead` + `Timeline` fed the real `CAREER` entry) →
+Pendidikan (`SectionHead` + `Timeline` falling to its `DataEmpty` children branch, since
+`EDUCATION` is intentionally empty) → `SkillList` → `SiteFooter`. `generateMetadata`
+untouched.
+
+**New component:** `SiteFooter` (no props, `footer.*` namespace) — the shared page-bottom
+block the spec called for but Phase 2's component list hadn't named; every page from here
+on reuses it.
+
+**Cross-cutting bug found and fixed (pre-review, same task as Beranda):**
+`[locale]/layout.tsx` forwarded only `nav`+`sidebar` to `NextIntlClientProvider` — a
+leftover from before any other client component read its own message namespace.
+`SkillList` (the first client component wired into a real page reading `skills.*`) hit
+`MISSING_MESSAGE` for all of it. Fixed by forwarding the **full** `messages` object
+instead of a curated subset — this also pre-empts the identical bug for Phase 4/5's
+`WorkFilters`, `AchievementFilters`, and `ContactDraftForm`, which are still to be wired.
+Cost: ~10 KB uncompressed JSON added to the RSC/HTML payload per locale — not counted by
+`check-bundle-size.mjs` (JS chunks only), and not a real budget concern.
+
+Also fixed in the same pass: two Playwright locator bugs in `e2e/home.spec.ts` and
+`e2e/motion.spec.ts` (`getByRole('link', {name: 'SIAKAD Informatika'})` without
+`exact: true` substring-matched `WorkCard`'s cover-image alt text as well as its title
+link — Playwright strict-mode violation), and a Tab-count cap bumped from 20 to 30 in the
+keyboard-nav test (`SkillList`'s 6 filter buttons pushed the target link further down the
+tab order).
+
+**i18n:** `home` namespace — 10 keys added (`hello*`, `intro1/2`, `aboutLink`,
+`selectedWorkAll`, `research*`), 12 retired (`eyebrow`, `tagline`, `statement`,
+`pillarsTitle`, `pillars.{build,teach,secure}.{title,body}`, `researchTitle`,
+`contactTitle`, `contactCta`) — grep-gated, confirmed no other consumer before deletion.
+`about` namespace — `body1/2/3` renamed to `biography1/2/3` (values unchanged), plus new
+`biography4` + `signoff`. New `footer` namespace (4 keys). All changes mirrored in both
+`messages/id.json` and `messages/en.json` and in `tests/messages.test.ts` `requiredKeys`.
+
+Final numbers: `tsc --noEmit` clean · unit **165/165** (47 files) · e2e **74/74** ·
+`next build` **34 static pages**, no warnings, no `MISSING_MESSAGE` · `check:size`
+**200.1 / 210.0 KB** (down from Phase 2's unwired 206.0 — the illustrated hero + motion
+primitives it drove from home cost more JS than `SkillList` added). Manually smoke-tested
+`/id`, `/en`, `/id/tentang`, `/en/about` via `next start` — no raw i18n keys leak into the
+rendered HTML.
+
+Not merged to `main` yet (`main` = `5a04d66`, Phase 1 only). Phase 4 (Karya + Karya/[slug])
+is next.
