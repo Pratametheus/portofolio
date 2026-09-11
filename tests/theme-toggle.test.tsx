@@ -1,6 +1,16 @@
-import {describe, expect, it, beforeEach} from 'vitest';
+import {describe, expect, it, beforeEach, vi} from 'vitest';
 import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+vi.mock('next-intl', () => ({
+  useTranslations: () => (k: string) =>
+    ({
+      'sidebar.themeGroupLabel': 'Tema',
+      'sidebar.themeNight': 'Malam',
+      'sidebar.themeLight': 'Terang'
+    })[k] ?? k
+}));
+
 import ThemeToggle, {resolveInitialTheme} from '@/components/theme-toggle';
 
 describe('resolveInitialTheme', () => {

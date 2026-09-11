@@ -1,6 +1,7 @@
 'use client';
 
 import {useEffect, useState} from 'react';
+import {useTranslations} from 'next-intl';
 import {THEMES, THEME_STORAGE_KEY, DEFAULT_THEME, type Theme} from '@/lib/theme';
 
 export function resolveInitialTheme(stored: string | null, prefersLight: boolean): Theme {
@@ -8,12 +9,13 @@ export function resolveInitialTheme(stored: string | null, prefersLight: boolean
   return prefersLight ? 'light' : 'night';
 }
 
-const LABELS: Record<Theme, {id: string}> = {
-  light: {id: 'Terang'},
-  night: {id: 'Malam'}
+const LABEL_KEY: Record<Theme, 'sidebar.themeLight' | 'sidebar.themeNight'> = {
+  light: 'sidebar.themeLight',
+  night: 'sidebar.themeNight'
 };
 
 export default function ThemeToggle() {
+  const t = useTranslations();
   const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function ThemeToggle() {
   }
 
   return (
-    <div role="group" aria-label="Tema" className="inline-flex rounded-lg border border-border p-0.5">
+    <div role="group" aria-label={t('sidebar.themeGroupLabel')} className="inline-flex rounded-lg border border-border p-0.5">
       {THEMES.map((option) => (
         <button
           key={option}
@@ -41,7 +43,7 @@ export default function ThemeToggle() {
           onClick={() => choose(option)}
           className="min-h-6 rounded-md px-2 py-1 font-mono text-xs text-fg-muted transition-colors aria-pressed:bg-surface-2 aria-pressed:text-fg"
         >
-          {LABELS[option].id}
+          {t(LABEL_KEY[option])}
         </button>
       ))}
     </div>

@@ -15,7 +15,11 @@
     "role": "Software Engineer · Guru Informatika",
     "availability": "Terbuka untuk kolaborasi",
     "railNote": "Membangun · Mengajar · Menguji",
-    "footer": "© 2026 Ferry Andhika Pratama"
+    "footer": "© 2026 Ferry Andhika Pratama",
+    "themeGroupLabel": "Tema",
+    "themeNight": "Malam",
+    "themeLight": "Terang",
+    "localeGroupLabel": "Bahasa"
   },
   "home": {
     "helloEyebrow": "SOFTWARE ENGINEER & GURU INFORMATIKA",
@@ -145,6 +149,7 @@
     "reset": "Hapus filter",
     "dataNote": "Sertifikat akan ditampilkan setelah dokumen dan detail penerbitnya ditambahkan.",
     "detailSummary": "Detail publikasi",
+    "coverLabel": "Artikel penelitian",
     "meta": {
       "description": "Garis waktu keluaran yang dapat diperiksa: publikasi JUTIF, materi ajar informatika kelas 4–6, dan SIAKAD Informatika yang aktif dipakai."
     }

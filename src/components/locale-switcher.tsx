@@ -1,6 +1,6 @@
 'use client';
 
-import {useLocale} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import {usePathname, useRouter} from '@/i18n/navigation';
 import {routing} from '@/i18n/routing';
 
@@ -8,9 +8,10 @@ export default function LocaleSwitcher() {
   const active = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const t = useTranslations();
 
   return (
-    <div role="group" aria-label="Bahasa" className="inline-flex rounded-lg border border-border p-0.5">
+    <div role="group" aria-label={t('sidebar.localeGroupLabel')} className="inline-flex rounded-lg border border-border p-0.5">
       {routing.locales.map((locale) => (
         <button
           key={locale}

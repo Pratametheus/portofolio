@@ -7,7 +7,10 @@ vi.mock('@/i18n/navigation', () => ({
   usePathname: () => '/karya',
   useRouter: () => ({replace})
 }));
-vi.mock('next-intl', () => ({useLocale: () => 'id'}));
+vi.mock('next-intl', () => ({
+  useLocale: () => 'id',
+  useTranslations: () => (k: string) => ({'sidebar.localeGroupLabel': 'Bahasa'})[k] ?? k
+}));
 
 import LocaleSwitcher from '@/components/locale-switcher';
 

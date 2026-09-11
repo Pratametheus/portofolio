@@ -15,7 +15,11 @@
     "role": "Software Engineer · Computing Teacher",
     "availability": "Open to relevant collaborations",
     "railNote": "Build · Teach · Secure",
-    "footer": "© 2026 Ferry Andhika Pratama"
+    "footer": "© 2026 Ferry Andhika Pratama",
+    "themeGroupLabel": "Theme",
+    "themeNight": "Night",
+    "themeLight": "Light",
+    "localeGroupLabel": "Language"
   },
   "home": {
     "helloEyebrow": "SOFTWARE ENGINEER & COMPUTING TEACHER",
@@ -145,6 +149,7 @@
     "reset": "Clear filters",
     "dataNote": "Certificates will appear once the documents and issuer details are added.",
     "detailSummary": "Publication details",
+    "coverLabel": "Research article",
     "meta": {
       "description": "A working timeline of checkable outputs: the JUTIF publication, a year 4–6 computing curriculum, and SIAKAD Informatika in active use."
     }
