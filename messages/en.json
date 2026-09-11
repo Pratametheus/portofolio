@@ -17,29 +17,17 @@
     "footer": "© 2026 Ferry Andhika Pratama"
   },
   "home": {
-    "eyebrow": "PUBLIC DOSSIER · FA-2026-0830",
-    "tagline": "I build software for work I genuinely do myself.",
-    "statement": "I build software inside the work itself, then improve it because I am usually the first person to feel where it fails.",
-    "pillarsTitle": "Three ways I work",
-    "pillars": {
-      "build": {
-        "title": "Build · Develop systems",
-        "body": "Products used in real working routines."
-      },
-      "teach": {
-        "title": "Teach · Explain and share",
-        "body": "Curricula and tools shaped by the needs of a classroom."
-      },
-      "secure": {
-        "title": "Secure · Test assumptions",
-        "body": "Security experiments documented well enough to publish."
-      }
-    },
+    "helloEyebrow": "SOFTWARE ENGINEER & COMPUTING TEACHER",
+    "helloHeading": "Hi, I'm Ferry",
+    "intro1": "I build software for the work I do myself — from a system for teaching computing, to a writing tool, to application security testing.",
+    "intro2": "I like it when an idea gets used, tested, and then improved based on what actually happens.",
+    "aboutLink": "A little about me",
     "selectedWork": "Selected work",
-    "researchTitle": "Research & publication",
-    "contactTitle": "Have a product, research question, or class worth discussing?",
-    "contactCta": "Start a conversation",
-    "heroAlt": "Illustration: a figure at a terminal ringed by slowly rotating cryptographic keys"
+    "selectedWorkAll": "All work",
+    "researchEyebrow": "PUBLICATION · JUTIF · 2026",
+    "researchHeadline": "Security that's tested, not assumed.",
+    "researchSummary": "A web application vulnerability analysis using black box testing. Ten test scenarios, recorded in a SINTA 2 publication.",
+    "researchLink": "Explore the research"
   },
   "work": {
     "title": "Work that is used, tested, or still evolving",

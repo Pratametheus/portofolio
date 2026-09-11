@@ -1,15 +1,13 @@
-import Image from 'next/image';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
-import {ContactRow} from '@/components/contact-row';
-import {ImageCard} from '@/components/image-card';
-import {PillarCard} from '@/components/pillar-card';
-import {ResearchCard} from '@/components/research-card';
+import {Link} from '@/i18n/navigation';
 import {Reveal, Stagger} from '@/components/motion/reveal';
-import {ScrollSpin} from '@/components/motion/scroll-spin.lazy';
-import {MagneticButton} from '@/components/motion/magnetic-button.lazy';
-import {getPathname} from '@/i18n/navigation';
+import {SectionHead} from '@/components/section-head';
+import {SkillList} from '@/components/skill-list';
+import {WorkCard} from '@/components/work-card';
+import {SiteFooter} from '@/components/site-footer';
+import {Icon} from '@/components/icon';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies} from '@/lib/content';
 
@@ -21,126 +19,85 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
   const locale = requested;
   setRequestLocale(locale);
 
-  const [t, sidebar, contact] = await Promise.all([
-    getTranslations({locale, namespace: 'home'}),
-    getTranslations({locale, namespace: 'sidebar'}),
-    getTranslations({locale, namespace: 'contact'})
-  ]);
-  const caseStudies = getAllCaseStudies(locale);
-  const contactHref = getPathname({locale, href: '/kontak'});
+  const t = await getTranslations({locale, namespace: 'home'});
+  const featured = getAllCaseStudies(locale).filter((cs) => cs.featured);
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-20 lg:px-12">
-      <header className="grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,420px)]">
-        <Stagger className="max-w-2xl">
-          <Reveal>
-            <p className="font-mono text-xs tracking-widest text-accent">{t('eyebrow')}</p>
-          </Reveal>
-          <Reveal>
-            <h1 className="mt-6 font-display text-5xl leading-tight text-fg sm:text-6xl">
-              Ferry Andhika Pratama
-            </h1>
-          </Reveal>
-          <Reveal>
-            <p className="mt-4 font-mono text-sm text-accent">{sidebar('role')}</p>
-          </Reveal>
-          <Reveal>
-            <p className="mt-8 text-2xl leading-9 text-fg">{t('tagline')}</p>
-          </Reveal>
-          <Reveal>
-            <p className="mt-4 leading-7 text-fg-muted">{t('statement')}</p>
-          </Reveal>
-        </Stagger>
-        <figure className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-surface">
-          <ScrollSpin className="absolute inset-0">
-            <Image
-              data-hero="night"
-              src="/hero/operator-night.webp"
-              alt={t('heroAlt')}
-              fill
-              sizes="(min-width:1024px) 420px, 100vw"
-              priority
-              className="object-cover object-[center_20%]"
-            />
-            <Image
-              data-hero="light"
-              src="/hero/operator-light.webp"
-              alt={t('heroAlt')}
-              fill
-              sizes="(min-width:1024px) 420px, 100vw"
-              priority
-              className="object-cover object-[center_22%]"
-            />
-          </ScrollSpin>
-        </figure>
-      </header>
-
-      <section aria-labelledby="pillars-heading" className="mt-20">
+    <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
+      <section>
         <Reveal>
-          <h2 id="pillars-heading" className="font-display text-3xl text-fg">
-            {t('pillarsTitle')}
-          </h2>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-fg-muted">
+            {t('helloEyebrow')}
+          </p>
         </Reveal>
-        <Stagger className="mt-8 grid gap-5 md:grid-cols-3">
+        <Reveal>
+          <h1 className="mt-3 font-display text-[34px] font-semibold leading-tight tracking-tight text-fg">
+            {t('helloHeading')}
+            <span className="text-accent">.</span>
+          </h1>
+        </Reveal>
+        <Stagger className="mt-5 max-w-xl space-y-3 text-sm leading-8 text-fg-muted">
           <Reveal>
-            <PillarCard icon="build" title={t('pillars.build.title')} body={t('pillars.build.body')} />
+            <p>{t('intro1')}</p>
           </Reveal>
           <Reveal>
-            <PillarCard icon="teach" title={t('pillars.teach.title')} body={t('pillars.teach.body')} />
-          </Reveal>
-          <Reveal>
-            <PillarCard icon="secure" title={t('pillars.secure.title')} body={t('pillars.secure.body')} />
+            <p>{t('intro2')}</p>
           </Reveal>
         </Stagger>
+        <Reveal>
+          <Link
+            href="/tentang"
+            className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-fg"
+          >
+            {t('aboutLink')} <span aria-hidden="true">→</span>
+          </Link>
+        </Reveal>
       </section>
 
-      <section aria-labelledby="selected-work-heading" className="mt-20">
-        <Reveal>
-          <h2 id="selected-work-heading" className="font-display text-3xl text-fg">
-            {t('selectedWork')}
-          </h2>
-        </Reveal>
-        <Stagger className="mt-8 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {caseStudies.map((caseStudy, index) => (
+      <div className="mt-8">
+        <SkillList />
+      </div>
+
+      <section className="mt-8 border-t border-border pt-8">
+        <SectionHead
+          title={t('selectedWork')}
+          aside={
+            <Link href="/karya" className="text-xs text-accent hover:text-fg">
+              {t('selectedWorkAll')} <span aria-hidden="true">→</span>
+            </Link>
+          }
+        />
+        <Stagger className="mt-6 grid gap-6 sm:grid-cols-2">
+          {featured.map((caseStudy) => (
             <Reveal key={caseStudy.slug}>
-              <ImageCard caseStudy={caseStudy} locale={locale} priority={index === 0} />
+              <WorkCard caseStudy={caseStudy} locale={locale} />
             </Reveal>
           ))}
         </Stagger>
       </section>
 
-      <section aria-labelledby="research-heading" className="mt-20">
-        <Reveal>
-          <h2 id="research-heading" className="font-display text-3xl text-fg">
-            {t('researchTitle')}
-          </h2>
-          <div className="mt-8">
-            <ResearchCard locale={locale} />
+      <Reveal>
+        <section className="mt-8 flex gap-5 border-t border-border pt-8">
+          <div className="mt-1 grid size-10 shrink-0 place-items-center rounded-xl border border-border text-accent">
+            <Icon name="research" className="size-5" />
           </div>
-        </Reveal>
-      </section>
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-fg-muted">
+              {t('researchEyebrow')}
+            </span>
+            <h2 className="mt-2 font-display text-[19px] text-fg">{t('researchHeadline')}</h2>
+            <p className="mt-2 max-w-lg text-sm leading-7 text-fg-muted">{t('researchSummary')}</p>
+            <Link
+              href="/riset"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm text-accent transition-colors hover:text-fg"
+            >
+              {t('researchLink')} <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </section>
+      </Reveal>
 
-      <section aria-labelledby="contact-heading" className="mt-20">
-        <Reveal>
-          <h2 id="contact-heading" className="max-w-3xl font-display text-3xl text-fg">
-            {t('contactTitle')}
-          </h2>
-          <div className="mt-8 rounded-xl border border-border bg-surface px-6">
-            <ContactRow label={contact('emailLabel')} value={contact('emailValue')} />
-            <ContactRow
-              label={contact('githubLabel')}
-              value={contact('githubValue')}
-              href="https://github.com/Pratametheus"
-            />
-          </div>
-          <MagneticButton
-            href={contactHref}
-            className="mt-6 inline-flex min-h-11 items-center rounded-lg bg-accent px-5 font-medium text-on-accent"
-          >
-            {t('contactCta')}
-          </MagneticButton>
-        </Reveal>
-      </section>
+      <SiteFooter />
     </main>
   );
 }

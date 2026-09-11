@@ -17,29 +17,17 @@
     "footer": "© 2026 Ferry Andhika Pratama"
   },
   "home": {
-    "eyebrow": "PUBLIC DOSSIER · FA-2026-0830",
-    "tagline": "Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri.",
-    "statement": "Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri — lalu memperbaikinya karena sayalah yang pertama merasakan kalau ada yang salah.",
-    "pillarsTitle": "Tiga cara saya bekerja",
-    "pillars": {
-      "build": {
-        "title": "Build · Mengembangkan sistem",
-        "body": "Produk yang dipakai dalam pekerjaan nyata."
-      },
-      "teach": {
-        "title": "Teach · Mengajar & berbagi",
-        "body": "Materi dan sistem yang tumbuh dari kebutuhan kelas."
-      },
-      "secure": {
-        "title": "Secure · Menguji keamanan",
-        "body": "Eksperimen yang dicatat dan diterbitkan."
-      }
-    },
+    "helloEyebrow": "SOFTWARE ENGINEER & GURU INFORMATIKA",
+    "helloHeading": "Halo, saya Ferry",
+    "intro1": "Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri. Dari sistem untuk mengajar informatika, alat menulis cerita, sampai pengujian keamanan aplikasi.",
+    "intro2": "Saya senang ketika sebuah ide bisa dipakai, diuji, lalu diperbaiki berdasarkan apa yang benar-benar terjadi.",
+    "aboutLink": "Sedikit tentang saya",
     "selectedWork": "Karya terpilih",
-    "researchTitle": "Riset & publikasi",
-    "contactTitle": "Ada proyek, riset, atau kelas yang ingin dibicarakan?",
-    "contactCta": "Hubungi saya",
-    "heroAlt": "Ilustrasi: sosok di depan terminal dengan cincin kunci kriptografis yang berputar"
+    "selectedWorkAll": "Semua karya",
+    "researchEyebrow": "PUBLIKASI · JUTIF · 2026",
+    "researchHeadline": "Keamanan yang diuji, bukan diasumsikan.",
+    "researchSummary": "Analisis kerentanan aplikasi web dengan metode black box testing. Sepuluh skenario pengujian, dicatat dalam publikasi SINTA 2.",
+    "researchLink": "Jelajahi riset"
   },
   "work": {
     "title": "Karya yang dipakai, diuji, atau terus dikerjakan",

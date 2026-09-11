@@ -1,10 +1,6 @@
 import {expect, test} from '@playwright/test';
 
 test.describe('deteksi bahasa peramban di akar', () => {
-  // Each case opens its own browser context (not the shared `page` fixture)
-  // so per-locale state can never leak between cases. `localeCookie` is
-  // disabled in routing config, so `/` detects locale from Accept-Language.
-
   test('peramban berbahasa Indonesia dialihkan ke /id', async ({browser}) => {
     const context = await browser.newContext({locale: 'id-ID'});
     const page = await context.newPage();
@@ -32,41 +28,29 @@ test.describe('deteksi bahasa peramban di akar', () => {
 
 test('judul utama terlihat', async ({page}) => {
   await page.goto('/id');
-  await expect(page.getByRole('heading', {level: 1})).toHaveText('Ferry Andhika Pratama');
+  await expect(page.getByRole('heading', {level: 1})).toContainText('Halo, saya Ferry');
 });
 
-test('halaman Indonesia menampilkan tagline Indonesia', async ({page}) => {
+test('halaman Indonesia menampilkan intro Indonesia', async ({page}) => {
   await page.goto('/id');
-  await expect(
-    page.getByText('Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri.', {
-      exact: true
-    })
-  ).toBeVisible();
+  await expect(page.getByText('Saya membangun perangkat lunak untuk pekerjaan yang saya jalani sendiri.', {exact: false})).toBeVisible();
 });
 
-test('halaman Inggris menampilkan tagline Inggris', async ({page}) => {
+test('halaman Inggris menampilkan intro Inggris', async ({page}) => {
   await page.goto('/en');
-  await expect(
-    page.getByText('I build software for work I genuinely do myself.', {exact: true})
-  ).toBeVisible();
+  await expect(page.getByText('I build software for the work I do myself', {exact: false})).toBeVisible();
 });
 
-test('ketiga studi kasus tampil di beranda', async ({page}) => {
+test('dua karya pilihan tampil di beranda, dengan tautan ke semua karya', async ({page}) => {
   await page.goto('/id');
-  for (const title of ['SIAKAD Informatika', 'City Courier', 'MochiToon']) {
-    await expect(page.getByRole('link', {name: title})).toBeVisible();
-  }
+  await expect(page.getByRole('link', {name: 'SIAKAD Informatika'})).toBeVisible();
+  await expect(page.getByRole('link', {name: 'City Courier'})).toBeVisible();
+  await expect(page.getByRole('link', {name: /Semua karya/})).toHaveAttribute('href', '/id/karya');
 });
 
-test('ketiga pilar kerja tampil di beranda', async ({page}) => {
+test('keahlian berfilter tampil di beranda', async ({page}) => {
   await page.goto('/id');
-  for (const title of [
-    'Build · Mengembangkan sistem',
-    'Teach · Mengajar & berbagi',
-    'Secure · Menguji keamanan'
-  ]) {
-    await expect(page.getByRole('heading', {name: title})).toBeVisible();
-  }
+  await expect(page.getByRole('group', {name: /Filter kategori keahlian/})).toBeVisible();
 });
 
 test('navigasi keyboard menjangkau kartu pertama dengan focus yang terlihat', async ({page}) => {
@@ -112,17 +96,7 @@ test.describe('kelengkapan aksesibilitas per halaman', () => {
 });
 
 test.describe('halaman 404', () => {
-  // Tidak ada route bertingkat di bawah /[locale] hari ini (mis. work/[slug]),
-  // jadi setiap URL yang tak cocok -- baik prefiks locale-nya valid
-  // (/id/rute-tidak-ada) maupun tidak (/xx, atau tanpa prefiks sama sekali)
-  // -- ditangani oleh app/global-not-found.tsx, bukan
-  // [locale]/not-found.tsx. Yang penting diperiksa di sini persis apa yang
-  // rusak sebelumnya: <html> tanpa lang dan tanpa <title>.
-  for (const path of [
-    '/id/rute-tidak-ada',
-    '/xx',
-    '/tidak/ada/rute/seperti/ini'
-  ]) {
+  for (const path of ['/id/rute-tidak-ada', '/xx', '/tidak/ada/rute/seperti/ini']) {
     test(`${path} menghasilkan 404 dengan <html lang> dan <title>`, async ({page}) => {
       const response = await page.goto(path);
       expect(response?.status()).toBe(404);
