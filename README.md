@@ -15,10 +15,10 @@ and publishing security research.
   before first paint by a tiny inline script (`src/lib/theme.ts`).
 - **Motion** (`motion`, framer-motion v13) — the only animation library. Imported
   *only* by the shared primitives in `src/components/motion/` (`Reveal`, `Stagger`,
-  `Counter`, `GlareCard`, `MagneticButton`, `Noise`, `ScrollSpin`, `ParallaxY`);
+  `Counter`, `GlareCard`, `MagneticButton`, `Noise`, `ParallaxY`);
   pages compose those, never `motion` directly. Every effect is SSR-safe (content
   renders and is visible with no JS) and no-ops under `prefers-reduced-motion`.
-  Below-the-fold islands (`ScrollSpin`, `Counter`, `MagneticButton`, `ParallaxY`)
+  Below-the-fold islands (`Counter`, `MagneticButton`, `ParallaxY`)
   are `next/dynamic({ssr:false})` to keep `motion` out of the initial bundle.
 - **Vitest** + **Testing Library** — unit tests
 - **Playwright** — end-to-end tests
@@ -52,7 +52,7 @@ prefixed.
 
 | `id` | `en` | Page |
 |---|---|---|
-| `/id` | `/en` | Beranda / Home — hero, three pillars, selected work, research, contact |
+| `/id` | `/en` | Beranda / Home — introduction, filterable skills, selected work, research, contact |
 | `/id/tentang` | `/en/about` | About |
 | `/id/karya` | `/en/work` | Work list |
 | `/id/karya/[slug]` | `/en/work/[slug]` | Case study (8-part, `Article` JSON-LD) |
@@ -72,14 +72,14 @@ locale-independent so links survive a language switch.
 | `src/app/[locale]/` | Localised route segments; `layout.tsx` is the themed shell (sidebar grid + no-flash script) |
 | `src/app/globals.css` | Two-theme token sets + `@theme inline` map |
 | `src/lib/theme.ts` | Theme constants + the pre-paint init script |
-| `src/components/` | `Sidebar` (rail + mobile drawer), `Nav`/`NavItem`, `ThemeToggle`, `LocaleSwitcher`, `ImageCard`, `CaseStudyBody`, `PillarCard`, `ResearchCard`, `ContactRow`, `Icon` |
+| `src/components/` | Profile rail and navigation, theme/locale controls, page and section headings, skills, work cards and filters, case-study body, publication and contact components |
 | `src/components/motion/` | The only place `motion` is imported. SSR-safe, reduced-motion-aware primitives + their `.lazy.tsx` (`next/dynamic`) wrappers; `src/lib/motion.ts` holds the shared easing / duration / travel vocabulary |
 | `src/content/case-studies/` | Case-study content as typed data, one file per project, both locales (not Markdown) |
 | `src/lib/` | Content access, JSON-LD builders, site constants |
 | `src/i18n/` | next-intl routing (`pathnames` map), navigation, message loading |
 | `messages/{id,en}.json` | UI copy; `tests/messages.test.ts` enforces key parity |
 | `scripts/check-bundle-size.mjs` | Initial-JS gzip budget check |
-| `public/hero/`, `public/karya/` | Optimised WebP art (hero illustration, case-study thumbnails) |
+| `public/karya/`, `public/tech/` | Optimised case-study WebP thumbnails and brand SVG badges |
 | `docs/spec/` | Phase specs (copy, architecture) |
 | `docs/superpowers/` | Design spec, implementation plans, decision ledger, QA notes |
 
