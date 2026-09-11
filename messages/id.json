@@ -155,6 +155,12 @@
     "notConnected": "Belum terhubung",
     "statValueLabel": "Belum tersedia"
   },
+  "footer": {
+    "title": "Ada yang ingin dikerjakan bersama?",
+    "description": "Produk, kelas, atau riset. Mulai dari konteksnya.",
+    "githubCta": "Temui saya di GitHub",
+    "copyright": "© 2026 Ferry Andhika Pratama"
+  },
   "guestbook": {
     "title": "Catatan singkat dari orang yang pernah melihat atau memakai karya",
     "empty": "Belum ada pesan yang ditampilkan. Buku tamu akan dibuka pada fase berikutnya.",

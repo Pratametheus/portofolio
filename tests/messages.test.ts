@@ -91,6 +91,7 @@ describe('kelengkapan terjemahan', () => {
       'achievements.empty.title', 'achievements.empty.body', 'achievements.reset',
       'achievements.dataNote', 'achievements.detailSummary',
       'dashboard.notConnected', 'dashboard.statValueLabel',
+      'footer.title', 'footer.description', 'footer.githubCta', 'footer.copyright',
       'contact.connectTitle', 'contact.github.title', 'contact.github.body', 'contact.github.cta',
       'contact.email.title', 'contact.email.body', 'contact.email.status',
       'contact.form.prepareTitle', 'contact.form.note', 'contact.form.name', 'contact.form.email',

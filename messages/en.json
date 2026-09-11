@@ -155,6 +155,12 @@
     "notConnected": "Not connected",
     "statValueLabel": "Not available"
   },
+  "footer": {
+    "title": "Got something to work on together?",
+    "description": "A product, a class, or research. Start from the context.",
+    "githubCta": "Find me on GitHub",
+    "copyright": "© 2026 Ferry Andhika Pratama"
+  },
   "guestbook": {
     "title": "Notes from people who have seen or used the work",
     "empty": "There are no public notes yet. Guestbook submissions will open in a later phase.",
