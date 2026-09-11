@@ -1,5 +1,3 @@
-'use server';
-
 import {redirect} from 'next/navigation';
 import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {
@@ -64,6 +62,7 @@ export async function createCareerEntryAction(
   kind: CareerKind,
   formData: FormData
 ): Promise<void> {
+  'use server';
   const input = parseCareerEntryForm(formData, kind);
   const {env} = await getCloudflareContext({async: true});
   await createCareerEntry(env.DB, input);
@@ -75,6 +74,7 @@ export async function updateCareerEntryAction(
   kind: CareerKind,
   formData: FormData
 ): Promise<void> {
+  'use server';
   const input = parseCareerEntryForm(formData, kind);
   const {env} = await getCloudflareContext({async: true});
   await updateCareerEntry(env.DB, id, input);
@@ -82,12 +82,14 @@ export async function updateCareerEntryAction(
 }
 
 export async function softDeleteCareerEntryAction(kind: CareerKind, id: number): Promise<void> {
+  'use server';
   const {env} = await getCloudflareContext({async: true});
   await softDeleteCareerEntry(env.DB, id);
   redirect(listPathFor(kind));
 }
 
 export async function undoCareerEntryEditAction(kind: CareerKind, id: number): Promise<void> {
+  'use server';
   const {env} = await getCloudflareContext({async: true});
   await undoLastCareerEdit(env.DB, id);
   redirect(listPathFor(kind));
