@@ -14,6 +14,14 @@
   "services": [
     {"binding": "WORKER_SELF_REFERENCE", "service": "portofolio"}
   ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portofolio-admin",
+      "database_id": "4f00d5bf-9188-4382-b089-b19b3c5fbc7e",
+      "migrations_dir": "migrations"
+    }
+  ],
   "observability": {"enabled": true},
   "env": {
     "staging": {
@@ -25,6 +33,14 @@
       "images": {"binding": "IMAGES"},
       "services": [
         {"binding": "WORKER_SELF_REFERENCE", "service": "portofolio-staging"}
+      ],
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "portofolio-admin-staging",
+          "database_id": "e30d0675-3529-49c0-9f7d-cf32ad9822e9",
+          "migrations_dir": "migrations"
+        }
       ]
     }
   }
