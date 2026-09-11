@@ -603,9 +603,26 @@ tab order).
 Final numbers: `tsc --noEmit` clean · unit **165/165** (47 files) · e2e **74/74** ·
 `next build` **34 static pages**, no warnings, no `MISSING_MESSAGE` · `check:size`
 **200.1 / 210.0 KB** (down from Phase 2's unwired 206.0 — the illustrated hero + motion
-primitives it drove from home cost more JS than `SkillList` added). Manually smoke-tested
-`/id`, `/en`, `/id/tentang`, `/en/about` via `next start` — no raw i18n keys leak into the
-rendered HTML.
+primitives it drove from home cost more JS than `SkillList` added). That figure counts JS
+chunks only — the full-messages fix above adds ~10.6 KB **uncompressed** to the RSC/HTML
+payload of all 34 pages, which `check-bundle-size.mjs` does not measure; not a budget
+violation, but the 200.1 KB number is JS-only, not the whole page-weight picture.
+Manually smoke-tested `/id`, `/en`, `/id/tentang`, `/en/about` via `next start` — no raw
+i18n keys leak into the rendered HTML.
+
+**e2e coverage vs. spec §11's suggested Phase 3 list:** the skill-filter-switches-groups
+and about-page career-card-expand checks are covered by unit tests
+(`skill-list.test.tsx`, `career-card.test.tsx`), not e2e — `e2e/home.spec.ts` only
+asserts the filter *group is visible*, and `/tentang`/`/en/about` have no dedicated e2e
+beyond `routes.spec.ts`'s generic single-`<h1>` check. An acceptable substitution (the
+unit coverage is real and non-vacuous), but noted here explicitly rather than left to
+look like full e2e parity with the spec's list.
+
+Final whole-branch review (opus, scoped to this phase's 6 commits): clean, no
+Critical/Important findings. One Minor deferred: `tests/assets.test.ts` still pins
+`public/hero/operator-{night,light}.webp` (45.6 KB) as required even though no page
+imports them anymore — left in place per spec §9 (ScrollSpin/hero disposition is a
+Phase 5 decision); the test and the assets retire together then.
 
 Not merged to `main` yet (`main` = `5a04d66`, Phase 1 only). Phase 4 (Karya + Karya/[slug])
 is next.
