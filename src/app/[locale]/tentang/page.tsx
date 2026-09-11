@@ -3,8 +3,15 @@ import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {Reveal, Stagger} from '@/components/motion/reveal';
-import {routing} from '@/i18n/routing';
+import {PageHeading} from '@/components/page-heading';
+import {SectionHead} from '@/components/section-head';
+import {Timeline} from '@/components/career-card';
+import {DataEmpty} from '@/components/data-empty';
+import {SkillList} from '@/components/skill-list';
+import {SiteFooter} from '@/components/site-footer';
+import {routing, type Locale} from '@/i18n/routing';
 import {pageMetadata} from '@/lib/page-metadata';
+import {CAREER, EDUCATION} from '@/content/career';
 
 export async function generateMetadata({
   params
@@ -28,24 +35,58 @@ export async function generateMetadata({
 export default async function AboutPage({params}: {params: Promise<{locale: string}>}) {
   const {locale: requested} = await params;
   if (!hasLocale(routing.locales, requested)) notFound();
-  const locale = requested;
+  const locale = requested as Locale;
   setRequestLocale(locale);
   const t = await getTranslations({locale, namespace: 'about'});
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-20 lg:px-12">
-      <h1 className="font-display text-5xl text-fg">{t('title')}</h1>
-      <Stagger className="mt-10 space-y-6 text-lg leading-8 text-fg-muted">
+    <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
+      <PageHeading title={t('title')} description={t('biography1')} />
+
+      <Stagger className="max-w-2xl space-y-5 text-sm leading-8 text-fg-muted">
         <Reveal>
-          <p>{t('body1')}</p>
+          <p>{t('biography2')}</p>
         </Reveal>
         <Reveal>
-          <p>{t('body2')}</p>
+          <p>{t('biography3')}</p>
         </Reveal>
         <Reveal>
-          <p>{t('body3')}</p>
+          <p>{t('biography4')}</p>
+        </Reveal>
+        <Reveal>
+          <p className="text-fg-muted">
+            {t('signoff')}
+            <br />
+            <strong className="text-accent">Ferry Andhika Pratama</strong>
+          </p>
         </Reveal>
       </Stagger>
+
+      <section className="mt-8 border-t border-border pt-8">
+        <SectionHead icon="work" title={t('career.title')} description={t('career.description')} />
+        <div className="mt-6">
+          <Timeline entries={CAREER[locale]} />
+        </div>
+      </section>
+
+      <section className="mt-8 border-t border-border pt-8">
+        <SectionHead icon="teach" title={t('education.title')} description={t('education.description')} />
+        <div className="mt-6">
+          <Timeline entries={EDUCATION[locale]}>
+            <DataEmpty
+              icon="teach"
+              title={t('education.emptyTitle')}
+              description={t('education.emptyBody')}
+            />
+          </Timeline>
+        </div>
+      </section>
+
+      <div className="mt-8 border-t border-border pt-8">
+        <SkillList />
+      </div>
+
+      <SiteFooter />
     </main>
   );
 }

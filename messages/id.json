@@ -61,9 +61,11 @@
   },
   "about": {
     "title": "Pekerjaan yang membentuk cara saya membangun",
-    "body1": "Saya bekerja di persimpangan pengembangan perangkat lunak, kegiatan belajar-mengajar, dan riset keamanan aplikasi. Halaman ini menjelaskan konteksnya tanpa melebihkan peran.",
-    "body2": "Saya membangun aplikasi web dan mobile yang digunakan dalam alur kerja nyata, lalu mengajar kelas 4–6 dengan materi yang dapat berjalan dalam keterbatasan sekolah.",
-    "body3": "Saya juga menguji autentikasi, mencatat asumsi dan keterbatasan, serta menerbitkan temuan yang bisa diperiksa.",
+    "biography1": "Saya bekerja di persimpangan pengembangan perangkat lunak, kegiatan belajar-mengajar, dan riset keamanan aplikasi. Halaman ini menjelaskan konteksnya tanpa melebihkan peran.",
+    "biography2": "Saya membangun aplikasi web dan mobile yang digunakan dalam alur kerja nyata, lalu mengajar kelas 4–6 dengan materi yang dapat berjalan dalam keterbatasan sekolah.",
+    "biography3": "Saya juga menguji autentikasi, mencatat asumsi dan keterbatasan, serta menerbitkan temuan yang bisa diperiksa.",
+    "biography4": "Kalau ada hal yang bisa dikerjakan bersama — produk, kelas, atau riset — mulai dari konteksnya.",
+    "signoff": "Salam hangat,",
     "meta": {
       "description": "Konteks pekerjaan Ferry Andhika Pratama di persimpangan pengembangan perangkat lunak, mengajar, dan riset keamanan aplikasi."
     },

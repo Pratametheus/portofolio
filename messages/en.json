@@ -61,9 +61,11 @@
   },
   "about": {
     "title": "The work that shaped how I build",
-    "body1": "My work sits where software development, classroom teaching, and application-security research overlap. This page gives that context without inflating the role I played.",
-    "body2": "I build web and mobile tools that enter real workflows, and I teach years 4–6 with material designed for the constraints of a school environment.",
-    "body3": "I also test authentication systems, document their assumptions and limitations, and publish findings that other people can inspect.",
+    "biography1": "My work sits where software development, classroom teaching, and application-security research overlap. This page gives that context without inflating the role I played.",
+    "biography2": "I build web and mobile tools that enter real workflows, and I teach years 4–6 with material designed for the constraints of a school environment.",
+    "biography3": "I also test authentication systems, document their assumptions and limitations, and publish findings that other people can inspect.",
+    "biography4": "If there's something we could work on together — a product, a class, or research — start from the context.",
+    "signoff": "Warm regards,",
     "meta": {
       "description": "Context for Ferry Andhika Pratama's work across software development, classroom teaching, and application-security research."
     },
