@@ -93,12 +93,21 @@
   },
   "research": {
     "title": "Pengujian keamanan yang dicatat dan diterbitkan",
+    "count": "{n} publikasi",
+    "listCardCta": "Lihat penelitian",
     "paper": {
       "title": "Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing",
       "meta": "JUTIF · Vol 7 No 2 (2026) · hal. 1834–1852 · SINTA 2",
       "summary": "Pengujian dilakukan dari sudut pandang perilaku sistem dan permukaan serangan yang dapat diamati. Sepuluh skenario diuji dan hasilnya dicatat dalam artikel yang dapat diakses melalui DOI.",
       "doiLabel": "Baca artikel melalui DOI",
-      "scenarios": "skenario serangan yang diuji"
+      "scenarios": "skenario serangan yang diuji",
+      "focusTitle": "Fokus penelitian",
+      "focusBody": "Penelitian ini membahas kerentanan keamanan aplikasi web menggunakan metode black box testing. City Courier menjadi konteks pengujian sistem autentikasi yang dibangun sendiri.",
+      "methodTitle": "Metode dan dokumentasi",
+      "methodBody": "Sepuluh skenario pengujian didokumentasikan dalam publikasi. Untuk hasil, rincian metode, dan batasan penelitian, baca naskah pada sumber penerbit.",
+      "pubTitle": "Publikasi",
+      "relatedTitle": "Proyek terkait",
+      "readAtPublisher": "Baca naskah di penerbit ↗"
     },
     "meta": {
       "description": "Analisis kerentanan keamanan aplikasi web dengan metode black box testing, terbit ber-DOI di JUTIF (SINTA 2)."
