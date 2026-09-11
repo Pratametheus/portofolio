@@ -6,8 +6,6 @@ import {caseStudies} from '@/content/case-studies';
 const publicDir = path.resolve(__dirname, '../public');
 
 const REQUIRED = [
-  'hero/operator-night.webp',
-  'hero/operator-light.webp',
   'karya/siakad-informatika.webp',
   'karya/city-courier.webp',
   'karya/mochitoon.webp'
