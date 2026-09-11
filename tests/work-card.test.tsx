@@ -22,7 +22,7 @@ describe('WorkCard', () => {
     const links = screen.getAllByRole('link');
     expect(links.every((a) => a.getAttribute('href') === '/karya/city-courier')).toBe(true);
     expect(screen.getByRole('heading', {level: 3, name: 'City Courier'})).toBeInTheDocument();
-    expect(screen.getByText(/Keamanan · Mobile/)).toBeInTheDocument();
+    expect(screen.getByText(/work\.filters\.category\.keamanan · work\.filters\.type\.mobile/)).toBeInTheDocument();
   });
 
   it('shows the featured label only when featured', () => {

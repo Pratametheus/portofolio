@@ -5,20 +5,21 @@ import {useTranslations} from 'next-intl';
 import type {Achievement} from '@/content/achievements';
 import {AchievementCard} from './achievement-card';
 import {DataEmpty} from './data-empty';
+import {ACHIEVEMENT_TYPE_LABEL_KEY, ACHIEVEMENT_CATEGORY_LABEL_KEY} from '@/lib/taxonomy-labels';
 
 // Explicit key maps — next-intl's typed `t()` rejects template-literal keys,
 // so the option labels are resolved through `as const` lookups instead.
 const TYPE_OPTION_KEY = {
-  '': 'achievements.filters.type.semua',
-  Publikasi: 'achievements.filters.type.publikasi',
-  Sertifikat: 'achievements.filters.type.sertifikat'
+  '': ACHIEVEMENT_TYPE_LABEL_KEY.Semua,
+  Publikasi: ACHIEVEMENT_TYPE_LABEL_KEY.Publikasi,
+  Sertifikat: ACHIEVEMENT_TYPE_LABEL_KEY.Sertifikat
 } as const;
 
 const CATEGORY_OPTION_KEY = {
-  '': 'achievements.filters.category.semua',
-  Keamanan: 'achievements.filters.category.keamanan',
-  Pendidikan: 'achievements.filters.category.pendidikan',
-  Pengembangan: 'achievements.filters.category.pengembangan'
+  '': ACHIEVEMENT_CATEGORY_LABEL_KEY.Semua,
+  Keamanan: ACHIEVEMENT_CATEGORY_LABEL_KEY.Keamanan,
+  Pendidikan: ACHIEVEMENT_CATEGORY_LABEL_KEY.Pendidikan,
+  Pengembangan: ACHIEVEMENT_CATEGORY_LABEL_KEY.Pengembangan
 } as const;
 
 const FIELD_CLASS =

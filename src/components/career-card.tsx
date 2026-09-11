@@ -20,7 +20,7 @@ export function CareerCard({entry}: {entry: CareerEntry}) {
           {`${entry.period} · ${entry.category}`}
         </small>
         <details className="mt-4">
-          <summary className="cursor-pointer text-xs text-fg-muted transition-colors hover:text-accent">
+          <summary className="inline-flex min-h-11 items-center cursor-pointer text-xs text-fg-muted transition-colors hover:text-accent">
             {t('about.career.detailSummary')}
           </summary>
           <p className="mt-3 text-sm leading-7 text-fg-muted">{entry.description}</p>

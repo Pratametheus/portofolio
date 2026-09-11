@@ -1,6 +1,8 @@
 import {useTranslations} from 'next-intl';
 import {getPathname} from '@/i18n/navigation';
 import {PublicationCover} from '@/components/publication-cover';
+import {RecordTags} from './record-tags';
+import {ACHIEVEMENT_TYPE_LABEL_KEY, ACHIEVEMENT_CATEGORY_LABEL_KEY} from '@/lib/taxonomy-labels';
 import type {Achievement} from '@/content/achievements';
 import type {Locale} from '@/content/types';
 
@@ -14,7 +16,7 @@ export function PublicationListCard({item, href}: {item: Achievement; href: stri
       </a>
       <div className="p-6">
         <span className="text-[10px] font-bold uppercase tracking-widest text-fg-muted">
-          {`${item.category} · ${item.type}`}
+          {`${t(ACHIEVEMENT_CATEGORY_LABEL_KEY[item.category])} · ${t(ACHIEVEMENT_TYPE_LABEL_KEY[item.type])}`}
         </span>
         <h3 className="mt-2 font-display text-lg text-fg">
           <a href={href} className="transition-colors hover:text-accent">
@@ -22,14 +24,7 @@ export function PublicationListCard({item, href}: {item: Achievement; href: stri
           </a>
         </h3>
         <p className="mt-2.5 text-sm leading-7 text-fg-muted">{item.description}</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <span className="rounded-full border border-border px-2.5 py-0.5 text-[10px] text-fg-muted">
-            {item.category}
-          </span>
-          <span className="rounded-full border border-border px-2.5 py-0.5 text-[10px] text-fg-muted">
-            SINTA 2
-          </span>
-        </div>
+        <RecordTags tags={[t(ACHIEVEMENT_CATEGORY_LABEL_KEY[item.category]), 'SINTA 2']} />
         <a href={href} className="mt-4 inline-flex items-center gap-1.5 text-xs text-accent">
           {t('research.listCardCta')} <span aria-hidden="true">→</span>
         </a>
@@ -38,7 +33,7 @@ export function PublicationListCard({item, href}: {item: Achievement; href: stri
   );
 }
 
-export function PaperStory({item, locale = 'id'}: {item: Achievement; locale?: Locale}) {
+export function PaperStory({item, locale}: {item: Achievement; locale: Locale}) {
   const t = useTranslations();
   const relatedHref = getPathname({locale, href: {pathname: '/karya/[slug]', params: {slug: 'city-courier'}}});
 

@@ -2,6 +2,7 @@ import {useTranslations} from 'next-intl';
 import {getPathname} from '@/i18n/navigation';
 import {TechBadgeRow} from '@/components/tech-badge-row';
 import {SKILLS} from '@/lib/skills';
+import {WORK_TYPE_LABEL_KEY, WORK_TOPIC_LABEL_KEY} from '@/lib/taxonomy-labels';
 import type {CaseStudy, Locale} from '@/content/types';
 
 export function WorkCard({caseStudy, locale}: {caseStudy: CaseStudy; locale: Locale}) {
@@ -34,7 +35,7 @@ export function WorkCard({caseStudy, locale}: {caseStudy: CaseStudy; locale: Loc
       </a>
       <div className="p-5">
         <span className="text-[10px] font-bold uppercase tracking-widest text-fg-muted">
-          {`${caseStudy.topic} · ${caseStudy.type}`}
+          {`${t(WORK_TOPIC_LABEL_KEY[caseStudy.topic])} · ${t(WORK_TYPE_LABEL_KEY[caseStudy.type])}`}
         </span>
         <h3 className="mt-2 font-display text-lg text-fg">
           <a href={detailHref} className="transition-colors hover:text-accent">
