@@ -32,8 +32,10 @@ the user did not select them for this round.
    Content volume is small (tens of rows), so D1's free tier and edge replication are
    more than sufficient.
 5. **Public pages move from fully static to statically-cached-with-revalidation** for the
-   two routes this touches (Tentang, Pencapaian) only. Every other route — Home, Karya,
-   Riset, Dasbor, Kontak, Links, Buku Tamu, 404 — stays exactly as static as it is today.
+   three routes this touches — Tentang, Pencapaian, **and Riset** (Riset renders
+   `ACHIEVEMENTS[locale][0]` as its featured publication — missed in the first pass of
+   this spec; caught while writing the implementation plan). Every other route — Home,
+   Karya, Dasbor, Kontak, Links, Buku Tamu, 404 — stays exactly as static as it is today.
    This is the path `docs/cloudflare.md` already flagged: *"Before introducing ISR,
    revalidatePath, revalidateTag, or cached server fetches, replace that cache with a
    writable backend."* D1 is that backend.
@@ -160,17 +162,23 @@ admin panel does. Lower sorts first, matching reading order top-to-bottom.
 
 ## 4. Public page changes
 
-`src/app/[locale]/tentang/page.tsx` and `src/app/[locale]/pencapaian/page.tsx` (and their
-data-loading helpers) switch from importing `CAREER`/`EDUCATION`/`ACHIEVEMENTS` from
-`src/content/*.ts` to reading from D1 through a small data-access module
-(`src/lib/repositories/career.ts`, `src/lib/repositories/achievements.ts`), shaped to
-return the exact same TypeScript types the pages already consume — so the page components
-themselves barely change. Every public-facing query filters `WHERE deleted_at IS NULL`
-(see §3's soft-delete mechanics) — a Trashed row never reaches a visitor. Reads use Next's
-`fetch`/data cache semantics so the rendered
-HTML is still edge-cacheable exactly as today, until a write calls `revalidatePath` for
-the four affected URLs (`/id/tentang`, `/en/about`, `/id/pencapaian`,
-`/en/achievements`). Every other route's data loading is untouched.
+`src/app/[locale]/tentang/page.tsx`, `src/app/[locale]/pencapaian/page.tsx`, and
+`src/app/[locale]/riset/page.tsx` (and the four components that import the `Achievement`/
+`CareerEntry` types — `achievement-card.tsx`, `achievement-filters.tsx`,
+`publication-list-card.tsx`, `career-card.tsx`) switch from importing `CAREER`/
+`EDUCATION`/`ACHIEVEMENTS` from `src/content/*.ts` to reading from D1 through a small
+data-access module (`src/lib/repositories/career.ts`,
+`src/lib/repositories/achievements.ts`), shaped to return the exact same TypeScript types
+the pages already consume — so the page components themselves barely change. Riset gets
+one new repository function, `getFeaturedPublication(locale)` (first non-deleted
+`achievements` row where `type = 'Publikasi'`, ordered by `sort_order`) — more precise
+than today's implicit "index 0" assumption, and correct once Sertifikat rows exist too.
+Every public-facing query filters `WHERE deleted_at IS NULL` (see §3's soft-delete
+mechanics) — a Trashed row never reaches a visitor. Reads use Next's `fetch`/data cache
+semantics so the rendered HTML is still edge-cacheable exactly as today, until a write
+calls `revalidatePath` for the six affected URLs (`/id/tentang`, `/en/about`,
+`/id/pencapaian`, `/en/achievements`, `/id/riset`, `/en/research`). Every other route's
+data loading is untouched.
 
 **Free-plan request cost:** this doesn't change how the *static* routes are served, and it
 doesn't make Tentang/Pencapaian hit the Worker on every request either — Cloudflare still
@@ -217,9 +225,9 @@ execute`) inserts the current `CAREER.id[0]` / `CAREER.en[0]` pair as one `caree
 row (`kind='career'`), and the current `ACHIEVEMENTS.id[0]` / `.en[0]` pair as one
 `achievements` row. `EDUCATION` is currently empty both locales, so no education seed row
 exists — the admin panel is how the first one gets added. After the seed is verified
-against the live site (Tentang/Pencapaian render identically to before, from D1 instead of
-the TS files), `src/content/career.ts` and `src/content/achievements.ts` are deleted along
-with their now-unused tests.
+against the live site (Tentang/Pencapaian/Riset render identically to before, from D1
+instead of the TS files), `src/content/career.ts` and `src/content/achievements.ts` are
+deleted along with their now-unused tests.
 
 ## 7. Testing
 
@@ -241,8 +249,8 @@ Matches the project's existing TDD convention:
   suite runs against `next dev`/`next start` where Access isn't present anyway. Manual
   verification against the deployed site substitutes, the same way Lighthouse and the
   Wrangler dry-runs already are controller-verified manually rather than in Playwright.
-- Existing Tentang/Pencapaian Playwright specs keep passing unmodified — the pages' public
-  output contract doesn't change, only where the data comes from.
+- Existing Tentang/Pencapaian/Riset Playwright specs keep passing unmodified — the pages'
+  public output contract doesn't change, only where the data comes from.
 
 ## 8. Open risks / follow-ups (not blocking, noted for the plan)
 
