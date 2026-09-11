@@ -445,3 +445,71 @@ components; lazy-load filters per spec §10 if it tightens).
 Commits: `a2e2f67` (foundation WIP subset) · `3c74ab0` (gitignore sandbox) ·
 `9d4dca9` (token retune) · `ad46cbb` (icons) · `af87dc2` (rail) · `d025cf8` (count + marker) ·
 `71fea6a` (e2e) · `89faffa` (count via server prop).
+
+---
+
+## Redesign "Personal" — Phase 2: Shared Components (2026-09-09/11)
+
+Spec: `docs/superpowers/specs/2026-09-09-ruang-kerja-personal-redesign.md`.
+Plan: `docs/superpowers/plans/2026-09-09-ruang-kerja-redesign-p2-components.md`.
+Executed via subagent-driven-development on branch `Pratametheus/ruang-kerja-code`
+(SDD ledger: `.superpowers/sdd/2026-09-09-ruang-kerja-redesign-p2-components/progress.md`),
+paused mid-run for a checkpoint (2026-09-09→11) and resumed cleanly — nothing drifted.
+
+**Data (T1-T3):** `src/lib/skills.ts` (12 skills, 6 groups incl. "Semua", brand SVGs copied
+from the design-preview sandbox into `public/tech/` — devicon, MIT); `CaseStudy` gains
+`type: 'Web'|'Mobile'` + `topic: 'Pendidikan'|'Keamanan'|'Penulisan'` (siakad→Web/Pendidikan,
+city-courier→Mobile/Keamanan, mochitoon→Web/Penulisan); `src/content/career.ts` (`CAREER` 1
+entry both locales, `EDUCATION` intentionally `{id:[],en:[]}`); `src/content/achievements.ts`
+(`ACHIEVEMENTS`, the existing JUTIF publication, added in T8).
+
+**Components (T4-T11), none wired into pages yet:** `SectionHead`/`PageHeading`/`DataEmpty`
+(primitives) · `TechBadgeRow`/`SkillList` (filterable, client) · `WorkCard`/`WorkFilters`
+(2-axis filter, client) · `CareerCard`/`Timeline` (native `<details>` expand) ·
+`PublicationCover`/`AchievementCard`/`AchievementFilters` (search+2-select, client) ·
+`PublicationListCard`/`PaperStory` · `SocialCard`/`ContactDraftForm` (clipboard-only, never
+sends data — verified by a `fetch` spy) · `DashboardStat`/`ConnectionState`/`RepoGrid` (every
+stat value a literal em dash, no fabricated numbers).
+
+**Process notes:**
+- T5 (`SkillList`) had 1 fix round: filter buttons initially showed raw English group names
+  instead of the `skills.groups.*` translations already added in T1 — fixed via an explicit
+  `GROUP_LABEL_KEY` map (template-literal i18n keys don't type-check in next-intl); re-review
+  confirmed addressed.
+- T6 (`WorkCard`/`WorkFilters`) and T10 (`ContactDraftForm`) each surfaced one implementer
+  environment finding: `@testing-library/user-event@14.6.6`'s `setup()` installs its own
+  `navigator.clipboard` getter, so a test-only clipboard mock must be assigned via
+  `Object.defineProperty(..., {configurable: true})` **after** `setup()`, not `Object.assign`
+  before it. Verified directly against the installed package source; all original assertions
+  preserved.
+- Nav.tsx originally imported `getAllCaseStudies` client-side for the Karya count badge
+  (Phase 1) — pulled the 53 KB case-studies dataset into the client bundle. Fixed in Phase 1
+  by threading the count from the server layout as a prop; carried forward correctly here.
+- T7 dispatched concurrently with T6's read-only review (zero file overlap, T6's implementer
+  already done) — a deliberate coordinator optimisation, no conflicts.
+
+**Deferred minors (none load-bearing, none blocking; noted for the eventual whole-branch
+review or a future pass):**
+- `work-card.tsx` cover hover scrim uses `bg-black/60 text-white` — the only non-theme colour
+  in the diff; a faithful, deliberate port of the sandbox `.cover-action` (legibility-first
+  overlay, correctly theme-independent).
+- `work-filters.tsx`'s two filter rows are near-duplicate JSX; a generic `FilterRow` would
+  DRY it. Optional.
+- `achievement-filters.tsx` search predicate adds `.trim()` beyond the literal spec formula —
+  harmless improvement.
+- `achievement-card.tsx` renders the JUTIF `PublicationCover` + "SINTA 2" tag unconditionally;
+  correct while only one publication exists, but a future `Sertifikat` entry would render the
+  wrong cover — revisit when real certificate data is added (Phase 5+).
+- `contact-draft-form.tsx`'s `<textarea>` lacks the `min-h-11` convention used on the other
+  fields (unlikely a real touch-target issue at `rows={5}`).
+- `social-card.tsx` hardcodes the "GitHub"/"Email" eyebrow labels instead of the pre-existing
+  `contact.githubLabel`/`contact.emailLabel` i18n keys already used on `kontak`/`links` pages.
+
+Final numbers: `tsc --noEmit` clean · unit **162/162** (45 files) · e2e **80/80** (unchanged —
+nothing wired) · `next build` **34 static pages**, no warnings · `check:size` **206.0 / 210.0
+KB** (clean rebuild; unchanged from Phase 1's 206.0 — every new component is currently dead
+code from the bundler's point of view until Phase 3 imports it).
+
+Not merged to `main` yet (Phase 1 is; `main` = `5a04d66`). Branch `Pratametheus/ruang-kerja-code`
+head after Phase 2: see the plan's task list — 11 feature/data commits + this ledger entry.
+Phase 3 (wiring Beranda + Tentang) is next.
