@@ -1,6 +1,6 @@
 import {useTranslations} from 'next-intl';
 import type {ReactNode} from 'react';
-import type {CareerEntry} from '@/content/career';
+import type {CareerEntry} from '@/lib/repositories/career';
 
 export function CareerCard({entry}: {entry: CareerEntry}) {
   const t = useTranslations();

@@ -11,7 +11,10 @@ import {SkillList} from '@/components/skill-list';
 import {SiteFooter} from '@/components/site-footer';
 import {routing, type Locale} from '@/i18n/routing';
 import {pageMetadata} from '@/lib/page-metadata';
-import {CAREER, EDUCATION} from '@/content/career';
+import {getCloudflareContext} from '@opennextjs/cloudflare';
+import {listPublicCareerEntries} from '@/lib/repositories/career';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params
@@ -38,6 +41,11 @@ export default async function AboutPage({params}: {params: Promise<{locale: stri
   const locale = requested as Locale;
   setRequestLocale(locale);
   const t = await getTranslations({locale, namespace: 'about'});
+  const {env} = await getCloudflareContext({async: true});
+  const [career, education] = await Promise.all([
+    listPublicCareerEntries(env.DB, 'career', locale),
+    listPublicCareerEntries(env.DB, 'education', locale)
+  ]);
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
@@ -65,14 +73,14 @@ export default async function AboutPage({params}: {params: Promise<{locale: stri
       <section className="mt-8 border-t border-border pt-8">
         <SectionHead icon="work" title={t('career.title')} description={t('career.description')} />
         <div className="mt-6">
-          <Timeline entries={CAREER[locale]} />
+          <Timeline entries={career} />
         </div>
       </section>
 
       <section className="mt-8 border-t border-border pt-8">
         <SectionHead icon="teach" title={t('education.title')} description={t('education.description')} />
         <div className="mt-6">
-          <Timeline entries={EDUCATION[locale]}>
+          <Timeline entries={education}>
             <DataEmpty
               icon="teach"
               title={t('education.emptyTitle')}

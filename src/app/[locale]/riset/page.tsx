@@ -5,10 +5,13 @@ import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {PageHeading} from '@/components/page-heading';
 import {PaperStory, PublicationListCard} from '@/components/publication-list-card';
 import {SiteFooter} from '@/components/site-footer';
-import {ACHIEVEMENTS} from '@/content/achievements';
 import {routing} from '@/i18n/routing';
 import {buildScholarlyArticleSchema} from '@/lib/jsonld';
 import {pageMetadata} from '@/lib/page-metadata';
+import {getCloudflareContext} from '@opennextjs/cloudflare';
+import {getFeaturedPublication, listPublicAchievements} from '@/lib/repositories/achievements';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params
@@ -35,7 +38,12 @@ export default async function ResearchPage({params}: {params: Promise<{locale: s
   const locale = requested;
   setRequestLocale(locale);
   const t = await getTranslations({locale, namespace: 'research'});
-  const publication = ACHIEVEMENTS[locale][0];
+  const {env} = await getCloudflareContext({async: true});
+  const [publication, achievements] = await Promise.all([
+    getFeaturedPublication(env.DB, locale),
+    listPublicAchievements(env.DB, locale)
+  ]);
+  if (!publication) notFound();
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
@@ -47,7 +55,7 @@ export default async function ResearchPage({params}: {params: Promise<{locale: s
       />
       <PageHeading title={t('title')} description={t('paper.summary')} />
       <section aria-labelledby="publication-count">
-        <h2 id="publication-count" className="mb-4 font-display text-lg text-fg">{t('count', {n: ACHIEVEMENTS[locale].length})}</h2>
+        <h2 id="publication-count" className="mb-4 font-display text-lg text-fg">{t('count', {n: achievements.length})}</h2>
         <PublicationListCard item={publication} href="#paper-story" />
       </section>
       <section id="paper-story" className="mt-10 scroll-mt-8 border-t border-border pt-8">
