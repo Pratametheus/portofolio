@@ -34,7 +34,7 @@ test('research page exposes ScholarlyArticle JSON-LD', async ({page}) => {
 
 test('links page opens every external link safely', async ({page}) => {
   await page.goto('/id/links');
-  const links = page.locator('main a[href^="http"]');
+  const links = page.locator('main ul a[href^="http"]');
 
   await expect(links).toHaveCount(3);
   for (const link of await links.all()) {

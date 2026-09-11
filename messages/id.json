@@ -111,6 +111,7 @@
   },
   "achievements": {
     "title": "Catatan perkembangan dan keluaran yang dapat diperiksa",
+    "listTitle": "Daftar pencapaian",
     "intro": "Pencapaian disajikan sebagai garis waktu pekerjaan—bukan daftar gelar. Yang ditonjolkan adalah keluaran, konteks, dan apa yang berubah setelahnya.",
     "publicationTitle": "Publikasi JUTIF",
     "publicationBody": "Riset keamanan aplikasi web terbit dengan DOI yang dapat dikutip di jurnal terakreditasi SINTA 2.",
@@ -159,6 +160,8 @@
   },
   "guestbook": {
     "title": "Catatan singkat dari orang yang pernah melihat atau memakai karya",
+    "intro": "Ruang untuk catatan publik dari orang yang pernah melihat atau memakai karya saya.",
+    "emptyTitle": "Belum ada catatan publik",
     "empty": "Belum ada pesan yang ditampilkan. Buku tamu akan dibuka pada fase berikutnya.",
     "meta": {
       "description": "Catatan singkat dari orang yang pernah melihat atau memakai karya. Buku tamu dibuka pada fase berikutnya."

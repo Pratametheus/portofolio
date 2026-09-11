@@ -2,8 +2,10 @@ import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
-import {ResearchCard} from '@/components/research-card';
-import {Reveal} from '@/components/motion/reveal';
+import {PageHeading} from '@/components/page-heading';
+import {PaperStory, PublicationListCard} from '@/components/publication-list-card';
+import {SiteFooter} from '@/components/site-footer';
+import {ACHIEVEMENTS} from '@/content/achievements';
 import {routing} from '@/i18n/routing';
 import {buildScholarlyArticleSchema} from '@/lib/jsonld';
 import {pageMetadata} from '@/lib/page-metadata';
@@ -33,18 +35,28 @@ export default async function ResearchPage({params}: {params: Promise<{locale: s
   const locale = requested;
   setRequestLocale(locale);
   const t = await getTranslations({locale, namespace: 'research'});
-  const schema = buildScholarlyArticleSchema();
+  const publication = ACHIEVEMENTS[locale][0];
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-20 lg:px-12">
+    <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{__html: JSON.stringify(schema).replace(/</g, '\\u003c')}}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildScholarlyArticleSchema()).replace(/</g, '\\u003c')
+        }}
       />
-      <h1 className="font-display text-5xl text-fg">{t('title')}</h1>
-      <Reveal className="mt-10 block">
-        <ResearchCard locale={locale} />
-      </Reveal>
+      <PageHeading title={t('title')} description={t('paper.summary')} />
+      <section aria-labelledby="publication-count">
+        <h2 id="publication-count" className="mb-4 font-display text-lg text-fg">{t('count', {n: ACHIEVEMENTS[locale].length})}</h2>
+        <PublicationListCard item={publication} href="#paper-story" />
+      </section>
+      <section id="paper-story" className="mt-10 scroll-mt-8 border-t border-border pt-8">
+        <h2 className="font-display text-2xl text-fg">{t('paper.title')}</h2>
+        <p className="mt-2 text-xs text-fg-muted">{t('paper.meta')}</p>
+        <p className="mt-4 max-w-2xl text-[15px] leading-8 text-fg-muted">{t('paper.summary')}</p>
+        <PaperStory item={publication} locale={locale} />
+      </section>
+      <SiteFooter />
     </main>
   );
 }

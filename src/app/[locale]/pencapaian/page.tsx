@@ -2,7 +2,10 @@ import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
-import {Reveal, Stagger} from '@/components/motion/reveal';
+import {AchievementFilters} from '@/components/achievement-filters';
+import {PageHeading} from '@/components/page-heading';
+import {SiteFooter} from '@/components/site-footer';
+import {ACHIEVEMENTS} from '@/content/achievements';
 import {routing} from '@/i18n/routing';
 import {pageMetadata} from '@/lib/page-metadata';
 
@@ -31,33 +34,16 @@ export default async function AchievementsPage({params}: {params: Promise<{local
   const locale = requested;
   setRequestLocale(locale);
   const t = await getTranslations({locale, namespace: 'achievements'});
-
   return (
-    <main className="mx-auto max-w-5xl px-6 py-20 lg:px-12">
-      <h1 className="font-display text-5xl text-fg">{t('title')}</h1>
-      <Reveal>
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-fg-muted">{t('intro')}</p>
-      </Reveal>
-      <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
-        <Reveal>
-          <article className="rounded-xl border border-border bg-surface p-6">
-            <h2 className="font-display text-xl text-fg">{t('publicationTitle')}</h2>
-            <p className="mt-3 leading-7 text-fg-muted">{t('publicationBody')}</p>
-          </article>
-        </Reveal>
-        <Reveal>
-          <article className="rounded-xl border border-border bg-surface p-6">
-            <h2 className="font-display text-xl text-fg">{t('teachingTitle')}</h2>
-            <p className="mt-3 leading-7 text-fg-muted">{t('teachingBody')}</p>
-          </article>
-        </Reveal>
-        <Reveal>
-          <article className="rounded-xl border border-border bg-surface p-6">
-            <h2 className="font-display text-xl text-fg">{t('productTitle')}</h2>
-            <p className="mt-3 leading-7 text-fg-muted">{t('productBody')}</p>
-          </article>
-        </Reveal>
-      </Stagger>
+    <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
+      <PageHeading title={t('title')} description={t('intro')} />
+      <section aria-labelledby="achievement-list-title">
+        <h2 id="achievement-list-title" className="sr-only">
+          {t('listTitle')}
+        </h2>
+        <AchievementFilters items={ACHIEVEMENTS[locale]} />
+      </section>
+      <SiteFooter />
     </main>
   );
 }

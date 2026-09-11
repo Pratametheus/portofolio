@@ -6,9 +6,9 @@ test('hero copy is visible on load without scrolling', async ({page}) => {
   await expect(page.getByText('Saya membangun perangkat lunak', {exact: false}).first()).toBeVisible();
 });
 
-test('research stat reaches its final value', async ({page}) => {
+test('research story preserves the ten-scenario evidence', async ({page}) => {
   await page.goto('/id/riset');
-  await expect(page.getByText(/^\s*10\s*$/)).toBeVisible({timeout: 4000});
+  await expect(page.getByText(/Sepuluh skenario pengujian/).first()).toBeVisible();
 });
 
 test('selected-work cards are all present and linked', async ({page}) => {
