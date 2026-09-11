@@ -29,6 +29,13 @@ rationale.
 
 ## Global Constraints
 
+- **Every admin page that reads D1 data needs `export const dynamic = 'force-dynamic'`**
+  — not just the 3 public pages. Found the hard way during Task 8: without it, an admin
+  list/edit page is statically prerendered at build time, so a create/edit/delete
+  "succeeds" (writes to D1 correctly) but the admin never sees it reflected until the
+  next full rebuild+deploy. Applies to every page under `src/app/admin/` that calls a
+  repository read function — the list pages and the `[id]` edit pages alike.
+  `src/app/admin/page.tsx` (the plain-links dashboard, no D1 read) is the one exception.
 - Bilingual everywhere: every `career_entries`/`achievements` row has independent
   `_id`/`_en` text columns; every admin form edits both languages together.
 - `achievements.type`/`category` are canonical Indonesian enum values consumed through the
@@ -1877,6 +1884,8 @@ import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {listAdminCareerEntries} from '@/lib/repositories/career';
 import {CareerEntryList} from '@/components/admin/career-entry-list';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminCareerPage() {
   const {env} = await getCloudflareContext({async: true});
   const entries = await listAdminCareerEntries(env.DB, 'career');
@@ -1895,6 +1904,8 @@ import {notFound} from 'next/navigation';
 import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {getAdminCareerEntry} from '@/lib/repositories/career';
 import {CareerEntryForm} from '@/components/admin/career-entry-form';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminCareerEntryPage({
   params
@@ -1922,6 +1933,8 @@ import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {listAdminCareerEntries} from '@/lib/repositories/career';
 import {CareerEntryList} from '@/components/admin/career-entry-list';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminEducationPage() {
   const {env} = await getCloudflareContext({async: true});
   const entries = await listAdminCareerEntries(env.DB, 'education');
@@ -1935,6 +1948,8 @@ import {notFound} from 'next/navigation';
 import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {getAdminCareerEntry} from '@/lib/repositories/career';
 import {CareerEntryForm} from '@/components/admin/career-entry-form';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminEducationEntryPage({
   params
@@ -2276,6 +2291,8 @@ import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {listAdminAchievements} from '@/lib/repositories/achievements';
 import {softDeleteAchievementAction, undoAchievementEditAction} from '@/lib/actions/achievements';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminAchievementsPage() {
   const {env} = await getCloudflareContext({async: true});
   const entries = await listAdminAchievements(env.DB);
@@ -2316,6 +2333,8 @@ import {notFound} from 'next/navigation';
 import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {getAdminAchievement} from '@/lib/repositories/achievements';
 import {AchievementForm} from '@/components/admin/achievement-form';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminAchievementEntryPage({
   params
@@ -2422,6 +2441,8 @@ import {
   restoreAchievementFromTrashAction,
   permanentlyDeleteAchievementAction
 } from '@/lib/actions/trash';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminTrashPage() {
   const {env} = await getCloudflareContext({async: true});
