@@ -743,3 +743,32 @@ Re-verified after the fix: `tsc --noEmit` clean · unit **161/161** (44 files, +
 assertion) · e2e **98/98** · `check:size` unchanged **197.4/210.0 KB** · manual re-check
 of `/en/work/city-courier` and `/en/achievements` confirms "Night"/"Light" and "Research
 article" render correctly, `/id/pencapaian` unchanged ("Artikel penelitian").
+
+`main` fast-forwarded to this branch's head (`669c04e`) and pushed to `origin/main`
+(`5a04d66..669c04e`) — deploy is Cloudflare Git-integrated and auto-published on push;
+confirmed live at `ferryandhikapratama.com` and the `workers.dev` URL immediately after.
+
+---
+
+## Post-merge polish — Phase 2 deferred minors closed (2026-09-11, commit `3520c9e`)
+
+Closed the four cosmetic items Phase 2's final review deferred as non-blocking:
+- `WorkFilters`' two duplicated filter-row blocks extracted into a shared `FilterRow`.
+- `SocialCard` reads `contact.githubLabel`/`emailLabel` instead of hardcoding
+  "GitHub"/"Email" (identical rendered value both locales; now i18n-driven regardless).
+- `SkillList` badges fall back to a "◈" text marker on a broken brand-icon `<img>`,
+  per spec §5's literal ("Broken icon → text fallback ◈").
+- `AchievementCard`'s record-footer year now reads "Terbit {year}" / "Published {year}"
+  instead of a bare number, per spec §5's literal ("record-footer with 'Terbit YYYY'").
+
+Re-verified: `tsc --noEmit` clean · unit **162/162** (+1 new assertion for the icon
+fallback) · e2e **98/98** · `check:size` **197.5/210.0 KB** (+0.1 KB, negligible) ·
+manual check of `/en/work` (filter interaction unchanged), `/en/achievements` ("Published
+2026"), `/id/pencapaian` ("Terbit 2026"), `/en/contact` (GitHub/Email labels unchanged).
+
+Remaining known gaps are all intentional empty-states awaiting real data/integrations,
+not defects: Pendidikan (education history), Sertifikat (certificates beyond the one
+JUTIF publication), Dasbor's GitHub/WakaTime/Monkeytype live stats, Buku Tamu's backend,
+and Kontak's actual email delivery. Lighthouse CI's Performance/SEO/LCP budgets remain on
+`warn` pending real-traffic thresholds; Accessibility is already a hard `error` gate at
+100 and passing.
