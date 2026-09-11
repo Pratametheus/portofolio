@@ -17,6 +17,7 @@ export const routing = defineRouting({
     '/karya/[slug]': {id: '/karya/[slug]', en: '/work/[slug]'},
     '/riset': {id: '/riset', en: '/research'},
     '/pencapaian': {id: '/pencapaian', en: '/achievements'},
+    '/dasbor': {id: '/dasbor', en: '/dashboard'},
     '/buku-tamu': {id: '/buku-tamu', en: '/guestbook'},
     '/kontak': {id: '/kontak', en: '/contact'},
     '/links': {id: '/links', en: '/links'}

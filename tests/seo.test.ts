@@ -15,12 +15,13 @@ describe('sitemap', () => {
     expect(urls).toContain(`${HOST}/id/karya`);
     expect(urls).toContain(`${HOST}/id/tentang`);
     expect(urls).toContain(`${HOST}/id/riset`);
+    expect(urls).toContain(`${HOST}/id/dasbor`);
     expect(urls).toContain(`${HOST}/id/pencapaian`);
     expect(urls).toContain(`${HOST}/id/links`);
     expect(urls).toContain(`${HOST}/id/kontak`);
     expect(urls).toContain(`${HOST}/id/buku-tamu`);
     expect(urls).toContain(`${HOST}/id/karya/city-courier`);
-    expect(entries).toHaveLength(8 + 3);
+    expect(entries).toHaveLength(9 + 3);
   });
 
   it('emits only absolute URLs on the canonical host, no duplicates', () => {
@@ -39,6 +40,13 @@ describe('sitemap', () => {
   it('localises the english alternate (/karya -> /work)', () => {
     const work = entries.find((e) => e.url === `${HOST}/id/karya`);
     expect(work?.alternates?.languages?.en).toBe(`${HOST}/en/work`);
+  });
+
+  it('indexes the dashboard with its English alternate', () => {
+    const dashboard = entries.find((e) => e.url === `${HOST}/id/dasbor`);
+    expect(dashboard?.alternates?.languages?.en).toBe(`${HOST}/en/dashboard`);
+    expect(dashboard?.priority).toBe(0.5);
+    expect(dashboard?.changeFrequency).toBe('yearly');
   });
 });
 

@@ -14,7 +14,7 @@ export function ContactDraftForm() {
     const email = String(data.get('email') ?? '');
     const message = String(data.get('message') ?? '');
     try {
-      await navigator.clipboard.writeText(`Dari: ${name} <${email}>\n\n${message}`);
+      await navigator.clipboard.writeText(`${t('contact.form.from')}: ${name} <${email}>\n\n${message}`);
       setStatus(t('contact.form.statusOk'));
     } catch {
       setStatus(t('contact.form.statusFail'));

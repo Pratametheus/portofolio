@@ -1,40 +1,47 @@
-import {render, screen} from '@testing-library/react';
+﻿import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {NextIntlClientProvider} from 'next-intl';
 import {describe, expect, it, vi} from 'vitest';
-
-vi.mock('next-intl', () => ({useTranslations: () => (k: string) => k}));
+import id from '../messages/id.json';
+import en from '../messages/en.json';
 import {ContactDraftForm} from '@/components/contact-draft-form';
 
 describe('ContactDraftForm', () => {
-  it('copies a formatted draft to the clipboard and never fetches', async () => {
+  it.each([
+    {locale: 'id', messages: id, name: 'Nama', message: 'Pesan', submit: 'Salin draf pesan', expected: 'Dari: Rin <rin@example.com>\n\nHalo'},
+    {locale: 'en', messages: en, name: 'Name', message: 'Message', submit: 'Copy message draft', expected: 'From: Rin <rin@example.com>\n\nHalo'}
+  ] as const)('copies a localized $locale draft without sending it', async (fixture) => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     const fetchSpy = vi.spyOn(globalThis, 'fetch');
     const user = userEvent.setup();
-    // user-event's setup() installs its own navigator.clipboard stub (for
-    // user.copy()/paste()), overwriting anything assigned beforehand. Define
-    // our mock after setup() so it is the one the component actually calls.
+    // setup installs its own clipboard getter; replace it at the browser boundary.
     Object.defineProperty(navigator, 'clipboard', {value: {writeText}, configurable: true});
-    render(<ContactDraftForm />);
-    await user.type(screen.getByLabelText('contact.form.name'), 'Rin');
-    await user.type(screen.getByLabelText('contact.form.email'), 'rin@example.com');
-    await user.type(screen.getByLabelText('contact.form.message'), 'Halo');
-    await user.click(screen.getByRole('button', {name: 'contact.form.submit'}));
-    expect(writeText).toHaveBeenCalledWith('Dari: Rin <rin@example.com>\n\nHalo');
-    expect(screen.getByRole('status')).toHaveTextContent('contact.form.statusOk');
+    render(
+      <NextIntlClientProvider locale={fixture.locale} messages={fixture.messages}>
+        <ContactDraftForm />
+      </NextIntlClientProvider>
+    );
+    await user.type(screen.getByLabelText(fixture.name), 'Rin');
+    await user.type(screen.getByLabelText('Email'), 'rin@example.com');
+    await user.type(screen.getByLabelText(fixture.message), 'Halo');
+    await user.click(screen.getByRole('button', {name: fixture.submit}));
+    expect(writeText).toHaveBeenCalledWith(fixture.expected);
+    expect(screen.getByRole('status')).toHaveTextContent(fixture.messages.contact.form.statusOk);
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  it('reports a clipboard failure without throwing', async () => {
+  it('reports clipboard denial while preserving the draft fields', async () => {
     const user = userEvent.setup();
     Object.defineProperty(navigator, 'clipboard', {
       value: {writeText: vi.fn().mockRejectedValue(new Error('no'))},
       configurable: true
     });
-    render(<ContactDraftForm />);
-    await user.type(screen.getByLabelText('contact.form.name'), 'A');
-    await user.type(screen.getByLabelText('contact.form.email'), 'a@b.co');
-    await user.type(screen.getByLabelText('contact.form.message'), 'x');
-    await user.click(screen.getByRole('button', {name: 'contact.form.submit'}));
-    expect(screen.getByRole('status')).toHaveTextContent('contact.form.statusFail');
+    render(<NextIntlClientProvider locale="en" messages={en}><ContactDraftForm /></NextIntlClientProvider>);
+    await user.type(screen.getByLabelText('Name'), 'A');
+    await user.type(screen.getByLabelText('Email'), 'a@b.co');
+    await user.type(screen.getByLabelText('Message'), 'Hello');
+    await user.click(screen.getByRole('button', {name: 'Copy message draft'}));
+    expect(screen.getByRole('status')).toHaveTextContent('Clipboard blocked by the browser. Copy the message manually.');
+    expect(screen.getByLabelText('Message')).toHaveValue('Hello');
   });
 });

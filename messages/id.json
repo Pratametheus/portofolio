@@ -5,6 +5,7 @@
     "work": "Karya",
     "research": "Riset",
     "achievements": "Pencapaian",
+    "dashboard": "Dasbor",
     "guestbook": "Buku Tamu",
     "contact": "Kontak",
     "links": "Links"
@@ -149,6 +150,32 @@
     }
   },
   "dashboard": {
+    "intro": "Ringkasan aktivitas pengembangan dari layanan yang belum dihubungkan.",
+    "meta": {
+      "description": "Dasbor aktivitas pengembangan Ferry Andhika Pratama untuk GitHub, WakaTime, dan Monkeytype."
+    },
+    "github": {
+      "title": "GitHub",
+      "link": "@Pratametheus",
+      "stats": {
+        "followers": "Pengikut",
+        "repositories": "Repositori publik",
+        "stars": "Bintang"
+      },
+      "calendarEmpty": {
+        "title": "Kalender kontribusi belum terhubung",
+        "description": "Aktivitas kontribusi GitHub akan tampil di sini setelah integrasi tersedia."
+      }
+    },
+    "repos": {"title": "Repositori pilihan"},
+    "wakatime": {
+      "title": "WakaTime",
+      "stats": {"codingTime": "Waktu coding", "topLanguage": "Bahasa teratas", "dailyAverage": "Rata-rata harian"}
+    },
+    "monkeytype": {
+      "title": "Monkeytype",
+      "stats": {"wpm": "Kata per menit", "accuracy": "Akurasi", "tests": "Tes selesai"}
+    },
     "notConnected": "Belum terhubung",
     "statValueLabel": "Belum tersedia"
   },
@@ -187,6 +214,7 @@
       "status": "Belum terhubung"
     },
     "form": {
+      "from": "Dari",
       "prepareTitle": "Siapkan pesan",
       "note": "Form ini menyalin draf, bukan mengirim email.",
       "name": "Nama",

@@ -6,17 +6,18 @@ import type {NavPathname} from '@/i18n/routing';
 import {NavIndicatorGroup} from '@/components/motion/nav-indicator';
 import {NavItem} from './nav-item';
 
-type NavKey = 'home' | 'about' | 'work' | 'research' | 'achievements' | 'guestbook' | 'contact' | 'links';
+type NavKey = 'home' | 'about' | 'work' | 'research' | 'achievements' | 'dashboard' | 'guestbook' | 'contact' | 'links';
 
 export const NAV_ITEMS: ReadonlyArray<{href: NavPathname; key: NavKey}> = [
   {href: '/', key: 'home'},
   {href: '/tentang', key: 'about'},
+  {href: '/pencapaian', key: 'achievements'},
   {href: '/karya', key: 'work'},
   {href: '/riset', key: 'research'},
-  {href: '/pencapaian', key: 'achievements'},
-  {href: '/buku-tamu', key: 'guestbook'},
+  {href: '/dasbor', key: 'dashboard'},
   {href: '/kontak', key: 'contact'},
-  {href: '/links', key: 'links'}
+  {href: '/links', key: 'links'},
+  {href: '/buku-tamu', key: 'guestbook'}
 ];
 
 export default function Nav({workCount}: {workCount?: number}) {

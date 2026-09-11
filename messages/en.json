@@ -5,6 +5,7 @@
     "work": "Work",
     "research": "Research",
     "achievements": "Achievements",
+    "dashboard": "Dashboard",
     "guestbook": "Guestbook",
     "contact": "Contact",
     "links": "Links"
@@ -149,6 +150,32 @@
     }
   },
   "dashboard": {
+    "intro": "A development activity overview for services that have not been connected yet.",
+    "meta": {
+      "description": "Ferry Andhika Pratama's development activity dashboard for GitHub, WakaTime, and Monkeytype."
+    },
+    "github": {
+      "title": "GitHub",
+      "link": "@Pratametheus",
+      "stats": {
+        "followers": "Followers",
+        "repositories": "Public repositories",
+        "stars": "Stars"
+      },
+      "calendarEmpty": {
+        "title": "Contribution calendar not connected",
+        "description": "GitHub contribution activity will appear here once the integration is available."
+      }
+    },
+    "repos": {"title": "Selected repositories"},
+    "wakatime": {
+      "title": "WakaTime",
+      "stats": {"codingTime": "Coding time", "topLanguage": "Top language", "dailyAverage": "Daily average"}
+    },
+    "monkeytype": {
+      "title": "Monkeytype",
+      "stats": {"wpm": "Words per minute", "accuracy": "Accuracy", "tests": "Tests completed"}
+    },
     "notConnected": "Not connected",
     "statValueLabel": "Not available"
   },
@@ -187,6 +214,7 @@
       "status": "Not connected"
     },
     "form": {
+      "from": "From",
       "prepareTitle": "Prepare a message",
       "note": "This form copies a draft — it does not send an email.",
       "name": "Name",

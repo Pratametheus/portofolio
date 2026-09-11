@@ -53,17 +53,23 @@ prefixed.
 | `id` | `en` | Page |
 |---|---|---|
 | `/id` | `/en` | Beranda / Home — introduction, filterable skills, selected work, research, contact |
-| `/id/tentang` | `/en/about` | About |
-| `/id/karya` | `/en/work` | Work list |
+| `/id/tentang` | `/en/about` | Biography, career, education empty state and skills |
+| `/id/karya` | `/en/work` | Work cards with type and category filters |
 | `/id/karya/[slug]` | `/en/work/[slug]` | Case study (8-part, `Article` JSON-LD) |
-| `/id/riset` | `/en/research` | Research (`ScholarlyArticle` JSON-LD) |
-| `/id/pencapaian` | `/en/achievements` | Achievements |
+| `/id/riset` | `/en/research` | Publication card and same-page research story (`ScholarlyArticle` JSON-LD) |
+| `/id/pencapaian` | `/en/achievements` | Searchable publication record with type/category filters |
 | `/id/buku-tamu` | `/en/guestbook` | Guestbook (read-only shell; write path is a later phase) |
-| `/id/kontak` | `/en/contact` | Contact |
+| `/id/kontak` | `/en/contact` | GitHub link and clipboard-only message draft; no message delivery |
 | `/id/links` | `/en/links` | Link hub |
+| `/id/dasbor` | `/en/dashboard` | GitHub, WakaTime and Monkeytype placeholders; three real case-study links |
 
 Case-study slugs (`siakad-informatika`, `city-courier`, `mochitoon`) are
 locale-independent so links survive a language switch.
+
+The approved Personal design uses a profile rail, Source Sans 3, dark surfaces
+with a yellow accent, and a warm light theme. The dashboard has no live integrations:
+all nine statistics show an em dash and a not-connected label. Education history,
+certificates, contact email and guestbook submission remain intentionally unavailable.
 
 ## Layout
 

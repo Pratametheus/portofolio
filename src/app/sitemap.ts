@@ -16,6 +16,7 @@ const STATIC_ROUTES: Array<{
   {href: '/tentang', changeFrequency: 'yearly', priority: 0.7},
   {href: '/riset', changeFrequency: 'yearly', priority: 0.7},
   {href: '/pencapaian', changeFrequency: 'yearly', priority: 0.6},
+  {href: '/dasbor', changeFrequency: 'yearly', priority: 0.5},
   {href: '/links', changeFrequency: 'yearly', priority: 0.6},
   {href: '/kontak', changeFrequency: 'yearly', priority: 0.6},
   {href: '/buku-tamu', changeFrequency: 'yearly', priority: 0.4}

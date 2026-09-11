@@ -22,6 +22,7 @@ describe('localised pathnames', () => {
     expect(p['/karya']).toEqual({id: '/karya', en: '/work'});
     expect(p['/karya/[slug]']).toEqual({id: '/karya/[slug]', en: '/work/[slug]'});
     expect(p['/riset']).toEqual({id: '/riset', en: '/research'});
+    expect(p['/dasbor']).toEqual({id: '/dasbor', en: '/dashboard'});
     expect(p['/pencapaian']).toEqual({id: '/pencapaian', en: '/achievements'});
     expect(p['/buku-tamu']).toEqual({id: '/buku-tamu', en: '/guestbook'});
     expect(p['/kontak']).toEqual({id: '/kontak', en: '/contact'});

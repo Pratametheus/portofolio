@@ -42,7 +42,7 @@ describe('kelengkapan terjemahan', () => {
   it('memuat seluruh kontrak katalog Ruang Kerja', () => {
     const requiredKeys = [
       'nav.home', 'nav.about', 'nav.work', 'nav.research', 'nav.achievements',
-      'nav.guestbook', 'nav.contact', 'nav.links',
+      'nav.dashboard', 'nav.guestbook', 'nav.contact', 'nav.links',
       'sidebar.name', 'sidebar.role', 'sidebar.availability', 'sidebar.railNote', 'sidebar.footer',
       'home.helloEyebrow', 'home.helloHeading', 'home.intro1', 'home.intro2',
       'home.aboutLink', 'home.selectedWork', 'home.selectedWorkAll',
@@ -90,11 +90,19 @@ describe('kelengkapan terjemahan', () => {
       'achievements.filters.category.pengembangan', 'achievements.total',
       'achievements.empty.title', 'achievements.empty.body', 'achievements.reset',
       'achievements.dataNote', 'achievements.detailSummary',
-      'dashboard.notConnected', 'dashboard.statValueLabel',
+      'dashboard.intro', 'dashboard.meta.description', 'dashboard.github.title',
+      'dashboard.github.link', 'dashboard.github.stats.followers',
+      'dashboard.github.stats.repositories', 'dashboard.github.stats.stars',
+      'dashboard.github.calendarEmpty.title', 'dashboard.github.calendarEmpty.description',
+      'dashboard.repos.title', 'dashboard.wakatime.title',
+      'dashboard.wakatime.stats.codingTime', 'dashboard.wakatime.stats.topLanguage',
+      'dashboard.wakatime.stats.dailyAverage', 'dashboard.monkeytype.title',
+      'dashboard.monkeytype.stats.wpm', 'dashboard.monkeytype.stats.accuracy',
+      'dashboard.monkeytype.stats.tests', 'dashboard.notConnected', 'dashboard.statValueLabel',
       'footer.title', 'footer.description', 'footer.githubCta', 'footer.copyright',
       'contact.connectTitle', 'contact.github.title', 'contact.github.body', 'contact.github.cta',
       'contact.email.title', 'contact.email.body', 'contact.email.status',
-      'contact.form.prepareTitle', 'contact.form.note', 'contact.form.name', 'contact.form.email',
+      'contact.form.from', 'contact.form.prepareTitle', 'contact.form.note', 'contact.form.name', 'contact.form.email',
       'contact.form.message', 'contact.form.submit', 'contact.form.statusOk', 'contact.form.statusFail'
     ];
 

@@ -9,16 +9,19 @@ vi.mock('@/i18n/navigation', () => ({
 }));
 vi.mock('next-intl', () => ({
   useTranslations: () => (k: string) =>
-    ({home: 'Beranda', about: 'Tentang', work: 'Karya', research: 'Riset', achievements: 'Pencapaian', guestbook: 'Buku Tamu', contact: 'Kontak', links: 'Links'}[k] ?? k)
+    ({home: 'Beranda', about: 'Tentang', work: 'Karya', research: 'Riset', achievements: 'Pencapaian', dashboard: 'Dasbor', guestbook: 'Buku Tamu', contact: 'Kontak', links: 'Links'}[k] ?? k)
 }));
 
 import Nav from '@/components/nav';
 
 describe('Nav', () => {
-  it('renders eight routes with text labels', () => {
+  it('makes all nine routes reachable in the Personal navigation order', () => {
     render(<Nav />);
     const links = screen.getAllByRole('link');
-    expect(links).toHaveLength(8);
+    expect(links).toHaveLength(9);
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/', '/tentang', '/pencapaian', '/karya', '/riset', '/dasbor', '/kontak', '/links', '/buku-tamu'
+    ]);
     expect(within(links[0]).getByText('Beranda')).toBeInTheDocument();
   });
   it('marks the active route with aria-current', () => {
