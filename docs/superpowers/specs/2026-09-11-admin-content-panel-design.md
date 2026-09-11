@@ -46,6 +46,13 @@ the user did not select them for this round.
    entry's Indonesian and English fields are edited together, side by side, in one save.
    No auto-translate step in this round (YAGNI; can be added later without a schema
    change since it would only prefill the English fields).
+8. **Soft delete + one-level undo, added 2026-09-11.** The single-admin, no-audit-log
+   design initially left "accidentally delete or overwrite an entry" unrecoverable except
+   by retyping it from memory. That's a real gap even for solo use, so: deletes are soft
+   (recoverable from a Trash view) and every edit keeps one previous snapshot (one step of
+   undo). This is deliberately *not* a full version-history table — one level of safety
+   net is enough for a single editor who notices mistakes quickly; unbounded history is
+   YAGNI here.
 
 ## 2. Architecture
 
@@ -96,7 +103,10 @@ CREATE TABLE career_entries (
   description_en TEXT NOT NULL,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  deleted_at TEXT,                 -- soft delete: NULL = live, set = in Trash
+  previous_snapshot TEXT,          -- JSON of this row's editable fields, one edit ago
+  snapshot_at TEXT                 -- when previous_snapshot was captured
 );
 
 CREATE TABLE achievements (
@@ -112,9 +122,29 @@ CREATE TABLE achievements (
   url TEXT,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  deleted_at TEXT,
+  previous_snapshot TEXT,
+  snapshot_at TEXT
 );
 ```
+
+**Soft delete + undo mechanics:**
+- *Delete* sets `deleted_at = datetime('now')` instead of removing the row. Public
+  repository reads always filter `WHERE deleted_at IS NULL` — a soft-deleted row is
+  invisible to visitors immediately, same as a hard delete would be.
+- *Restore* (from the Trash view) sets `deleted_at = NULL`.
+- *Permanently delete* (only offered from the Trash view, a deliberate second step) issues
+  a real `DELETE FROM ... WHERE id = ?`.
+- *Undo last edit*: before an `UPDATE` writes new values, the Server Action first reads the
+  row's current editable-field values, JSON-encodes them into `previous_snapshot`, and
+  stamps `snapshot_at`, in the same write. The edit form shows an "Urungkan perubahan dari
+  {snapshot_at}" button whenever `previous_snapshot` is not null; clicking it writes those
+  snapshot values back as the row's current fields and clears `previous_snapshot` — one
+  level only, no redo/undo stack. A fresh edit after an undo captures a new snapshot as
+  normal.
+- Creating a new row leaves `previous_snapshot`/`deleted_at` null; there's nothing to undo
+  yet and nothing to restore from.
 
 `type`/`category` on `achievements` stay canonical Indonesian enum values on purpose —
 this matches the existing `ACHIEVEMENT_TYPE_LABEL_KEY`/`ACHIEVEMENT_CATEGORY_LABEL_KEY`
@@ -135,7 +165,9 @@ data-loading helpers) switch from importing `CAREER`/`EDUCATION`/`ACHIEVEMENTS` 
 `src/content/*.ts` to reading from D1 through a small data-access module
 (`src/lib/repositories/career.ts`, `src/lib/repositories/achievements.ts`), shaped to
 return the exact same TypeScript types the pages already consume — so the page components
-themselves barely change. Reads use Next's `fetch`/data cache semantics so the rendered
+themselves barely change. Every public-facing query filters `WHERE deleted_at IS NULL`
+(see §3's soft-delete mechanics) — a Trashed row never reaches a visitor. Reads use Next's
+`fetch`/data cache semantics so the rendered
 HTML is still edge-cacheable exactly as today, until a write calls `revalidatePath` for
 the four affected URLs (`/id/tentang`, `/en/about`, `/id/pencapaian`,
 `/en/achievements`). Every other route's data loading is untouched.
@@ -160,13 +192,17 @@ src/app/admin/
   career/page.tsx         — list + add/edit/delete/reorder for kind='career'
   education/page.tsx      — list + add/edit/delete/reorder for kind='education'
   achievements/page.tsx   — list + add/edit/delete/reorder
+  trash/page.tsx          — soft-deleted rows across all three types, restore / delete permanently
 ```
 
-Each list page shows existing rows (title, a one-line ID/EN preview, sort order) with
-edit/delete actions, and a form (inline or `/admin/career/new`) with the Indonesian and
-English fields grouped in two visually distinct columns so it's obvious both need filling
-in before saving. Writes go through Next.js Server Actions calling the repository module
-directly (no separate REST/JSON API surface needed for a single first-party admin UI).
+Each list page shows existing (non-deleted) rows (title, a one-line ID/EN preview, sort
+order) with edit/delete actions, and a form (inline or `/admin/career/new`) with the
+Indonesian and English fields grouped in two visually distinct columns so it's obvious
+both need filling in before saving. The edit form additionally shows an "undo last edit"
+action when a snapshot exists (§3). Writes go through Next.js Server Actions calling the
+repository module directly (no separate REST/JSON API surface needed for a single
+first-party admin UI). "Delete" from a list page is always the soft delete; permanent
+removal only happens from `/admin/trash`, as a separate, harder-to-hit action.
 
 Plain, functional styling reusing the existing design tokens (`--bg`, `--fg`, `--border`,
 etc. from `globals.css`) for visual consistency, but not held to the public site's
@@ -194,6 +230,12 @@ Matches the project's existing TDD convention:
   uses).
 - Unit tests for Server Action input validation (required bilingual fields, valid
   `type`/`category` enum values, `url` is a well-formed URL or empty).
+- Unit tests for the soft-delete/undo mechanics specifically: delete sets `deleted_at`
+  and removes the row from repository reads; restore clears it and the row reappears in
+  its original `sort_order` position; an edit captures the pre-edit values into
+  `previous_snapshot`; undo restores those values and clears the snapshot (and a second
+  undo attempt with no snapshot is a no-op, not an error); permanent delete from Trash
+  actually removes the row and is irreversible.
 - No Playwright coverage for `/admin/*` — it sits behind Cloudflare Access in the only
   environment Playwright would exercise meaningfully (production), and the existing e2e
   suite runs against `next dev`/`next start` where Access isn't present anyway. Manual
