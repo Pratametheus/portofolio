@@ -57,6 +57,12 @@
         "keamanan": "Security",
         "penulisan": "Writing"
       }
+    },
+    "detail": {
+      "back": "Back to Work",
+      "techTitle": "Technology",
+      "fullCaseTitle": "Full case study",
+      "relatedTitle": "Other work"
     }
   },
   "about": {

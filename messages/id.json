@@ -57,6 +57,12 @@
         "keamanan": "Keamanan",
         "penulisan": "Penulisan"
       }
+    },
+    "detail": {
+      "back": "Kembali ke Karya",
+      "techTitle": "Teknologi",
+      "fullCaseTitle": "Studi kasus lengkap",
+      "relatedTitle": "Karya lainnya"
     }
   },
   "about": {

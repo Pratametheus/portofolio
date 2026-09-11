@@ -78,6 +78,7 @@ describe('kelengkapan terjemahan', () => {
       'work.filters.category.keamanan', 'work.filters.category.penulisan',
       'work.cardCta', 'work.coverAction', 'work.count', 'work.featuredLabel',
       'work.empty.title', 'work.empty.body',
+      'work.detail.back', 'work.detail.techTitle', 'work.detail.fullCaseTitle', 'work.detail.relatedTitle',
       'about.career.title', 'about.career.description', 'about.career.detailSummary',
       'about.education.title', 'about.education.description',
       'about.education.emptyTitle', 'about.education.emptyBody',
