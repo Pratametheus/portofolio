@@ -24,7 +24,7 @@ export function parseAchievementForm(formData: FormData): AchievementInput {
     if (typeof raw !== 'string' || raw.trim() === '') {
       throw new Error(`Field "${field}" is required`);
     }
-    values[field] = raw;
+    values[field] = raw.trim();
   }
 
   const type = formData.get('type');
@@ -55,8 +55,8 @@ export function parseAchievementForm(formData: FormData): AchievementInput {
   let sortOrder = 0;
   if (typeof sortOrderRaw === 'string' && sortOrderRaw.trim() !== '') {
     sortOrder = Number(sortOrderRaw);
-    if (!Number.isFinite(sortOrder)) {
-      throw new Error('Field "sortOrder" must be a number');
+    if (!Number.isInteger(sortOrder)) {
+      throw new Error('Field "sortOrder" must be a whole number');
     }
   }
 

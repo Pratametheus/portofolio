@@ -25,15 +25,19 @@ export function parseCareerEntryForm(formData: FormData, kind: CareerKind): Care
     if (typeof raw !== 'string' || raw.trim() === '') {
       throw new Error(`Field "${field}" is required`);
     }
-    values[field] = raw;
+    values[field] = raw.trim();
+  }
+
+  if (values.mark.length > 2) {
+    throw new Error('Field "mark" must be at most 2 characters');
   }
 
   const sortOrderRaw = formData.get('sortOrder');
   let sortOrder = 0;
   if (typeof sortOrderRaw === 'string' && sortOrderRaw.trim() !== '') {
     sortOrder = Number(sortOrderRaw);
-    if (!Number.isFinite(sortOrder)) {
-      throw new Error('Field "sortOrder" must be a number');
+    if (!Number.isInteger(sortOrder)) {
+      throw new Error('Field "sortOrder" must be a whole number');
     }
   }
 
