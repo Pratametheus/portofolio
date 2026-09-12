@@ -1,7 +1,7 @@
-// Replaced per the plan's "After Task 8 — manual steps" section once the R2 bucket's
-// public access is enabled and the real pub-<hash>.r2.dev URL is known — everything
-// else in this module works correctly regardless of this value.
-export const UPLOADS_PUBLIC_BASE_URL = 'https://REPLACE-WITH-R2-PUBLIC-URL.r2.dev';
+// Served through a custom domain on the R2 bucket (rather than the raw r2.dev
+// subdomain) so it sits in the zone and can carry a rate-limiting rule — see the
+// plan's "After Task 8 — manual steps" section.
+export const UPLOADS_PUBLIC_BASE_URL = 'https://uploads.ferryandhikapratama.com';
 
 export const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'] as const;
 export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
