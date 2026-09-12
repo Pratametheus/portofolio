@@ -60,8 +60,13 @@ npx wrangler d1 execute portofolio-admin --local --file=scripts/seed-initial-con
 `wrangler.jsonc` targets Cloudflare account
 `06d5d4ba7c6c2dcbbd02ceb7133e0163`. The top-level Worker is production
 (`portofolio`); the named staging environment uses `portofolio-staging`.
-Each environment has its own Worker self-reference. No custom-domain route is
-configured, so deploying does not change the portfolio domain's DNS.
+Each environment has its own Worker self-reference. **Correction, 2026-09-12:**
+the note above about no custom-domain route is stale — `ferryandhikapratama.com`
+is live in production today (confirmed directly: served by Cloudflare, correct
+locale redirects), configured as a custom domain via the dashboard outside
+`wrangler.jsonc`. `workers_dev` is deliberately `false` in production (see
+"Admin content panel" below) specifically because that custom domain is the
+only intended path to the deployed Worker.
 
 Cloudflare MCP authentication does **not** authenticate local Wrangler.
 Complete the browser login yourself; never paste tokens into chat or commit
@@ -135,6 +140,34 @@ Access policy on the custom domain would cover. Staging keeps `workers_dev: true
 since staging has no custom domain of its own.
 
 See `docs/superpowers/specs/2026-09-11-admin-content-panel-design.md` for the full design.
+
+## Backup and rollback
+
+**D1 backup.** `.github/workflows/backup-d1.yml` exports the production database
+(`portofolio-admin`) every Monday and on manual trigger (Actions tab →
+"Backup D1" → Run workflow), uploading the `.sql` dump as a workflow artifact
+(90-day retention). To restore from one: download the artifact, then
+`npx wrangler d1 execute portofolio-admin --remote --file=<the downloaded .sql>`
+— read it first if the goal is recovering specific rows rather than a full
+overwrite, since replaying `INSERT`s against a non-empty table will conflict on
+the existing primary keys. To back up on demand instead of waiting for the
+schedule:
+
+```sh
+npx wrangler d1 export portofolio-admin --remote --output=backup.sql
+```
+
+**Worker rollback.** Cloudflare retains previous Worker versions automatically;
+no separate rollback infrastructure is needed.
+
+```sh
+npx wrangler deployments list          # find the version-id to roll back to
+npx wrangler rollback <version-id>     # -m "reason" to record why
+```
+
+This only reverts the *code* — it does not undo any D1 schema migration or data
+change a bad deploy might have made. For a schema-level mistake, restore from
+the D1 backup above instead (or in addition).
 
 ## References
 

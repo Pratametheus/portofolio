@@ -36,6 +36,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run cf:typegen
+      - run: npx wrangler d1 migrations apply portofolio-admin --local
+      - run: npx wrangler d1 execute portofolio-admin --local --file=scripts/seed-initial-content.sql
       - run: npm run build
       # Accessibility is asserted as an error (must be 100). Performance / SEO /
       # LCP report as warnings until the thresholds are tuned against real CI
