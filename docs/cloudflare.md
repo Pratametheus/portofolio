@@ -10,8 +10,9 @@ Cloudflare now recommends vinext for new integrations, but it is beta; evaluate
 its compatibility separately before changing this application's build system.
 
 The configuration uses a read-only Static Assets cache for prerendered pages.
-No R2, KV, D1, Durable Objects, or queue is needed for the current content.
-Rebuild and redeploy to publish content changes. Before introducing ISR,
+No R2, KV, Durable Objects, or queue is needed for the current content. D1 is
+now used for the admin content panel — see "Admin content panel (D1 + Access)"
+below. Rebuild and redeploy to publish content changes. Before introducing ISR,
 `revalidatePath`, `revalidateTag`, or cached server fetches, replace that cache
 with a writable backend. A writable guestbook would also need its own database
 and abuse protection; neither is provisioned here.
@@ -44,6 +45,15 @@ Wrangler has no `check` command in the installed version; `cf:check` uses its
 supported `deploy --dry-run` command. The explicit esbuild dev dependency is
 needed because OpenNext imports it from its CLI but does not list it as a
 runtime dependency in version 1.20.4.
+
+A fresh checkout needs local D1 set up before `npm run dev` or
+`npm run test:e2e` will work (the admin content panel's tables don't exist
+otherwise):
+
+```sh
+npx wrangler d1 migrations apply portofolio-admin --local
+npx wrangler d1 execute portofolio-admin --local --file=scripts/seed-initial-content.sql
+```
 
 ## Account and deployment
 
@@ -95,6 +105,36 @@ its execute tool to issue scoped GET requests. Use that same sequence for
 follow-up inspections. Prefer the local OpenNext deploy command for this app's
 multi-file Worker and static asset upload after authentication; MCP can inspect
 the resulting Worker and deployment without handling local CLI credentials.
+
+## Admin content panel (D1 + Access)
+
+`/admin/*` manages Karier, Pendidikan, and Pencapaian content, backed by a D1 database
+(binding `DB`, databases `portofolio-admin` / `portofolio-admin-staging`). Schema lives in
+`migrations/`; apply with `wrangler d1 migrations apply <db-name> --local|--remote`.
+
+`/tentang`, `/pencapaian`, and `/riset` read from D1 and are `force-dynamic` — they render
+per-request rather than being served from the static-assets cache described above. This
+was a deliberate choice over ISR/`revalidatePath`: this project has none of the
+Incremental Cache (R2/KV) + Tag Cache (D1/DO) + DO queue infrastructure OpenNext's
+Cloudflare adapter needs for on-demand revalidation to work, and standing that up for
+three low-traffic pages wasn't worth it. If traffic to these three routes ever becomes a
+real Free-plan concern, that infrastructure — not reverting to static content files — is
+the next step.
+
+Auth is Cloudflare Access, configured in the dashboard (Zero Trust → Access →
+Applications), not in this repository — there is no application-level login. **Access
+is not yet configured.** `/admin` is unauthenticated on the deployed Worker until a
+policy is added on `ferryandhikapratama.com/admin*` (Zero Trust → Access →
+Applications) — a manual, one-time dashboard step that must happen before or
+immediately after this branch deploys. Local `next dev` and `cf:preview` always serve
+`/admin` unauthenticated regardless of Access configuration.
+
+`workers_dev` is `false` at the top level specifically so `/admin` is only reachable
+via the Access-gated custom domain, not the Worker's own `workers.dev` URL, which no
+Access policy on the custom domain would cover. Staging keeps `workers_dev: true`
+since staging has no custom domain of its own.
+
+See `docs/superpowers/specs/2026-09-11-admin-content-panel-design.md` for the full design.
 
 ## References
 

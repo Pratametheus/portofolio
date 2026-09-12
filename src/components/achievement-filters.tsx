@@ -2,7 +2,7 @@
 
 import {useState} from 'react';
 import {useTranslations} from 'next-intl';
-import type {Achievement} from '@/content/achievements';
+import type {Achievement} from '@/lib/repositories/achievements';
 import {AchievementCard} from './achievement-card';
 import {DataEmpty} from './data-empty';
 import {ACHIEVEMENT_TYPE_LABEL_KEY, ACHIEVEMENT_CATEGORY_LABEL_KEY} from '@/lib/taxonomy-labels';

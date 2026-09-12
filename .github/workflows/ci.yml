@@ -21,6 +21,8 @@ jobs:
       - run: npm run cf:check
       - run: npm run check:size
       - run: npx tsc --noEmit
+      - run: npx wrangler d1 migrations apply portofolio-admin --local
+      - run: npx wrangler d1 execute portofolio-admin --local --file=scripts/seed-initial-content.sql
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
 

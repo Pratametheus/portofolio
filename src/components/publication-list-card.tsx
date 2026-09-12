@@ -3,7 +3,7 @@ import {getPathname} from '@/i18n/navigation';
 import {PublicationCover} from '@/components/publication-cover';
 import {RecordTags} from './record-tags';
 import {ACHIEVEMENT_TYPE_LABEL_KEY, ACHIEVEMENT_CATEGORY_LABEL_KEY} from '@/lib/taxonomy-labels';
-import type {Achievement} from '@/content/achievements';
+import type {Achievement} from '@/lib/repositories/achievements';
 import type {Locale} from '@/content/types';
 
 export function PublicationListCard({item, href}: {item: Achievement; href: string}) {

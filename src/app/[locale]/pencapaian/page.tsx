@@ -5,9 +5,12 @@ import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {AchievementFilters} from '@/components/achievement-filters';
 import {PageHeading} from '@/components/page-heading';
 import {SiteFooter} from '@/components/site-footer';
-import {ACHIEVEMENTS} from '@/content/achievements';
 import {routing} from '@/i18n/routing';
 import {pageMetadata} from '@/lib/page-metadata';
+import {getCloudflareContext} from '@opennextjs/cloudflare';
+import {listPublicAchievements} from '@/lib/repositories/achievements';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params
@@ -34,6 +37,8 @@ export default async function AchievementsPage({params}: {params: Promise<{local
   const locale = requested;
   setRequestLocale(locale);
   const t = await getTranslations({locale, namespace: 'achievements'});
+  const {env} = await getCloudflareContext({async: true});
+  const achievements = await listPublicAchievements(env.DB, locale);
   return (
     <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
       <PageHeading title={t('title')} description={t('intro')} />
@@ -41,7 +46,7 @@ export default async function AchievementsPage({params}: {params: Promise<{local
         <h2 id="achievement-list-title" className="sr-only">
           {t('listTitle')}
         </h2>
-        <AchievementFilters items={ACHIEVEMENTS[locale]} />
+        <AchievementFilters items={achievements} />
       </section>
       <SiteFooter />
     </main>

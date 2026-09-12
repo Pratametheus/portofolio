@@ -1,5 +1,5 @@
 import {useTranslations} from 'next-intl';
-import type {Achievement} from '@/content/achievements';
+import type {Achievement} from '@/lib/repositories/achievements';
 import {PublicationCover} from './publication-cover';
 import {RecordTags} from './record-tags';
 import {ACHIEVEMENT_TYPE_LABEL_KEY, ACHIEVEMENT_CATEGORY_LABEL_KEY} from '@/lib/taxonomy-labels';
