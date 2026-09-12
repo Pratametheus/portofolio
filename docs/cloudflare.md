@@ -96,6 +96,28 @@ follow-up inspections. Prefer the local OpenNext deploy command for this app's
 multi-file Worker and static asset upload after authentication; MCP can inspect
 the resulting Worker and deployment without handling local CLI credentials.
 
+## Admin content panel (D1 + Access)
+
+`/admin/*` manages Karier, Pendidikan, and Pencapaian content, backed by a D1 database
+(binding `DB`, databases `portofolio-admin` / `portofolio-admin-staging`). Schema lives in
+`migrations/`; apply with `wrangler d1 migrations apply <db-name> --local|--remote`.
+
+`/tentang`, `/pencapaian`, and `/riset` read from D1 and are `force-dynamic` — they render
+per-request rather than being served from the static-assets cache described above. This
+was a deliberate choice over ISR/`revalidatePath`: this project has none of the
+Incremental Cache (R2/KV) + Tag Cache (D1/DO) + DO queue infrastructure OpenNext's
+Cloudflare adapter needs for on-demand revalidation to work, and standing that up for
+three low-traffic pages wasn't worth it. If traffic to these three routes ever becomes a
+real Free-plan concern, that infrastructure — not reverting to static content files — is
+the next step.
+
+Auth is Cloudflare Access, configured in the dashboard (Zero Trust → Access →
+Applications), not in this repository — there is no application-level login. Local
+`next dev` and `cf:preview` serve `/admin` unauthenticated; only the production and
+staging domains are Access-protected.
+
+See `docs/superpowers/specs/2026-09-11-admin-content-panel-design.md` for the full design.
+
 ## References
 
 - [Cloudflare Next.js guidance](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/)
