@@ -1,6 +1,7 @@
 /** @vitest-environment node */
 import {describe, expect, it, beforeEach, afterAll, beforeAll} from 'vitest';
 import {createTestDb, resetTestDb} from '../helpers/d1';
+import {uploadUrl} from '@/lib/uploads';
 import {
   createAchievement,
   listPublicAchievements,
@@ -26,7 +27,8 @@ const sample: AchievementInput = {
   descriptionId: 'Artikel penelitian.',
   descriptionEn: 'A research article.',
   url: 'https://doi.org/x',
-  sortOrder: 0
+  sortOrder: 0,
+  coverKey: null
 };
 
 describe('achievements repository', () => {
@@ -49,7 +51,8 @@ describe('achievements repository', () => {
       type: 'Publikasi',
       category: 'Keamanan',
       description: 'Artikel penelitian.',
-      url: 'https://doi.org/x'
+      url: 'https://doi.org/x',
+      coverUrl: undefined
     });
     const [enEntry] = await listPublicAchievements(db, 'en');
     expect(enEntry.title).toBe('Vulnerability Analysis');
@@ -105,5 +108,37 @@ describe('achievements repository', () => {
     await softDeleteAchievement(db, row.id);
     await hardDeleteAchievement(db, row.id);
     expect(await getAdminAchievement(db, row.id)).toBeNull();
+  });
+
+  it('computes coverUrl from a non-null coverKey', async () => {
+    await createAchievement(db, {...sample, coverKey: 'achievement-covers/abc.png'});
+    const [entry] = await listPublicAchievements(db, 'id');
+    expect(entry.coverUrl).toBe(uploadUrl('achievement-covers/abc.png'));
+  });
+
+  it('preserves coverKey through the undo round-trip', async () => {
+    await createAchievement(db, {...sample, coverKey: 'achievement-covers/original.png'});
+    const [row] = await listAdminAchievements(db);
+    await updateAchievement(db, row.id, {...sample, coverKey: 'achievement-covers/replacement.png'});
+    expect((await getAdminAchievement(db, row.id))?.coverKey).toBe('achievement-covers/replacement.png');
+
+    await undoLastAchievementEdit(db, row.id);
+    expect((await getAdminAchievement(db, row.id))?.coverKey).toBe('achievement-covers/original.png');
+  });
+
+  it('hard delete returns the deleted row\'s coverKey', async () => {
+    await createAchievement(db, {...sample, coverKey: 'achievement-covers/to-clean-up.png'});
+    const [row] = await listAdminAchievements(db);
+    await softDeleteAchievement(db, row.id);
+    const deletedCoverKey = await hardDeleteAchievement(db, row.id);
+    expect(deletedCoverKey).toBe('achievement-covers/to-clean-up.png');
+  });
+
+  it('hard delete returns null when the row had no cover', async () => {
+    await createAchievement(db, sample);
+    const [row] = await listAdminAchievements(db);
+    await softDeleteAchievement(db, row.id);
+    const deletedCoverKey = await hardDeleteAchievement(db, row.id);
+    expect(deletedCoverKey).toBeNull();
   });
 });

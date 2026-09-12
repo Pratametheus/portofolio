@@ -70,6 +70,7 @@ export function parseAchievementForm(formData: FormData): AchievementInput {
     descriptionId: values.descriptionId,
     descriptionEn: values.descriptionEn,
     url,
+    coverKey: null,
     sortOrder
   };
 }
