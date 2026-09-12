@@ -1,6 +1,6 @@
-// Replaced in Task 9 once the R2 bucket's public access is enabled and the real
-// pub-<hash>.r2.dev URL is known — everything else in this module works correctly
-// regardless of this value.
+// Replaced per the plan's "After Task 8 — manual steps" section once the R2 bucket's
+// public access is enabled and the real pub-<hash>.r2.dev URL is known — everything
+// else in this module works correctly regardless of this value.
 export const UPLOADS_PUBLIC_BASE_URL = 'https://REPLACE-WITH-R2-PUBLIC-URL.r2.dev';
 
 export const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'] as const;
