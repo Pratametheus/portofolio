@@ -19,5 +19,6 @@ export default async function AdminCareerEntryPage({
   const {env} = await getCloudflareContext({async: true});
   const entry = await getAdminCareerEntry(env.DB, numericId);
   if (!entry) notFound();
+  if (entry.kind !== 'career') notFound();
   return <CareerEntryForm kind="career" entry={entry} />;
 }
