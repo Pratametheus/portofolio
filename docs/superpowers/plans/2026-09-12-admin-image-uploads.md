@@ -2479,21 +2479,32 @@ local development or testing — R2 bindings emulate fully locally via Miniflare
    npx wrangler d1 migrations apply portofolio-admin --remote
    npx wrangler d1 migrations apply portofolio-admin-staging --remote --env staging
    ```
-4. In the Cloudflare dashboard: R2 → `portofolio-uploads` → Settings → Public Access →
-   Allow Access (enables the bucket's `pub-<hash>.r2.dev` subdomain). Repeat for
-   `portofolio-uploads-staging` if staging should also serve images publicly.
-5. Copy the resulting `https://pub-<hash>.r2.dev` URL and update
-   `src/lib/uploads.ts`:
+4. **Revised, 2026-09-12: use a custom domain instead of the raw `r2.dev` public
+   subdomain**, so the bucket sits inside the user's own Cloudflare zone and can carry a
+   rate-limiting rule (extra safety net against cost-based read abuse — the r2.dev
+   managed subdomain is opaque and outside the zone, so it cannot carry zone-level
+   Security/WAF rules). In the Cloudflare dashboard: R2 → `portofolio-uploads` →
+   Settings → Custom Domains → Connect Domain → enter a subdomain (e.g.
+   `uploads.ferryandhikapratama.com`) → Continue (Cloudflare creates the proxied DNS
+   record automatically, since the zone is already on Cloudflare). Repeat with a
+   distinct subdomain for `portofolio-uploads-staging` if staging should also serve
+   images publicly (e.g. `uploads-staging.ferryandhikapratama.com`).
+5. Add a rate-limiting rule scoped to that hostname: dashboard → Security → WAF → Rate
+   limiting rules → Create rule → match `Hostname equals uploads.ferryandhikapratama.com`
+   → set a request-per-IP threshold appropriate for a personal site's image traffic
+   (e.g. 100 requests / 1 minute per IP) → action: Block (or Managed Challenge). This is
+   available on the Free plan (1 rule included).
+6. Update `src/lib/uploads.ts` with the custom domain instead of an r2.dev URL:
    ```ts
-   export const UPLOADS_PUBLIC_BASE_URL = 'https://pub-<hash>.r2.dev';
+   export const UPLOADS_PUBLIC_BASE_URL = 'https://uploads.ferryandhikapratama.com';
    ```
-6. Run `npm test -- --run && npx tsc --noEmit && npm run build`, then commit:
+7. Run `npm test -- --run && npx tsc --noEmit && npm run build`, then commit:
    ```sh
    git add src/lib/uploads.ts
    git commit -m "fix(uploads): set the real R2 public base URL"
    ```
-7. Merge/push this branch, then deploy and confirm a real uploaded image renders on
-   the live site.
+8. Merge/push this branch, then deploy and confirm a real uploaded image renders on
+   the live site through the custom domain.
 
 Until step 2 is done, do not push this branch's merge to `main` — CI's `deploy` job
 will fail on the Worker upload step (a failed deploy does not take down the
