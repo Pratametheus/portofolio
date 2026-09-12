@@ -17,6 +17,7 @@ import {
   listTrashedCareerEntries,
   type CareerEntryInput
 } from '@/lib/repositories/career';
+import {uploadUrl} from '@/lib/uploads';
 
 const sample: CareerEntryInput = {
   kind: 'career',
@@ -31,7 +32,8 @@ const sample: CareerEntryInput = {
   mark: 'SD',
   descriptionId: 'Mengajar komputer.',
   descriptionEn: 'Teaching computing.',
-  sortOrder: 0
+  sortOrder: 0,
+  logoKey: null
 };
 
 describe('career repository', () => {
@@ -54,7 +56,8 @@ describe('career repository', () => {
         period: 'Mulai April 2026',
         category: 'Pendidikan',
         mark: 'SD',
-        description: 'Mengajar komputer.'
+        description: 'Mengajar komputer.',
+        logoUrl: undefined
       }
     ]);
     const enEntries = await listPublicCareerEntries(db, 'career', 'en');
@@ -129,5 +132,37 @@ describe('career repository', () => {
     await hardDeleteCareerEntry(db, row.id);
     expect(await listTrashedCareerEntries(db)).toHaveLength(0);
     expect(await getAdminCareerEntry(db, row.id)).toBeNull();
+  });
+
+  it('computes logoUrl from a non-null logoKey', async () => {
+    await createCareerEntry(db, {...sample, logoKey: 'career-logos/abc.png'});
+    const [entry] = await listPublicCareerEntries(db, 'career', 'id');
+    expect(entry.logoUrl).toBe(uploadUrl('career-logos/abc.png'));
+  });
+
+  it('preserves logoKey through the undo round-trip', async () => {
+    await createCareerEntry(db, {...sample, logoKey: 'career-logos/original.png'});
+    const [row] = await listAdminCareerEntries(db, 'career');
+    await updateCareerEntry(db, row.id, {...sample, logoKey: 'career-logos/replacement.png'});
+    expect((await getAdminCareerEntry(db, row.id))?.logoKey).toBe('career-logos/replacement.png');
+
+    await undoLastCareerEdit(db, row.id);
+    expect((await getAdminCareerEntry(db, row.id))?.logoKey).toBe('career-logos/original.png');
+  });
+
+  it('hard delete returns the deleted row\'s logoKey', async () => {
+    await createCareerEntry(db, {...sample, logoKey: 'career-logos/to-clean-up.png'});
+    const [row] = await listAdminCareerEntries(db, 'career');
+    await softDeleteCareerEntry(db, row.id);
+    const deletedLogoKey = await hardDeleteCareerEntry(db, row.id);
+    expect(deletedLogoKey).toBe('career-logos/to-clean-up.png');
+  });
+
+  it('hard delete returns null when the row had no logo', async () => {
+    await createCareerEntry(db, sample);
+    const [row] = await listAdminCareerEntries(db, 'career');
+    await softDeleteCareerEntry(db, row.id);
+    const deletedLogoKey = await hardDeleteCareerEntry(db, row.id);
+    expect(deletedLogoKey).toBeNull();
   });
 });

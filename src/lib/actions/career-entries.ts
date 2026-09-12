@@ -54,6 +54,7 @@ export function parseCareerEntryForm(formData: FormData, kind: CareerKind): Care
     mark: values.mark,
     descriptionId: values.descriptionId,
     descriptionEn: values.descriptionEn,
+    logoKey: null,
     sortOrder
   };
 }
