@@ -1,5 +1,10 @@
+/**
+ * @vitest-environment node
+ */
 import {describe, expect, it} from 'vitest';
 import {parseAchievementForm} from '@/lib/actions/achievements';
+import {createTestBucket} from '../helpers/r2';
+import {resolveCoverKey} from '@/lib/actions/achievements';
 
 function fd(fields: Record<string, string>): FormData {
   const f = new FormData();
@@ -48,5 +53,57 @@ describe('parseAchievementForm', () => {
     const fields = {...validFields};
     delete (fields as Record<string, string>).titleEn;
     expect(() => parseAchievementForm(fd(fields))).toThrow(/titleEn/);
+  });
+});
+
+function fileFormData(file?: File): FormData {
+  const f = new FormData();
+  if (file) f.set('cover', file);
+  return f;
+}
+
+describe('resolveCoverKey', () => {
+  it('returns the existing key unchanged when no file is submitted', async () => {
+    const {bucket, dispose} = await createTestBucket();
+    try {
+      const key = await resolveCoverKey(bucket, fileFormData(), 'achievement-covers/existing.png');
+      expect(key).toBe('achievement-covers/existing.png');
+    } finally {
+      await dispose();
+    }
+  });
+
+  it('returns the existing key unchanged when the file input was left empty', async () => {
+    const {bucket, dispose} = await createTestBucket();
+    try {
+      const emptyFile = new File([], '', {type: 'application/octet-stream'});
+      const key = await resolveCoverKey(bucket, fileFormData(emptyFile), 'achievement-covers/existing.png');
+      expect(key).toBe('achievement-covers/existing.png');
+    } finally {
+      await dispose();
+    }
+  });
+
+  it('uploads a new file and returns its key', async () => {
+    const {bucket, dispose} = await createTestBucket();
+    try {
+      const file = new File([new Uint8Array(10)], 'cover.webp', {type: 'image/webp'});
+      const key = await resolveCoverKey(bucket, fileFormData(file), null);
+      expect(key).toMatch(/^achievement-covers\/[\w-]+\.webp$/);
+      const stored = await bucket.get(key!);
+      expect(stored).not.toBeNull();
+    } finally {
+      await dispose();
+    }
+  });
+
+  it('rejects an oversized file', async () => {
+    const {bucket, dispose} = await createTestBucket();
+    try {
+      const file = new File([new Uint8Array(6 * 1024 * 1024)], 'cover.png', {type: 'image/png'});
+      await expect(resolveCoverKey(bucket, fileFormData(file), null)).rejects.toThrow(/smaller/);
+    } finally {
+      await dispose();
+    }
   });
 });

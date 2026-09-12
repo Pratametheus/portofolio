@@ -28,6 +28,9 @@ export async function restoreAchievementFromTrashAction(id: number): Promise<voi
 
 export async function permanentlyDeleteAchievementAction(id: number): Promise<void> {
   const {env} = await getCloudflareContext({async: true});
-  await hardDeleteAchievement(env.DB, id);
+  const coverKey = await hardDeleteAchievement(env.DB, id);
+  if (coverKey) {
+    await env.UPLOADS.delete(coverKey);
+  }
   redirect('/admin/trash');
 }
