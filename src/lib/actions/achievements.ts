@@ -5,10 +5,12 @@ import {
   updateAchievement,
   softDeleteAchievement,
   undoLastAchievementEdit,
+  getAdminAchievement,
   type AchievementInput,
   type AchievementType,
   type AchievementCategory
 } from '@/lib/repositories/achievements';
+import {validateUploadedFile, buildUploadKey} from '@/lib/uploads';
 
 const ACHIEVEMENT_TYPES: AchievementType[] = ['Publikasi', 'Sertifikat'];
 const ACHIEVEMENT_CATEGORIES: AchievementCategory[] = ['Keamanan', 'Pendidikan', 'Pengembangan'];
@@ -17,7 +19,7 @@ const REQUIRED_TEXT_FIELDS = [
   'titleId', 'titleEn', 'issuer', 'year', 'descriptionId', 'descriptionEn'
 ] as const;
 
-export function parseAchievementForm(formData: FormData): AchievementInput {
+export function parseAchievementForm(formData: FormData): Omit<AchievementInput, 'coverKey'> {
   const values: Record<string, string> = {};
   for (const field of REQUIRED_TEXT_FIELDS) {
     const raw = formData.get(field);
@@ -74,19 +76,41 @@ export function parseAchievementForm(formData: FormData): AchievementInput {
   };
 }
 
+export async function resolveCoverKey(
+  bucket: R2Bucket,
+  formData: FormData,
+  existingKey: string | null
+): Promise<string | null> {
+  const file = formData.get('cover');
+  if (!(file instanceof File) || file.size === 0) {
+    return existingKey;
+  }
+  validateUploadedFile(file);
+  const key = buildUploadKey('achievement-covers', file.type);
+  await bucket.put(key, await file.arrayBuffer(), {httpMetadata: {contentType: file.type}});
+  return key;
+}
+
 export async function createAchievementAction(formData: FormData): Promise<void> {
   'use server';
-  const input = parseAchievementForm(formData);
+  const fields = parseAchievementForm(formData);
   const {env} = await getCloudflareContext({async: true});
-  await createAchievement(env.DB, input);
+  const coverKey = await resolveCoverKey(env.UPLOADS, formData, null);
+  await createAchievement(env.DB, {...fields, coverKey});
   redirect('/admin/achievements');
 }
 
 export async function updateAchievementAction(id: number, formData: FormData): Promise<void> {
   'use server';
-  const input = parseAchievementForm(formData);
+  const fields = parseAchievementForm(formData);
   const {env} = await getCloudflareContext({async: true});
-  await updateAchievement(env.DB, id, input);
+  const existing = await getAdminAchievement(env.DB, id);
+  if (!existing) {
+    throw new Error(`Achievement ${id} not found`);
+  }
+  const previousCoverKey = existing.coverKey;
+  const coverKey = await resolveCoverKey(env.UPLOADS, formData, previousCoverKey);
+  await updateAchievement(env.DB, id, {...fields, coverKey});
   redirect('/admin/achievements');
 }
 

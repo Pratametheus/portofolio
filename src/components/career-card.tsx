@@ -7,11 +7,21 @@ export function CareerCard({entry}: {entry: CareerEntry}) {
 
   return (
     <article className="flex gap-4 rounded-2xl border border-border bg-surface p-6">
-      <div
-        className="grid size-12 shrink-0 place-items-center rounded-lg border border-border bg-bg text-sm font-bold text-accent"
-        aria-hidden="true"
-      >
-        {entry.mark}
+      <div className="flex shrink-0 items-center gap-2">
+        {entry.logoUrl ? (
+          <img
+            src={entry.logoUrl}
+            alt=""
+            aria-hidden="true"
+            className="size-12 rounded-lg border border-border object-cover"
+          />
+        ) : null}
+        <div
+          className="grid size-12 shrink-0 place-items-center rounded-lg border border-border bg-bg text-sm font-bold text-accent"
+          aria-hidden="true"
+        >
+          {entry.mark}
+        </div>
       </div>
       <div>
         <h3 className="font-display text-[17px] text-fg">{entry.role}</h3>

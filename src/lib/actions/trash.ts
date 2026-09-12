@@ -13,7 +13,14 @@ export async function restoreCareerEntryFromTrashAction(id: number): Promise<voi
 
 export async function permanentlyDeleteCareerEntryAction(id: number): Promise<void> {
   const {env} = await getCloudflareContext({async: true});
-  await hardDeleteCareerEntry(env.DB, id);
+  const logoKey = await hardDeleteCareerEntry(env.DB, id);
+  if (logoKey) {
+    try {
+      await env.UPLOADS.delete(logoKey);
+    } catch (error) {
+      console.error(`Failed to delete R2 object ${logoKey} after permanent delete:`, error);
+    }
+  }
   redirect('/admin/trash');
 }
 
@@ -25,6 +32,13 @@ export async function restoreAchievementFromTrashAction(id: number): Promise<voi
 
 export async function permanentlyDeleteAchievementAction(id: number): Promise<void> {
   const {env} = await getCloudflareContext({async: true});
-  await hardDeleteAchievement(env.DB, id);
+  const coverKey = await hardDeleteAchievement(env.DB, id);
+  if (coverKey) {
+    try {
+      await env.UPLOADS.delete(coverKey);
+    } catch (error) {
+      console.error(`Failed to delete R2 object ${coverKey} after permanent delete:`, error);
+    }
+  }
   redirect('/admin/trash');
 }

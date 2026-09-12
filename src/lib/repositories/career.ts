@@ -1,3 +1,5 @@
+import {uploadUrl} from '@/lib/uploads';
+
 export type CareerEntry = {
   role: string;
   organization: string;
@@ -5,6 +7,7 @@ export type CareerEntry = {
   category: string;
   mark: string;
   description: string;
+  logoUrl?: string;
 };
 
 export type CareerKind = 'career' | 'education';
@@ -23,6 +26,7 @@ export type CareerEntryRow = {
   mark: string;
   descriptionId: string;
   descriptionEn: string;
+  logoKey: string | null;
   sortOrder: number;
   deletedAt: string | null;
   previousSnapshot: string | null;
@@ -48,6 +52,7 @@ type DbRow = {
   mark: string;
   description_id: string;
   description_en: string;
+  logo_key: string | null;
   sort_order: number;
   deleted_at: string | null;
   previous_snapshot: string | null;
@@ -69,6 +74,7 @@ function toRow(r: DbRow): CareerEntryRow {
     mark: r.mark,
     descriptionId: r.description_id,
     descriptionEn: r.description_en,
+    logoKey: r.logo_key,
     sortOrder: r.sort_order,
     deletedAt: r.deleted_at,
     previousSnapshot: r.previous_snapshot,
@@ -77,6 +83,7 @@ function toRow(r: DbRow): CareerEntryRow {
 }
 
 function toPublic(row: CareerEntryRow, locale: 'id' | 'en'): CareerEntry {
+  const logoUrl = row.logoKey ? uploadUrl(row.logoKey) : undefined;
   return locale === 'id'
     ? {
         role: row.roleId,
@@ -84,7 +91,8 @@ function toPublic(row: CareerEntryRow, locale: 'id' | 'en'): CareerEntry {
         period: row.periodId,
         category: row.categoryId,
         mark: row.mark,
-        description: row.descriptionId
+        description: row.descriptionId,
+        logoUrl
       }
     : {
         role: row.roleEn,
@@ -92,7 +100,8 @@ function toPublic(row: CareerEntryRow, locale: 'id' | 'en'): CareerEntry {
         period: row.periodEn,
         category: row.categoryEn,
         mark: row.mark,
-        description: row.descriptionEn
+        description: row.descriptionEn,
+        logoUrl
       };
 }
 
@@ -139,8 +148,8 @@ export async function createCareerEntry(db: D1Database, input: CareerEntryInput)
     .prepare(
       `INSERT INTO career_entries
         (kind, role_id, role_en, organization_id, organization_en, period_id, period_en,
-         category_id, category_en, mark, description_id, description_en, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+         category_id, category_en, mark, description_id, description_en, logo_key, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .bind(
       input.kind,
@@ -155,6 +164,7 @@ export async function createCareerEntry(db: D1Database, input: CareerEntryInput)
       input.mark,
       input.descriptionId,
       input.descriptionEn,
+      input.logoKey,
       input.sortOrder
     )
     .run();
@@ -180,6 +190,7 @@ export async function updateCareerEntry(
     mark: current.mark,
     descriptionId: current.descriptionId,
     descriptionEn: current.descriptionEn,
+    logoKey: current.logoKey,
     sortOrder: current.sortOrder
   };
 
@@ -188,7 +199,7 @@ export async function updateCareerEntry(
       `UPDATE career_entries SET
         role_id = ?, role_en = ?, organization_id = ?, organization_en = ?,
         period_id = ?, period_en = ?, category_id = ?, category_en = ?,
-        mark = ?, description_id = ?, description_en = ?, sort_order = ?,
+        mark = ?, description_id = ?, description_en = ?, logo_key = ?, sort_order = ?,
         updated_at = datetime('now'),
         previous_snapshot = ?, snapshot_at = datetime('now')
        WHERE id = ?`
@@ -205,6 +216,7 @@ export async function updateCareerEntry(
       input.mark,
       input.descriptionId,
       input.descriptionEn,
+      input.logoKey,
       input.sortOrder,
       JSON.stringify(snapshot),
       id
@@ -222,7 +234,7 @@ export async function undoLastCareerEdit(db: D1Database, id: number): Promise<vo
       `UPDATE career_entries SET
         role_id = ?, role_en = ?, organization_id = ?, organization_en = ?,
         period_id = ?, period_en = ?, category_id = ?, category_en = ?,
-        mark = ?, description_id = ?, description_en = ?, sort_order = ?,
+        mark = ?, description_id = ?, description_en = ?, logo_key = ?, sort_order = ?,
         updated_at = datetime('now'),
         previous_snapshot = NULL, snapshot_at = NULL
        WHERE id = ?`
@@ -239,6 +251,7 @@ export async function undoLastCareerEdit(db: D1Database, id: number): Promise<vo
       snapshot.mark,
       snapshot.descriptionId,
       snapshot.descriptionEn,
+      snapshot.logoKey,
       snapshot.sortOrder,
       id
     )
@@ -256,8 +269,13 @@ export async function restoreCareerEntry(db: D1Database, id: number): Promise<vo
   await db.prepare('UPDATE career_entries SET deleted_at = NULL WHERE id = ?').bind(id).run();
 }
 
-export async function hardDeleteCareerEntry(db: D1Database, id: number): Promise<void> {
+export async function hardDeleteCareerEntry(db: D1Database, id: number): Promise<string | null> {
+  const row = await db
+    .prepare('SELECT logo_key FROM career_entries WHERE id = ?')
+    .bind(id)
+    .first<{logo_key: string | null}>();
   await db.prepare('DELETE FROM career_entries WHERE id = ?').bind(id).run();
+  return row?.logo_key ?? null;
 }
 
 export async function listTrashedCareerEntries(db: D1Database): Promise<CareerEntryRow[]> {

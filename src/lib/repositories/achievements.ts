@@ -1,3 +1,5 @@
+import {uploadUrl} from '@/lib/uploads';
+
 export type AchievementType = 'Publikasi' | 'Sertifikat';
 export type AchievementCategory = 'Keamanan' | 'Pendidikan' | 'Pengembangan';
 
@@ -9,6 +11,7 @@ export type Achievement = {
   category: AchievementCategory;
   description: string;
   url?: string;
+  coverUrl?: string;
 };
 
 export type AchievementRow = {
@@ -22,6 +25,7 @@ export type AchievementRow = {
   descriptionId: string;
   descriptionEn: string;
   url: string | null;
+  coverKey: string | null;
   sortOrder: number;
   deletedAt: string | null;
   previousSnapshot: string | null;
@@ -44,6 +48,7 @@ type DbRow = {
   description_id: string;
   description_en: string;
   url: string | null;
+  cover_key: string | null;
   sort_order: number;
   deleted_at: string | null;
   previous_snapshot: string | null;
@@ -62,6 +67,7 @@ function toRow(r: DbRow): AchievementRow {
     descriptionId: r.description_id,
     descriptionEn: r.description_en,
     url: r.url,
+    coverKey: r.cover_key,
     sortOrder: r.sort_order,
     deletedAt: r.deleted_at,
     previousSnapshot: r.previous_snapshot,
@@ -74,7 +80,8 @@ function toPublic(row: AchievementRow, locale: 'id' | 'en'): Achievement {
     issuer: row.issuer,
     year: row.year,
     type: row.type,
-    category: row.category
+    category: row.category,
+    coverUrl: row.coverKey ? uploadUrl(row.coverKey) : undefined
   };
   return locale === 'id'
     ? {...base, title: row.titleId, description: row.descriptionId, url: row.url ?? undefined}
@@ -125,8 +132,8 @@ export async function createAchievement(db: D1Database, input: AchievementInput)
   await db
     .prepare(
       `INSERT INTO achievements
-        (title_id, title_en, issuer, year, type, category, description_id, description_en, url, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        (title_id, title_en, issuer, year, type, category, description_id, description_en, url, cover_key, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .bind(
       input.titleId,
@@ -138,6 +145,7 @@ export async function createAchievement(db: D1Database, input: AchievementInput)
       input.descriptionId,
       input.descriptionEn,
       input.url,
+      input.coverKey,
       input.sortOrder
     )
     .run();
@@ -160,6 +168,7 @@ export async function updateAchievement(
     descriptionId: current.descriptionId,
     descriptionEn: current.descriptionEn,
     url: current.url,
+    coverKey: current.coverKey,
     sortOrder: current.sortOrder
   };
 
@@ -167,7 +176,7 @@ export async function updateAchievement(
     .prepare(
       `UPDATE achievements SET
         title_id = ?, title_en = ?, issuer = ?, year = ?, type = ?, category = ?,
-        description_id = ?, description_en = ?, url = ?, sort_order = ?,
+        description_id = ?, description_en = ?, url = ?, cover_key = ?, sort_order = ?,
         updated_at = datetime('now'),
         previous_snapshot = ?, snapshot_at = datetime('now')
        WHERE id = ?`
@@ -182,6 +191,7 @@ export async function updateAchievement(
       input.descriptionId,
       input.descriptionEn,
       input.url,
+      input.coverKey,
       input.sortOrder,
       JSON.stringify(snapshot),
       id
@@ -198,7 +208,7 @@ export async function undoLastAchievementEdit(db: D1Database, id: number): Promi
     .prepare(
       `UPDATE achievements SET
         title_id = ?, title_en = ?, issuer = ?, year = ?, type = ?, category = ?,
-        description_id = ?, description_en = ?, url = ?, sort_order = ?,
+        description_id = ?, description_en = ?, url = ?, cover_key = ?, sort_order = ?,
         updated_at = datetime('now'),
         previous_snapshot = NULL, snapshot_at = NULL
        WHERE id = ?`
@@ -213,6 +223,7 @@ export async function undoLastAchievementEdit(db: D1Database, id: number): Promi
       snapshot.descriptionId,
       snapshot.descriptionEn,
       snapshot.url,
+      snapshot.coverKey,
       snapshot.sortOrder,
       id
     )
@@ -227,8 +238,13 @@ export async function restoreAchievement(db: D1Database, id: number): Promise<vo
   await db.prepare('UPDATE achievements SET deleted_at = NULL WHERE id = ?').bind(id).run();
 }
 
-export async function hardDeleteAchievement(db: D1Database, id: number): Promise<void> {
+export async function hardDeleteAchievement(db: D1Database, id: number): Promise<string | null> {
+  const row = await db
+    .prepare('SELECT cover_key FROM achievements WHERE id = ?')
+    .bind(id)
+    .first<{cover_key: string | null}>();
   await db.prepare('DELETE FROM achievements WHERE id = ?').bind(id).run();
+  return row?.cover_key ?? null;
 }
 
 export async function listTrashedAchievements(db: D1Database): Promise<AchievementRow[]> {

@@ -15,7 +15,7 @@ export function AchievementCard({item}: {item: Achievement}) {
 
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-surface">
-      <PublicationCover size="grid" />
+      <PublicationCover size="grid" coverUrl={item.coverUrl} />
       <div className="p-5">
         <h3 className="font-display text-[17px] leading-6 text-fg">{item.title}</h3>
         <p className="mt-2.5 text-sm text-fg-muted">{item.issuer}</p>

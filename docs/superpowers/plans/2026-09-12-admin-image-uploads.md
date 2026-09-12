@@ -48,12 +48,16 @@ alongside this plan.
 - Modify: `wrangler.jsonc`
 - Modify: `next.config.ts`
 - Create: `migrations/0002_add_upload_columns.sql`
+- Modify: `tests/helpers/d1.ts`
 
 **Interfaces:**
 - Produces: an R2 binding named `UPLOADS` (`R2Bucket`, from `cloudflare-env.d.ts` after
   typegen), reachable via `getCloudflareContext({async: true})` in server code and
   `getPlatformProxy` in tests — same access pattern as the existing `DB` binding. Two new
-  nullable columns: `career_entries.logo_key`, `achievements.cover_key`.
+  nullable columns: `career_entries.logo_key`, `achievements.cover_key`, applied to every
+  `createTestDb()`-provisioned ephemeral test database as well as the real local/remote
+  databases (Task 3/4's repository tests read/write these columns and will fail with
+  "no such column" against a test database that only has migration 0001 applied).
 
 - [ ] **Step 1: Create the R2 buckets**
 
@@ -266,20 +270,74 @@ export default createNextIntlPlugin()(nextConfig);
 initOpenNextCloudflareForDev();
 ```
 
-- [ ] **Step 6: Regenerate Cloudflare types and verify**
+- [ ] **Step 6: Make `createTestDb()` apply the new migration too**
+
+Current `tests/helpers/d1.ts` reads and applies only
+`migrations/0001_create_content_tables.sql`. Every repository test that will read or
+write `logo_key`/`cover_key` (Tasks 3 and 4) runs against this ephemeral test database,
+so it must also have migration 0002 applied. Update the top of the file:
+
+```ts
+// tests/helpers/d1.ts
+import {readFileSync} from 'node:fs';
+import path from 'node:path';
+import {getPlatformProxy} from 'wrangler';
+
+// Read migration SQL
+const MIGRATION_SQL = readFileSync(
+  path.resolve(import.meta.dirname, '../../migrations/0001_create_content_tables.sql'),
+  'utf-8'
+);
+const UPLOAD_COLUMNS_MIGRATION_SQL = readFileSync(
+  path.resolve(import.meta.dirname, '../../migrations/0002_add_upload_columns.sql'),
+  'utf-8'
+);
+```
+
+And in `createTestDb`, after running Migration 0001's statements, also run migration
+0002's two `ALTER TABLE` statements (reuse the same split-by-`;` approach already used
+below in the function — the file's existing comment documents its known limits, which
+this migration's two plain `ALTER TABLE` statements don't hit):
+
+```ts
+  for (const statement of statements) {
+    await db.prepare(statement).run();
+  }
+
+  const uploadStatements = UPLOAD_COLUMNS_MIGRATION_SQL
+    .replace(/\r\n/g, '\n')
+    .split(';')
+    .map((stmt) => stmt.trim())
+    .filter((stmt) => stmt.length > 0);
+  for (const statement of uploadStatements) {
+    await db.prepare(statement).run();
+  }
+
+  return {db, dispose: proxy.dispose};
+}
+```
+
+(This replaces the existing `return {db, dispose: proxy.dispose};` line at the end of
+`createTestDb` — the rest of the function, including `resetTestDb`, is unchanged.)
+
+- [ ] **Step 7: Regenerate Cloudflare types and verify**
 
 ```bash
 npm run cf:typegen
 npx tsc --noEmit
+npx vitest run tests/repositories/career.test.ts tests/repositories/achievements.test.ts
 ```
 
-Expected: clean — `cloudflare-env.d.ts` now declares `UPLOADS: R2Bucket` on
-`CloudflareEnv` alongside the existing `DB: D1Database`, and nothing yet references it.
+Expected: `cf:typegen`/`tsc` clean — `cloudflare-env.d.ts` now declares `UPLOADS:
+R2Bucket` on `CloudflareEnv` alongside the existing `DB: D1Database`, and nothing yet
+references it. The two repository test files should still pass unchanged at this point
+(Tasks 3/4 haven't added their new tests yet) — this just confirms `createTestDb()`
+still works correctly with the extra migration applied.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
-git add wrangler.jsonc next.config.ts migrations/0002_add_upload_columns.sql
+git add wrangler.jsonc next.config.ts migrations/0002_add_upload_columns.sql tests/helpers/d1.ts
 git commit -m "feat(uploads): provision R2 bucket and add image-key columns"
 ```
 
@@ -2397,29 +2455,47 @@ Stop the server afterward.
 
 ---
 
-## After Task 8 — manual step (not a task an implementer can do alone)
+## After Task 8 — manual steps (required before this branch is safe to push to main)
 
-`UPLOADS_PUBLIC_BASE_URL` in `src/lib/uploads.ts` is still the placeholder from Task 2.
-Uploaded images are written to R2 and their keys are correctly stored in D1 throughout
-this whole plan — only the *public URL* they resolve to is wrong until this step:
+Merging this branch and pushing to `main` triggers CI's `deploy` job, which will fail
+without the following, since R2 is not yet enabled on the Cloudflare account (a known
+external blocker discovered during Task 1 — `wrangler r2 bucket create` returns API
+error 10042, "Please enable R2 through the Cloudflare Dashboard"). None of this blocks
+local development or testing — R2 bindings emulate fully locally via Miniflare/wrangler
+`--local`, independent of the real account state.
 
-1. In the Cloudflare dashboard: R2 → `portofolio-uploads` → Settings → Public Access →
+**Before pushing this branch's merge to `main`, complete in order:**
+
+1. Enable R2 on the Cloudflare account: dashboard → Account Home → R2 → accept the R2
+   terms (free tier exists but must be turned on once).
+2. Create both buckets:
+   ```sh
+   npx wrangler r2 bucket create portofolio-uploads
+   npx wrangler r2 bucket create portofolio-uploads-staging
+   ```
+3. Apply the pending migration to both remote databases (local/test databases already
+   have it from Task 1):
+   ```sh
+   npx wrangler d1 migrations apply portofolio-admin --remote
+   npx wrangler d1 migrations apply portofolio-admin-staging --remote --env staging
+   ```
+4. In the Cloudflare dashboard: R2 → `portofolio-uploads` → Settings → Public Access →
    Allow Access (enables the bucket's `pub-<hash>.r2.dev` subdomain). Repeat for
    `portofolio-uploads-staging` if staging should also serve images publicly.
-2. Copy the resulting `https://pub-<hash>.r2.dev` URL.
-3. Update `src/lib/uploads.ts`:
+5. Copy the resulting `https://pub-<hash>.r2.dev` URL and update
+   `src/lib/uploads.ts`:
    ```ts
    export const UPLOADS_PUBLIC_BASE_URL = 'https://pub-<hash>.r2.dev';
    ```
-4. Run `npm test -- --run && npx tsc --noEmit && npm run build`, then commit:
-   ```bash
+6. Run `npm test -- --run && npx tsc --noEmit && npm run build`, then commit:
+   ```sh
    git add src/lib/uploads.ts
    git commit -m "fix(uploads): set the real R2 public base URL"
    ```
-5. Deploy and confirm a previously-uploaded image actually renders on the live site
-   (it was uploaded correctly earlier; only its URL was wrong, so no re-upload is
-   needed once this constant is fixed).
+7. Merge/push this branch, then deploy and confirm a real uploaded image renders on
+   the live site.
 
-This is the same shape of step Cloudflare Access was for the admin panel itself — a
-one-time dashboard action outside this repository, which the controller coordinates
-with the user directly rather than delegating to an implementer subagent.
+Until step 2 is done, do not push this branch's merge to `main` — CI's `deploy` job
+will fail on the Worker upload step (a failed deploy does not take down the
+currently-live version, so this is a red CI run, not a production outage, but it's
+avoidable by sequencing steps 1-3 first).

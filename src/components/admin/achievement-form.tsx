@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {AchievementRow} from '@/lib/repositories/achievements';
 import {createAchievementAction, updateAchievementAction} from '@/lib/actions/achievements';
+import {uploadUrl} from '@/lib/uploads';
 
 const FIELD_CLASS =
   'mt-1.5 min-h-11 w-full rounded-lg border border-border bg-bg px-3 text-sm text-fg';
@@ -76,6 +77,22 @@ export function AchievementForm({entry}: {entry: AchievementRow | null}) {
           <label className={LABEL_CLASS}>
             Urutan tampil
             <input className={FIELD_CLASS} name="sortOrder" type="number" defaultValue={entry?.sortOrder ?? 0} />
+          </label>
+          <label className={`${LABEL_CLASS} sm:col-span-2`}>
+            Cover (opsional, PNG/JPEG/WebP, maks 5MB)
+            {entry?.coverKey ? (
+              <img
+                src={uploadUrl(entry.coverKey)}
+                alt=""
+                className="mt-2 h-24 w-40 rounded-lg border border-border object-cover"
+              />
+            ) : null}
+            <input
+              className={`${FIELD_CLASS} p-2`}
+              name="cover"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+            />
           </label>
         </div>
 

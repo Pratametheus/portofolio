@@ -22,6 +22,12 @@
       "migrations_dir": "migrations"
     }
   ],
+  "r2_buckets": [
+    {
+      "binding": "UPLOADS",
+      "bucket_name": "portofolio-uploads"
+    }
+  ],
   "observability": {"enabled": true},
   "env": {
     "staging": {
@@ -41,6 +47,12 @@
           "database_name": "portofolio-admin-staging",
           "database_id": "e30d0675-3529-49c0-9f7d-cf32ad9822e9",
           "migrations_dir": "migrations"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "UPLOADS",
+          "bucket_name": "portofolio-uploads-staging"
         }
       ]
     }
