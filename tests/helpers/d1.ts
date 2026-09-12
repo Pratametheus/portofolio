@@ -7,6 +7,10 @@ const MIGRATION_SQL = readFileSync(
   path.resolve(import.meta.dirname, '../../migrations/0001_create_content_tables.sql'),
   'utf-8'
 );
+const UPLOAD_COLUMNS_MIGRATION_SQL = readFileSync(
+  path.resolve(import.meta.dirname, '../../migrations/0002_add_upload_columns.sql'),
+  'utf-8'
+);
 
 export async function createTestDb(): Promise<{
   db: D1Database;
@@ -40,6 +44,16 @@ export async function createTestDb(): Promise<{
   for (const statement of statements) {
     await db.prepare(statement).run();
   }
+
+  const uploadStatements = UPLOAD_COLUMNS_MIGRATION_SQL
+    .replace(/\r\n/g, '\n')
+    .split(';')
+    .map((stmt) => stmt.trim())
+    .filter((stmt) => stmt.length > 0);
+  for (const statement of uploadStatements) {
+    await db.prepare(statement).run();
+  }
+
   return {db, dispose: proxy.dispose};
 }
 

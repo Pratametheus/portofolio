@@ -4,7 +4,10 @@ import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   experimental: {
-    globalNotFound: true
+    globalNotFound: true,
+    serverActions: {
+      bodySizeLimit: '5mb'
+    }
   },
   images: {
     // Cloudflare Workers Free plan: every `/_next/image` request invokes the
