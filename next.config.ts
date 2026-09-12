@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
     serverActions: {
-      bodySizeLimit: '5mb'
+      bodySizeLimit: '6mb'
     }
   },
   images: {
