@@ -4,6 +4,13 @@
 import {describe, expect, it} from 'vitest';
 import {parseCareerEntryForm, resolveLogoKey} from '@/lib/actions/career-entries';
 import {createTestBucket} from '../helpers/r2';
+import {createTestDb} from '../helpers/d1';
+import {
+  createCareerEntry,
+  listAdminCareerEntries,
+  softDeleteCareerEntry,
+  hardDeleteCareerEntry
+} from '@/lib/repositories/career';
 
 function fd(fields: Record<string, string>): FormData {
   const f = new FormData();
@@ -117,4 +124,70 @@ describe('resolveLogoKey', () => {
       await dispose();
     }
   });
+});
+
+describe('permanent delete R2 cleanup (mirrors trash.ts logic)', () => {
+  it('deletes the R2 object when a permanently-deleted entry had a logo', async () => {
+    // Spinning up both a D1 and an R2 platform proxy in one test is slower than
+    // either alone (each involves its own Miniflare bootstrap) — needs a longer
+    // timeout than vitest's 5000ms default.
+    const {db, dispose: disposeDb} = await createTestDb();
+    const {bucket, dispose: disposeBucket} = await createTestBucket();
+    try {
+      await bucket.put('career-logos/cleanup-test.png', new Uint8Array(10));
+      await createCareerEntry(db, {
+        kind: 'career',
+        roleId: 'R', roleEn: 'R',
+        organizationId: 'O', organizationEn: 'O',
+        periodId: 'P', periodEn: 'P',
+        categoryId: 'C', categoryEn: 'C',
+        mark: 'X',
+        descriptionId: 'D', descriptionEn: 'D',
+        sortOrder: 0,
+        logoKey: 'career-logos/cleanup-test.png'
+      });
+      const [row] = await listAdminCareerEntries(db, 'career');
+      await softDeleteCareerEntry(db, row.id);
+
+      // Mirrors permanentlyDeleteCareerEntryAction's logic exactly
+      const logoKey = await hardDeleteCareerEntry(db, row.id);
+      if (logoKey) {
+        await bucket.delete(logoKey);
+      }
+
+      expect(await bucket.get('career-logos/cleanup-test.png')).toBeNull();
+    } finally {
+      await disposeDb();
+      await disposeBucket();
+    }
+  }, 20000);
+
+  it('does nothing to R2 when a permanently-deleted entry had no logo', async () => {
+    // See timeout note above — same combined D1+R2 proxy setup cost applies.
+    const {db, dispose: disposeDb} = await createTestDb();
+    const {bucket, dispose: disposeBucket} = await createTestBucket();
+    try {
+      await createCareerEntry(db, {
+        kind: 'career',
+        roleId: 'R', roleEn: 'R',
+        organizationId: 'O', organizationEn: 'O',
+        periodId: 'P', periodEn: 'P',
+        categoryId: 'C', categoryEn: 'C',
+        mark: 'X',
+        descriptionId: 'D', descriptionEn: 'D',
+        sortOrder: 0,
+        logoKey: null
+      });
+      const [row] = await listAdminCareerEntries(db, 'career');
+      await softDeleteCareerEntry(db, row.id);
+
+      const logoKey = await hardDeleteCareerEntry(db, row.id);
+      expect(logoKey).toBeNull();
+      // No bucket.delete call should be attempted — nothing to assert on the bucket
+      // itself, but this documents the "no-op when absent" branch explicitly.
+    } finally {
+      await disposeDb();
+      await disposeBucket();
+    }
+  }, 20000);
 });

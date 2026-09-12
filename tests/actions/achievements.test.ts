@@ -5,6 +5,13 @@ import {describe, expect, it} from 'vitest';
 import {parseAchievementForm} from '@/lib/actions/achievements';
 import {createTestBucket} from '../helpers/r2';
 import {resolveCoverKey} from '@/lib/actions/achievements';
+import {createTestDb} from '../helpers/d1';
+import {
+  createAchievement,
+  listAdminAchievements,
+  softDeleteAchievement,
+  hardDeleteAchievement
+} from '@/lib/repositories/achievements';
 
 function fd(fields: Record<string, string>): FormData {
   const f = new FormData();
@@ -106,4 +113,66 @@ describe('resolveCoverKey', () => {
       await dispose();
     }
   });
+});
+
+describe('permanent delete R2 cleanup (mirrors trash.ts logic)', () => {
+  it('deletes the R2 object when a permanently-deleted entry had a cover', async () => {
+    // Spinning up both a D1 and an R2 platform proxy in one test is slower than
+    // either alone (each involves its own Miniflare bootstrap) — needs a longer
+    // timeout than vitest's 5000ms default.
+    const {db, dispose: disposeDb} = await createTestDb();
+    const {bucket, dispose: disposeBucket} = await createTestBucket();
+    try {
+      await bucket.put('achievement-covers/cleanup-test.png', new Uint8Array(10));
+      await createAchievement(db, {
+        titleId: 'Judul', titleEn: 'Title',
+        issuer: 'JUTIF', year: '2026',
+        type: 'Publikasi', category: 'Keamanan',
+        descriptionId: 'Deskripsi.', descriptionEn: 'Description.',
+        url: null,
+        sortOrder: 0,
+        coverKey: 'achievement-covers/cleanup-test.png'
+      });
+      const [row] = await listAdminAchievements(db);
+      await softDeleteAchievement(db, row.id);
+
+      // Mirrors permanentlyDeleteAchievementAction's logic exactly
+      const coverKey = await hardDeleteAchievement(db, row.id);
+      if (coverKey) {
+        await bucket.delete(coverKey);
+      }
+
+      expect(await bucket.get('achievement-covers/cleanup-test.png')).toBeNull();
+    } finally {
+      await disposeDb();
+      await disposeBucket();
+    }
+  }, 20000);
+
+  it('does nothing to R2 when a permanently-deleted entry had no cover', async () => {
+    // See timeout note above — same combined D1+R2 proxy setup cost applies.
+    const {db, dispose: disposeDb} = await createTestDb();
+    const {bucket, dispose: disposeBucket} = await createTestBucket();
+    try {
+      await createAchievement(db, {
+        titleId: 'Judul', titleEn: 'Title',
+        issuer: 'JUTIF', year: '2026',
+        type: 'Publikasi', category: 'Keamanan',
+        descriptionId: 'Deskripsi.', descriptionEn: 'Description.',
+        url: null,
+        sortOrder: 0,
+        coverKey: null
+      });
+      const [row] = await listAdminAchievements(db);
+      await softDeleteAchievement(db, row.id);
+
+      const coverKey = await hardDeleteAchievement(db, row.id);
+      expect(coverKey).toBeNull();
+      // No bucket.delete call should be attempted — nothing to assert on the bucket
+      // itself, but this documents the "no-op when absent" branch explicitly.
+    } finally {
+      await disposeDb();
+      await disposeBucket();
+    }
+  }, 20000);
 });
