@@ -13,7 +13,10 @@ export async function restoreCareerEntryFromTrashAction(id: number): Promise<voi
 
 export async function permanentlyDeleteCareerEntryAction(id: number): Promise<void> {
   const {env} = await getCloudflareContext({async: true});
-  await hardDeleteCareerEntry(env.DB, id);
+  const logoKey = await hardDeleteCareerEntry(env.DB, id);
+  if (logoKey) {
+    await env.UPLOADS.delete(logoKey);
+  }
   redirect('/admin/trash');
 }
 

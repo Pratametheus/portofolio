@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type {CareerEntryRow, CareerKind} from '@/lib/repositories/career';
 import {createCareerEntryAction, updateCareerEntryAction} from '@/lib/actions/career-entries';
+import {uploadUrl} from '@/lib/uploads';
 
 const FIELD_CLASS =
   'mt-1.5 min-h-11 w-full rounded-lg border border-border bg-bg px-3 text-sm text-fg';
@@ -83,6 +84,22 @@ export function CareerEntryForm({kind, entry}: {kind: CareerKind; entry: CareerE
           <label className={LABEL_CLASS}>
             Urutan tampil
             <input className={FIELD_CLASS} name="sortOrder" type="number" defaultValue={entry?.sortOrder ?? 0} />
+          </label>
+          <label className={`${LABEL_CLASS} sm:col-span-2`}>
+            Logo (opsional, PNG/JPEG/WebP, maks 5MB)
+            {entry?.logoKey ? (
+              <img
+                src={uploadUrl(entry.logoKey)}
+                alt=""
+                className="mt-2 size-16 rounded-lg border border-border object-cover"
+              />
+            ) : null}
+            <input
+              className={`${FIELD_CLASS} p-2`}
+              name="logo"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+            />
           </label>
         </div>
 
