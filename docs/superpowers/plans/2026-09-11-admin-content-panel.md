@@ -2082,8 +2082,6 @@ Expected: FAIL — `Cannot find module '@/lib/actions/achievements'`.
 
 ```ts
 // src/lib/actions/achievements.ts
-'use server';
-
 import {redirect} from 'next/navigation';
 import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {
@@ -2161,6 +2159,7 @@ export function parseAchievementForm(formData: FormData): AchievementInput {
 }
 
 export async function createAchievementAction(formData: FormData): Promise<void> {
+  'use server';
   const input = parseAchievementForm(formData);
   const {env} = await getCloudflareContext({async: true});
   await createAchievement(env.DB, input);
@@ -2168,6 +2167,7 @@ export async function createAchievementAction(formData: FormData): Promise<void>
 }
 
 export async function updateAchievementAction(id: number, formData: FormData): Promise<void> {
+  'use server';
   const input = parseAchievementForm(formData);
   const {env} = await getCloudflareContext({async: true});
   await updateAchievement(env.DB, id, input);
@@ -2175,17 +2175,24 @@ export async function updateAchievementAction(id: number, formData: FormData): P
 }
 
 export async function softDeleteAchievementAction(id: number): Promise<void> {
+  'use server';
   const {env} = await getCloudflareContext({async: true});
   await softDeleteAchievement(env.DB, id);
   redirect('/admin/achievements');
 }
 
 export async function undoAchievementEditAction(id: number): Promise<void> {
+  'use server';
   const {env} = await getCloudflareContext({async: true});
   await undoLastAchievementEdit(env.DB, id);
   redirect('/admin/achievements');
 }
 ```
+
+`'use server'` is scoped per-function (not file-level) so that `parseAchievementForm`
+above can stay a synchronous, directly-testable export — a file-level directive would
+force every export to be async, which broke the build in Task 7 until fixed the same
+way (see the Global Constraints note above).
 
 `/pencapaian` and `/riset` are both `force-dynamic` (Task 5), so no revalidation call is
 needed here either.
