@@ -12,7 +12,7 @@ export function PublicationListCard({item, href}: {item: Achievement; href: stri
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-surface sm:flex">
       <a href={href} className="block sm:w-64 sm:shrink-0">
-        <PublicationCover size="list" />
+        <PublicationCover size="list" coverUrl={item.coverUrl} />
       </a>
       <div className="p-6">
         <span className="text-[10px] font-bold uppercase tracking-widest text-fg-muted">
@@ -39,7 +39,7 @@ export function PaperStory({item, locale}: {item: Achievement; locale: Locale}) 
 
   return (
     <div>
-      <PublicationCover size="list" />
+      <PublicationCover size="list" coverUrl={item.coverUrl} />
       <article className="mt-6 max-w-2xl">
         <section className="border-b border-border py-6">
           <h2 className="font-display text-xl text-fg">{t('research.paper.focusTitle')}</h2>

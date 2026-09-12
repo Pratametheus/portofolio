@@ -16,4 +16,22 @@ describe('PublicationCover', () => {
     render(<PublicationCover />);
     expect(screen.getByText('achievements.coverLabel')).toBeInTheDocument();
   });
+
+  it('renders the uploaded cover image instead of the hard-coded graphic when coverUrl is given', () => {
+    const {container} = render(
+      <PublicationCover coverUrl="https://example.r2.dev/achievement-covers/abc.png" />
+    );
+    // The cover image has alt="" (decorative), which gives it an implicit ARIA
+    // role of "presentation" rather than "img" — so it's queried directly
+    // rather than via getByRole.
+    const img = container.querySelector('img');
+    expect(img).toHaveAttribute('src', 'https://example.r2.dev/achievement-covers/abc.png');
+    expect(screen.queryByText('JUTIF')).not.toBeInTheDocument();
+  });
+
+  it('renders the existing hard-coded graphic when coverUrl is absent', () => {
+    const {container} = render(<PublicationCover />);
+    expect(screen.getByText('JUTIF')).toBeInTheDocument();
+    expect(container.querySelector('img')).not.toBeInTheDocument();
+  });
 });

@@ -18,6 +18,44 @@ describe('CareerCard', () => {
     await user.click(screen.getByText('about.career.detailSummary'));
     expect(screen.getByText('Mengajar kelas 4-6.')).toBeVisible();
   });
+
+  it('renders the uploaded logo image alongside the mark badge when logoUrl is present', () => {
+    const {container} = render(
+      <CareerCard
+        entry={{
+          role: 'Guru Informatika',
+          organization: 'SDN Ujung XIII/38',
+          period: 'Mulai April 2026',
+          category: 'Pendidikan',
+          mark: 'SD',
+          description: 'Mengajar komputer.',
+          logoUrl: 'https://example.r2.dev/career-logos/abc.png'
+        }}
+      />
+    );
+    // The logo is decorative (alt="", aria-hidden), which gives it an implicit
+    // ARIA role of "presentation" rather than "img" — so it's queried directly
+    // rather than via getByRole.
+    const img = container.querySelector('img');
+    expect(img).toHaveAttribute('src', 'https://example.r2.dev/career-logos/abc.png');
+    expect(screen.getByText('SD')).toBeInTheDocument();
+  });
+
+  it('renders no image when logoUrl is absent', () => {
+    const {container} = render(
+      <CareerCard
+        entry={{
+          role: 'Guru Informatika',
+          organization: 'SDN Ujung XIII/38',
+          period: 'Mulai April 2026',
+          category: 'Pendidikan',
+          mark: 'SD',
+          description: 'Mengajar komputer.'
+        }}
+      />
+    );
+    expect(container.querySelector('img')).not.toBeInTheDocument();
+  });
 });
 
 describe('Timeline', () => {
