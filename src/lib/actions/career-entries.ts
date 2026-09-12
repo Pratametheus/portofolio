@@ -106,12 +106,12 @@ export async function updateCareerEntryAction(
   const fields = parseCareerEntryForm(formData, kind);
   const {env} = await getCloudflareContext({async: true});
   const existing = await getAdminCareerEntry(env.DB, id);
-  const previousLogoKey = existing?.logoKey ?? null;
+  if (!existing) {
+    throw new Error(`Career entry ${id} not found`);
+  }
+  const previousLogoKey = existing.logoKey;
   const logoKey = await resolveLogoKey(env.UPLOADS, formData, previousLogoKey);
   await updateCareerEntry(env.DB, id, {...fields, logoKey});
-  if (logoKey !== previousLogoKey && previousLogoKey) {
-    await env.UPLOADS.delete(previousLogoKey);
-  }
   redirect(listPathFor(kind));
 }
 

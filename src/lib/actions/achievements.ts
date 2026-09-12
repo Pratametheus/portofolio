@@ -105,12 +105,12 @@ export async function updateAchievementAction(id: number, formData: FormData): P
   const fields = parseAchievementForm(formData);
   const {env} = await getCloudflareContext({async: true});
   const existing = await getAdminAchievement(env.DB, id);
-  const previousCoverKey = existing?.coverKey ?? null;
+  if (!existing) {
+    throw new Error(`Achievement ${id} not found`);
+  }
+  const previousCoverKey = existing.coverKey;
   const coverKey = await resolveCoverKey(env.UPLOADS, formData, previousCoverKey);
   await updateAchievement(env.DB, id, {...fields, coverKey});
-  if (coverKey !== previousCoverKey && previousCoverKey) {
-    await env.UPLOADS.delete(previousCoverKey);
-  }
   redirect('/admin/achievements');
 }
 
