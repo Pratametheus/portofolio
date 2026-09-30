@@ -10,6 +10,7 @@ import {
   type CareerKind
 } from '@/lib/repositories/career';
 import {validateUploadedFile, buildUploadKey} from '@/lib/uploads';
+import {assertAdminAuth} from '@/lib/auth';
 
 const REQUIRED_FIELDS = [
   'roleId', 'roleEn',
@@ -90,6 +91,7 @@ export async function createCareerEntryAction(
   formData: FormData
 ): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const fields = parseCareerEntryForm(formData, kind);
   const {env} = await getCloudflareContext({async: true});
   const logoKey = await resolveLogoKey(env.UPLOADS, formData, null);
@@ -103,6 +105,7 @@ export async function updateCareerEntryAction(
   formData: FormData
 ): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const fields = parseCareerEntryForm(formData, kind);
   const {env} = await getCloudflareContext({async: true});
   const existing = await getAdminCareerEntry(env.DB, id);
@@ -117,6 +120,7 @@ export async function updateCareerEntryAction(
 
 export async function softDeleteCareerEntryAction(kind: CareerKind, id: number): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const {env} = await getCloudflareContext({async: true});
   await softDeleteCareerEntry(env.DB, id);
   redirect(listPathFor(kind));
@@ -124,6 +128,7 @@ export async function softDeleteCareerEntryAction(kind: CareerKind, id: number):
 
 export async function undoCareerEntryEditAction(kind: CareerKind, id: number): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const {env} = await getCloudflareContext({async: true});
   await undoLastCareerEdit(env.DB, id);
   redirect(listPathFor(kind));

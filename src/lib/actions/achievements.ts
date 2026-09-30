@@ -11,6 +11,7 @@ import {
   type AchievementCategory
 } from '@/lib/repositories/achievements';
 import {validateUploadedFile, buildUploadKey} from '@/lib/uploads';
+import {assertAdminAuth} from '@/lib/auth';
 
 const ACHIEVEMENT_TYPES: AchievementType[] = ['Publikasi', 'Sertifikat'];
 const ACHIEVEMENT_CATEGORIES: AchievementCategory[] = ['Keamanan', 'Pendidikan', 'Pengembangan'];
@@ -93,6 +94,7 @@ export async function resolveCoverKey(
 
 export async function createAchievementAction(formData: FormData): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const fields = parseAchievementForm(formData);
   const {env} = await getCloudflareContext({async: true});
   const coverKey = await resolveCoverKey(env.UPLOADS, formData, null);
@@ -102,6 +104,7 @@ export async function createAchievementAction(formData: FormData): Promise<void>
 
 export async function updateAchievementAction(id: number, formData: FormData): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const fields = parseAchievementForm(formData);
   const {env} = await getCloudflareContext({async: true});
   const existing = await getAdminAchievement(env.DB, id);
@@ -116,6 +119,7 @@ export async function updateAchievementAction(id: number, formData: FormData): P
 
 export async function softDeleteAchievementAction(id: number): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const {env} = await getCloudflareContext({async: true});
   await softDeleteAchievement(env.DB, id);
   redirect('/admin/achievements');
@@ -123,6 +127,7 @@ export async function softDeleteAchievementAction(id: number): Promise<void> {
 
 export async function undoAchievementEditAction(id: number): Promise<void> {
   'use server';
+  await assertAdminAuth();
   const {env} = await getCloudflareContext({async: true});
   await undoLastAchievementEdit(env.DB, id);
   redirect('/admin/achievements');

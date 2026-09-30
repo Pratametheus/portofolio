@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
 import {AdminThemeToggle} from '@/components/admin/admin-theme-toggle';
+import {assertAdminAuth} from '@/lib/auth';
 import {bodyFont, jetbrainsMono} from '../fonts';
 import '../globals.css';
 
@@ -16,7 +17,8 @@ const NAV_ITEMS = [
   {href: '/admin/trash', label: 'Sampah'}
 ];
 
-export default function AdminLayout({children}: {children: React.ReactNode}) {
+export default async function AdminLayout({children}: {children: React.ReactNode}) {
+  await assertAdminAuth();
   return (
     <html
       lang="id"
