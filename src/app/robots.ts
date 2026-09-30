@@ -38,7 +38,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       ...BLOCKED_USER_AGENTS.map((userAgent) => ({userAgent, disallow: '/'})),
-      {userAgent: '*', allow: '/'}
+      {userAgent: '*', allow: '/', disallow: ['/admin', '/admin/*']}
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl

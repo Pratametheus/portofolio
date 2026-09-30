@@ -54,8 +54,8 @@ describe('robots', () => {
   const result = robots();
   const rules = Array.isArray(result.rules) ? result.rules : [result.rules];
 
-  it('still allows general crawlers', () => {
-    expect(rules).toContainEqual({userAgent: '*', allow: '/'});
+  it('still allows general crawlers while disallowing admin routes', () => {
+    expect(rules).toContainEqual({userAgent: '*', allow: '/', disallow: ['/admin', '/admin/*']});
   });
 
   it('turns away known aggressive AI and SEO scrapers', () => {
