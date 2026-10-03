@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {notFound} from 'next/navigation';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
 import {AdminThemeToggle} from '@/components/admin/admin-theme-toggle';
 import {assertAdminAuth} from '@/lib/auth';
@@ -18,7 +19,12 @@ const NAV_ITEMS = [
 ];
 
 export default async function AdminLayout({children}: {children: React.ReactNode}) {
-  await assertAdminAuth();
+  try {
+    await assertAdminAuth();
+  } catch {
+    notFound();
+  }
+
   return (
     <html
       lang="id"

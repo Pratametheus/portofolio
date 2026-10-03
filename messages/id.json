@@ -96,6 +96,8 @@
     "title": "Pengujian keamanan yang dicatat dan diterbitkan",
     "count": "{n} publikasi",
     "listCardCta": "Lihat penelitian",
+    "emptyTitle": "Belum ada publikasi",
+    "emptyBody": "Catatan penelitian dan publikasi sedang diperbarui.",
     "paper": {
       "title": "Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing",
       "meta": "JUTIF · Vol 7 No 2 (2026) · hal. 1834–1852 · SINTA 2",

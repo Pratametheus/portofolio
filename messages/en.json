@@ -96,6 +96,8 @@
     "title": "Security testing recorded in public",
     "count": "{n} publication",
     "listCardCta": "See the research",
+    "emptyTitle": "No publications yet",
+    "emptyBody": "Research and publication records are being updated.",
     "paper": {
       "title": "Web Application Security Vulnerability Analysis Using Black Box Testing",
       "meta": "JUTIF · Vol 7 No 2 (2026) · pp. 1834–1852 · SINTA 2",

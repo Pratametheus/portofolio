@@ -29,6 +29,19 @@ describe('buildScholarlyArticleSchema', () => {
   it('menyebut Ferry sebagai penulis pertama', () => {
     expect(schema.author[0].name).toBe('Ferry Andhika Pratama');
   });
+
+  it('menyajikan headline sesuai judul publikasi riil per locale', () => {
+    const idSchema = buildScholarlyArticleSchema('id');
+    const enSchema = buildScholarlyArticleSchema('en');
+    expect(idSchema.headline).toBe(
+      'Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing'
+    );
+    expect(enSchema.headline).toBe(
+      'Web Application Security Vulnerability Analysis Using Black Box Testing'
+    );
+    expect(idSchema.inLanguage).toBe('id');
+    expect(enSchema.inLanguage).toBe('en');
+  });
 });
 
 describe('buildCaseStudyArticleSchema', () => {
