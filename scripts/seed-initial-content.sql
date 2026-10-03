@@ -26,17 +26,17 @@ WHERE NOT EXISTS (
 INSERT INTO achievements
   (title_id, title_en, issuer, year, type, category, description_id, description_en, url, sort_order)
 SELECT
-  'Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing',
-  'Web Application Security Vulnerability Analysis Using Black Box Testing',
+  'Security Assessment of JWKS-Based Authentication: Mitigating JWT Attack Vectors Through Penetration Testing',
+  'Security Assessment of JWKS-Based Authentication: Mitigating JWT Attack Vectors Through Penetration Testing',
   'JUTIF · Vol. 7 No. 2',
   '2026',
   'Publikasi',
   'Keamanan',
-  'Artikel penelitian dengan sepuluh skenario pengujian. Terbit pada halaman 1834–1852 di jurnal terakreditasi SINTA 2.',
-  'A research article with ten test scenarios. Published on pages 1834–1852 in a SINTA 2 accredited journal.',
+  'Artikel penelitian pengujian keamanan autentikasi berbasis JWKS dan mitigasi vektor serangan JWT. Terbit pada halaman 1834–1852 di jurnal terakreditasi SINTA 2.',
+  'A research article evaluating JWKS-based authentication security and mitigating JWT attack vectors through penetration testing. Published on pages 1834–1852 in a SINTA 2 accredited journal.',
   'https://doi.org/10.52436/1.jutif.2026.7.2.5662',
   0
 WHERE NOT EXISTS (
   SELECT 1 FROM achievements
-  WHERE title_id = 'Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing'
+  WHERE title_id = 'Security Assessment of JWKS-Based Authentication: Mitigating JWT Attack Vectors Through Penetration Testing'
 );

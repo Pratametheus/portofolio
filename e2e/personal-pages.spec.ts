@@ -21,7 +21,7 @@ test('achievement search filters the real publication and reset restores it', as
   await expect(page.getByRole('heading', {name: 'Tidak ada hasil yang cocok'})).toBeVisible();
   await page.getByRole('button', {name: 'Hapus filter'}).click();
   await expect(page.getByRole('status')).toHaveText('Total: 1');
-  await expect(page.getByRole('heading', {name: /Analisis Kerentanan Keamanan/})).toBeVisible();
+  await expect(page.getByRole('heading', {name: /Security Assessment of JWKS-Based Authentication/})).toBeVisible();
 });
 
 test('contact copies a draft without submitting a request', async ({page}) => {

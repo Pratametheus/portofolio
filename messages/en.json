@@ -99,13 +99,13 @@
     "emptyTitle": "No publications yet",
     "emptyBody": "Research and publication records are being updated.",
     "paper": {
-      "title": "Web Application Security Vulnerability Analysis Using Black Box Testing",
+      "title": "Security Assessment of JWKS-Based Authentication: Mitigating JWT Attack Vectors Through Penetration Testing",
       "meta": "JUTIF · Vol 7 No 2 (2026) · pp. 1834–1852 · SINTA 2",
       "summary": "The study treated the application as an observable attack surface rather than trusting its implementation. Ten scenarios were exercised, with the method and results preserved in a DOI-linked paper.",
       "doiLabel": "Read the published paper",
       "scenarios": "attack scenarios exercised",
       "focusTitle": "Research focus",
-      "focusBody": "This research examines web application security vulnerabilities using black box testing. City Courier is the context for testing a self-built authentication system.",
+      "focusBody": "This research examines security assessment of JWKS-based authentication and mitigating JWT attack vectors through penetration testing. City Courier is the context for testing a self-built authentication system.",
       "methodTitle": "Method and documentation",
       "methodBody": "Ten test scenarios are documented in the publication. For results, method details, and research limitations, read the manuscript at the publisher.",
       "pubTitle": "Publication",
@@ -113,7 +113,7 @@
       "readAtPublisher": "Read the manuscript at the publisher ↗"
     },
     "meta": {
-      "description": "Web application security vulnerability analysis using black box testing, published with a citable DOI in JUTIF (SINTA 2)."
+      "description": "Security assessment of JWKS-based authentication and mitigating JWT attack vectors through penetration testing, published with a citable DOI in JUTIF (SINTA 2)."
     }
   },
   "achievements": {

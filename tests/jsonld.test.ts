@@ -30,15 +30,13 @@ describe('buildScholarlyArticleSchema', () => {
     expect(schema.author[0].name).toBe('Ferry Andhika Pratama');
   });
 
-  it('menyajikan headline sesuai judul publikasi riil per locale', () => {
+  it('menyajikan headline sesuai judul publikasi riil', () => {
     const idSchema = buildScholarlyArticleSchema('id');
     const enSchema = buildScholarlyArticleSchema('en');
-    expect(idSchema.headline).toBe(
-      'Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing'
-    );
-    expect(enSchema.headline).toBe(
-      'Web Application Security Vulnerability Analysis Using Black Box Testing'
-    );
+    const expectedHeadline =
+      'Security Assessment of JWKS-Based Authentication: Mitigating JWT Attack Vectors Through Penetration Testing';
+    expect(idSchema.headline).toBe(expectedHeadline);
+    expect(enSchema.headline).toBe(expectedHeadline);
     expect(idSchema.inLanguage).toBe('id');
     expect(enSchema.inLanguage).toBe('en');
   });

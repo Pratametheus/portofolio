@@ -15,15 +15,11 @@ export function buildPersonSchema() {
 }
 
 export function buildScholarlyArticleSchema(locale: Locale = 'id') {
-  const headline =
-    locale === 'en'
-      ? 'Web Application Security Vulnerability Analysis Using Black Box Testing'
-      : 'Analisis Kerentanan Keamanan Aplikasi Web Menggunakan Metode Black Box Testing';
-
   return {
     '@context': 'https://schema.org',
     '@type': 'ScholarlyArticle' as const,
-    headline,
+    headline:
+      'Security Assessment of JWKS-Based Authentication: Mitigating JWT Attack Vectors Through Penetration Testing',
     identifier: '10.52436/1.jutif.2026.7.2.5662',
     url: 'https://doi.org/10.52436/1.jutif.2026.7.2.5662',
     datePublished: '2026-04-18',
