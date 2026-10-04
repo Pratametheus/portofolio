@@ -197,9 +197,24 @@
     "title": "Catatan singkat dari orang yang pernah melihat atau memakai karya",
     "intro": "Ruang untuk catatan publik dari orang yang pernah melihat atau memakai karya saya.",
     "emptyTitle": "Belum ada catatan publik",
-    "empty": "Belum ada pesan yang ditampilkan. Buku tamu akan dibuka pada fase berikutnya.",
+    "empty": "Belum ada pesan yang ditampilkan. Jadilah yang pertama meninggalkan jejak!",
+    "count": "{n} catatan",
+    "form": {
+      "heading": "Tinggalkan pesan",
+      "nameLabel": "Nama",
+      "namePlaceholder": "Nama atau nama panggilan",
+      "websiteLabel": "Situs / profil sosial (opsional)",
+      "websitePlaceholder": "https://...",
+      "messageLabel": "Pesan",
+      "messagePlaceholder": "Tulis kesan, masukan, atau sekadar menyapa…",
+      "submit": "Kirim pesan",
+      "submitting": "Mengirim…",
+      "success": "Terima kasih! Pesanmu berhasil dikirim.",
+      "error": "Gagal mengirim pesan. Silakan periksa formulir.",
+      "websiteVisit": "Kunjungi situs"
+    },
     "meta": {
-      "description": "Catatan singkat dari orang yang pernah melihat atau memakai karya. Buku tamu dibuka pada fase berikutnya."
+      "description": "Catatan singkat dan buku tamu publik dari orang yang pernah melihat atau memakai karya."
     }
   },
   "contact": {

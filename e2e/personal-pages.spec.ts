@@ -85,3 +85,10 @@ test('research list opens its story on-page and links to the localized related p
     '/en/work/city-courier'
   );
 });
+
+test('guestbook displays form and empty state initially', async ({page}) => {
+  await page.goto('/id/buku-tamu');
+  await expect(page.getByRole('heading', {name: 'Tinggalkan pesan'})).toBeVisible();
+  await expect(page.getByLabel('Nama')).toBeVisible();
+  await expect(page.getByLabel('Pesan')).toBeVisible();
+});

@@ -4,6 +4,7 @@ const SECTIONS = [
   {href: '/admin/career', title: 'Karier', description: 'Riwayat pekerjaan yang tampil di halaman Tentang.'},
   {href: '/admin/education', title: 'Pendidikan', description: 'Riwayat pendidikan yang tampil di halaman Tentang.'},
   {href: '/admin/achievements', title: 'Pencapaian', description: 'Publikasi dan sertifikat yang tampil di Pencapaian & Riset.'},
+  {href: '/admin/guestbook', title: 'Buku Tamu', description: 'Pesan pengunjung dari halaman Buku Tamu.'},
   {href: '/admin/trash', title: 'Sampah', description: 'Entri yang dihapus — bisa dipulihkan atau dihapus permanen.'}
 ];
 

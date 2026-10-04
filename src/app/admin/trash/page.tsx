@@ -1,11 +1,14 @@
 import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {listTrashedCareerEntries} from '@/lib/repositories/career';
 import {listTrashedAchievements} from '@/lib/repositories/achievements';
+import {listTrashedGuestbookEntries} from '@/lib/repositories/guestbook';
 import {
   restoreCareerEntryFromTrashAction,
   permanentlyDeleteCareerEntryAction,
   restoreAchievementFromTrashAction,
-  permanentlyDeleteAchievementAction
+  permanentlyDeleteAchievementAction,
+  restoreGuestbookFromTrashAction,
+  permanentlyDeleteGuestbookAction
 } from '@/lib/actions/trash';
 
 export const dynamic = 'force-dynamic';
@@ -31,9 +34,10 @@ function PermanentDelete({action}: {action: () => Promise<void>}) {
 
 export default async function AdminTrashPage() {
   const {env} = await getCloudflareContext({async: true});
-  const [careerEntries, achievements] = await Promise.all([
+  const [careerEntries, achievements, guestbookEntries] = await Promise.all([
     listTrashedCareerEntries(env.DB),
-    listTrashedAchievements(env.DB)
+    listTrashedAchievements(env.DB),
+    listTrashedGuestbookEntries(env.DB)
   ]);
 
   return (
@@ -91,6 +95,36 @@ export default async function AdminTrashPage() {
                     </button>
                   </form>
                   <PermanentDelete action={permanentlyDeleteAchievementAction.bind(null, entry.id)} />
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <h2 className="mt-8 font-display text-sm font-semibold text-fg-muted">Buku Tamu</h2>
+      {guestbookEntries.length === 0 ? (
+        <p className="mt-2 text-sm text-fg-muted">Kosong.</p>
+      ) : (
+        <ul className="mt-3 space-y-3">
+          {guestbookEntries.map((entry) => (
+            <li key={entry.id} className="rounded-2xl border border-border bg-surface p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="font-display text-base text-fg">{entry.name}</p>
+                  <p className="mt-1 text-sm text-fg-muted line-clamp-2">{entry.message}</p>
+                  <p className="mt-1 text-xs text-fg-muted/70">dihapus {entry.deletedAt}</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <form action={restoreGuestbookFromTrashAction.bind(null, entry.id)}>
+                    <button
+                      type="submit"
+                      className="min-h-9 rounded-lg border border-border px-3 py-1.5 text-xs text-fg transition-colors hover:bg-surface-2"
+                    >
+                      Pulihkan
+                    </button>
+                  </form>
+                  <PermanentDelete action={permanentlyDeleteGuestbookAction.bind(null, entry.id)} />
                 </div>
               </div>
             </li>

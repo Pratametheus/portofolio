@@ -11,6 +11,10 @@ const UPLOAD_COLUMNS_MIGRATION_SQL = readFileSync(
   path.resolve(import.meta.dirname, '../../migrations/0002_add_upload_columns.sql'),
   'utf-8'
 );
+const GUESTBOOK_MIGRATION_SQL = readFileSync(
+  path.resolve(import.meta.dirname, '../../migrations/0003_create_guestbook_table.sql'),
+  'utf-8'
+);
 
 export async function createTestDb(): Promise<{
   db: D1Database;
@@ -54,9 +58,24 @@ export async function createTestDb(): Promise<{
     await db.prepare(statement).run();
   }
 
+  const guestbookStatements = GUESTBOOK_MIGRATION_SQL
+    .replace(/\r\n/g, '\n')
+    .split(';')
+    .map((stmt) => {
+      return stmt
+        .split('\n')
+        .filter((line) => !line.trim().startsWith('--'))
+        .join(' ')
+        .trim();
+    })
+    .filter((stmt) => stmt.length > 0);
+  for (const statement of guestbookStatements) {
+    await db.prepare(statement).run();
+  }
+
   return {db, dispose: proxy.dispose};
 }
 
 export async function resetTestDb(db: D1Database): Promise<void> {
-  await db.exec('DELETE FROM career_entries; DELETE FROM achievements;');
+  await db.exec('DELETE FROM career_entries; DELETE FROM achievements; DELETE FROM guestbook_entries;');
 }

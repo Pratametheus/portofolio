@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   {href: '/admin/career', label: 'Karier'},
   {href: '/admin/education', label: 'Pendidikan'},
   {href: '/admin/achievements', label: 'Pencapaian'},
+  {href: '/admin/guestbook', label: 'Buku Tamu'},
   {href: '/admin/trash', label: 'Sampah'}
 ];
 

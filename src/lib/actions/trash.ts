@@ -4,6 +4,7 @@ import {redirect} from 'next/navigation';
 import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {restoreCareerEntry, hardDeleteCareerEntry} from '@/lib/repositories/career';
 import {restoreAchievement, hardDeleteAchievement} from '@/lib/repositories/achievements';
+import {restoreGuestbookEntry, hardDeleteGuestbookEntry} from '@/lib/repositories/guestbook';
 import {assertAdminAuth} from '@/lib/auth';
 
 export async function restoreCareerEntryFromTrashAction(id: number): Promise<void> {
@@ -45,5 +46,19 @@ export async function permanentlyDeleteAchievementAction(id: number): Promise<vo
       console.error(`Failed to delete R2 object ${coverKey} after permanent delete:`, error);
     }
   }
+  redirect('/admin/trash');
+}
+
+export async function restoreGuestbookFromTrashAction(id: number): Promise<void> {
+  await assertAdminAuth();
+  const {env} = await getCloudflareContext({async: true});
+  await restoreGuestbookEntry(env.DB, id);
+  redirect('/admin/trash');
+}
+
+export async function permanentlyDeleteGuestbookAction(id: number): Promise<void> {
+  await assertAdminAuth();
+  const {env} = await getCloudflareContext({async: true});
+  await hardDeleteGuestbookEntry(env.DB, id);
   redirect('/admin/trash');
 }
