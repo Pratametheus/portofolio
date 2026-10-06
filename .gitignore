@@ -47,6 +47,7 @@ next-env.d.ts
 
 # superpowers
 .superpowers/
+.worktrees/
 
 # agent-local tooling & transient run state
 .claude/
