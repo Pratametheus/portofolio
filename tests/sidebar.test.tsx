@@ -62,14 +62,29 @@ describe('Sidebar', () => {
     expect(screen.getByText('Membangun · Mengajar · Menguji')).toBeInTheDocument();
   });
 
-  it('opens the mobile drawer and closes it with Escape', async () => {
+  it('opens a labelled drawer and restores trigger focus after backdrop close', async () => {
     const user = userEvent.setup();
     render(<Sidebar />);
     const trigger = screen.getByRole('button', {name: /menu/i});
-    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
     await user.click(trigger);
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    await user.keyboard('{Escape}');
+    expect(screen.getByRole('dialog', {name: 'Menu'})).toBeInTheDocument();
+    expect(document.activeElement).not.toBe(trigger);
+
+    await user.click(screen.getByRole('button', {name: 'Tutup navigasi'}));
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveFocus();
+  });
+
+  it('closes the mobile drawer with Escape and restores trigger focus', async () => {
+    const user = userEvent.setup();
+    render(<Sidebar />);
+    const trigger = screen.getByRole('button', {name: /menu/i});
+    await user.click(trigger);
+
+    await user.keyboard('{Escape}');
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveFocus();
   });
 });

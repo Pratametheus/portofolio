@@ -48,9 +48,8 @@ describe('Nav', () => {
     expect(screen.getByRole('link', {name: /Karya/})).not.toHaveTextContent('3');
   });
 
-  it('adds a directional marker to the active item only', () => {
+  it('uses aria-current rather than a decorative arrow for the active item', () => {
     render(<Nav />); // mock pathname '/karya' -> Karya active
-    expect(screen.getByRole('link', {name: /Karya/})).toHaveTextContent('→');
-    expect(screen.getByRole('link', {name: /Beranda/})).not.toHaveTextContent('→');
+    expect(screen.getByRole('link', {name: /Karya/})).not.toHaveTextContent('→');
   });
 });

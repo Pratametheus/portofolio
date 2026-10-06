@@ -34,14 +34,14 @@ export default function ThemeToggle() {
   }
 
   return (
-    <div role="group" aria-label={t('sidebar.themeGroupLabel')} className="inline-flex rounded-lg border border-border p-0.5">
+    <div role="group" aria-label={t('sidebar.themeGroupLabel')} className="inline-flex border border-border p-0.5">
       {THEMES.map((option) => (
         <button
           key={option}
           type="button"
           aria-pressed={theme === option}
           onClick={() => choose(option)}
-          className="min-h-6 rounded-md px-2 py-1 font-mono text-xs text-fg-muted transition-colors aria-pressed:bg-surface-2 aria-pressed:text-fg"
+          className="min-h-11 min-w-11 px-3 py-2 font-mono text-xs text-fg-muted transition-[background-color,color] duration-200 aria-pressed:bg-surface-2 aria-pressed:text-fg"
         >
           {t(LABEL_KEY[option])}
         </button>

@@ -32,7 +32,6 @@ export function NavItem({
       {count != null ? (
         <span className="ml-1 rounded border border-border px-1.5 text-[10px] text-fg-muted">{count}</span>
       ) : null}
-      {active ? <span aria-hidden="true" className="ml-auto text-accent">→</span> : null}
     </Link>
   );
 }

@@ -77,7 +77,7 @@ export default function Sidebar({workCount}: {workCount?: number}) {
           className="inline-flex min-h-11 items-center gap-3 rounded-full border border-border px-5 text-sm text-fg transition-colors hover:bg-surface"
         >
           Menu
-          <span aria-hidden="true">{open ? '−' : '+'}</span>
+          <span aria-hidden="true">{open ? 'Tutup' : 'Buka'}</span>
         </button>
       </div>
 
@@ -86,20 +86,22 @@ export default function Sidebar({workCount}: {workCount?: number}) {
           type="button"
           aria-label="Tutup navigasi"
           onClick={closeDrawer}
-          className="fixed inset-0 top-20 z-40 bg-bg/70 backdrop-blur-sm"
+          className="fixed inset-0 top-16 z-40 bg-bg/70 lg:hidden"
         />
       ) : null}
 
       <div
         ref={drawerRef}
         id="sidebar-drawer"
+        role={open ? 'dialog' : undefined}
+        aria-modal={open || undefined}
         aria-label="Menu"
-        className={`${open ? 'flex' : 'hidden'} absolute right-4 top-20 z-50 max-h-[calc(100dvh-96px)] w-[min(440px,calc(100vw-32px))] flex-col overflow-y-auto rounded-2xl border border-border bg-bg p-6 shadow-xl lg:static lg:flex lg:max-h-full lg:w-auto lg:rounded-none lg:border-0 lg:p-0 lg:shadow-none`}
+        className={`absolute right-4 top-20 z-50 flex max-h-[calc(100dvh-96px)] w-[min(400px,calc(100vw-32px))] flex-col overflow-y-auto rounded-xl border border-border bg-bg p-5 transition-[opacity,transform] duration-200 ease-out ${open ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'} lg:static lg:pointer-events-auto lg:flex lg:max-h-full lg:w-auto lg:translate-y-0 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:opacity-100`}
       >
-        <div className="mb-4 flex flex-col items-start gap-3 pt-3 lg:pt-0">
+        <div className="mb-5 flex flex-col items-start gap-3 pt-1 lg:pt-0">
           <div
             aria-label={t('sidebar.name')}
-            className="relative grid size-[68px] place-content-center rounded-[20px] border border-accent/40 bg-surface font-display text-[28px] font-semibold lowercase text-accent"
+            className="relative grid size-14 place-content-center rounded-lg border border-border bg-surface font-display text-2xl font-semibold lowercase text-accent"
           >
             fa
             <span className="absolute bottom-3 right-4 text-accent">.</span>

@@ -89,9 +89,9 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
         <Noise />
         <NextIntlClientProvider messages={messages}>
-          <div className="mx-auto max-w-[1190px] px-6 lg:grid lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-12">
+          <div className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16 lg:px-8">
             <Sidebar workCount={getAllCaseStudies(routing.defaultLocale).length} />
-            <div className="min-w-0">{children}</div>
+            <div className="min-w-0 pb-12 lg:pb-16">{children}</div>
           </div>
         </NextIntlClientProvider>
       </body>

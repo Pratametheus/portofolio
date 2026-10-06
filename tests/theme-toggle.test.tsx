@@ -38,12 +38,22 @@ describe('ThemeToggle', () => {
     expect(screen.getByRole('button', {name: /terang|light/i})).toBeInTheDocument();
     expect(screen.getByRole('button', {name: /gelap|malam|night|dark/i})).toBeInTheDocument();
   });
-  it('switches the document theme and persists it', async () => {
+  it('persists both selections and updates their pressed state', async () => {
     const user = userEvent.setup();
     render(<ThemeToggle />);
-    await user.click(screen.getByRole('button', {name: /terang|light/i}));
+    const light = screen.getByRole('button', {name: /terang|light/i});
+    const night = screen.getByRole('button', {name: /gelap|malam|night|dark/i});
+
+    await user.click(light);
     expect(document.documentElement.dataset.theme).toBe('light');
     expect(localStorage.getItem('ruang-kerja-theme')).toBe('light');
-    expect(screen.getByRole('button', {name: /terang|light/i})).toHaveAttribute('aria-pressed', 'true');
+    expect(light).toHaveAttribute('aria-pressed', 'true');
+    expect(night).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(night);
+    expect(document.documentElement.dataset.theme).toBe('night');
+    expect(localStorage.getItem('ruang-kerja-theme')).toBe('night');
+    expect(light).toHaveAttribute('aria-pressed', 'false');
+    expect(night).toHaveAttribute('aria-pressed', 'true');
   });
 });
