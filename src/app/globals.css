@@ -20,28 +20,28 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Night — default, server-rendered as <html data-theme="night">.
-   Redesign palette (spec 2026-09-09 §3). Contrast:
-   fg/bg 16.39 · fg-muted/bg 7.76 · fg-muted/surface 6.94 · on-accent/accent 12.82 — all >= 4.5. */
+/* Night default, server-rendered as <html data-theme="night">.
+   Charcoal and slate keep extended reading calm; the muted warm accent remains a
+   navigational cue without becoming a dominant yellow surface. */
 :root,
 :root[data-theme="night"] {
-  --bg: #101112;
-  --surface: #1b1d1e;
-  --surface-2: #232427;
-  --border: #33383b;
-  --fg: #eeefed;
-  --fg-muted: #a1a7a9;
-  --accent: #efd45d;
-  --accent-dim: rgb(239 212 93 / 0.14);
-  --on-accent: #101112;
-  --color-bg: #101112;
-  --color-surface: #1b1d1e;
-  --color-surface-2: #232427;
-  --color-border: #33383b;
-  --color-fg: #eeefed;
-  --color-fg-muted: #a1a7a9;
-  --color-accent: #efd45d;
-  --color-on-accent: #101112;
+  --bg: #25282a;
+  --surface: #303437;
+  --surface-2: #3d4246;
+  --border: #4d5358;
+  --fg: #f4f1ea;
+  --fg-muted: #bab5aa;
+  --accent: #b98558;
+  --accent-dim: rgb(185 133 88 / 0.16);
+  --on-accent: #25282a;
+  --color-bg: #25282a;
+  --color-surface: #303437;
+  --color-surface-2: #3d4246;
+  --color-border: #4d5358;
+  --color-fg: #f4f1ea;
+  --color-fg-muted: #bab5aa;
+  --color-accent: #b98558;
+  --color-on-accent: #25282a;
   color-scheme: dark;
 }
 

@@ -31,4 +31,23 @@ describe('Stagger', () => {
     expect(screen.getByText('a')).toBeVisible();
     expect(screen.getByText('b')).toBeVisible();
   });
+
+  it('under prefers-reduced-motion keeps every revealed child in its final visible state', () => {
+    mockReducedMotion(true);
+    const {container} = render(
+      <Stagger>
+        <Reveal>first record</Reveal>
+        <Reveal>second record</Reveal>
+        <Reveal>third record</Reveal>
+      </Stagger>
+    );
+
+    for (const name of ['first record', 'second record', 'third record']) {
+      const child = screen.getByText(name);
+      expect(child).toBeVisible();
+      expect(child.getAttribute('style') ?? '').not.toMatch(/opacity:\s*(?:0|0\.0+)/);
+      expect(child.getAttribute('style') ?? '').not.toContain('transform: translateY');
+    }
+    expect(container.firstElementChild?.getAttribute('style') ?? '').not.toMatch(/opacity:\s*(?:0|0\.0+)/);
+  });
 });

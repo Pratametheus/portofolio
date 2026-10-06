@@ -4,16 +4,16 @@ import path from 'node:path';
 
 const css = readFileSync(path.resolve(__dirname, '../src/app/globals.css'), 'utf8');
 
-// Redesign palette (spec 2026-09-09 §3). Night = sandbox Option A; light = adapted warm paper.
+// Editorial redesign: charcoal/slate reading surfaces with a muted warm accent.
 const NIGHT: Array<[string, string]> = [
-  ['--color-bg', '#101112'],
-  ['--color-surface', '#1b1d1e'],
-  ['--color-surface-2', '#232427'],
-  ['--color-border', '#33383b'],
-  ['--color-fg', '#eeefed'],
-  ['--color-fg-muted', '#a1a7a9'],
-  ['--color-accent', '#efd45d'],
-  ['--color-on-accent', '#101112']
+  ['--color-bg', '#25282a'],
+  ['--color-surface', '#303437'],
+  ['--color-surface-2', '#3d4246'],
+  ['--color-border', '#4d5358'],
+  ['--color-fg', '#f4f1ea'],
+  ['--color-fg-muted', '#bab5aa'],
+  ['--color-accent', '#b98558'],
+  ['--color-on-accent', '#25282a']
 ];
 const LIGHT: Array<[string, string]> = [
   ['--color-bg', '#f7f3ec'],
