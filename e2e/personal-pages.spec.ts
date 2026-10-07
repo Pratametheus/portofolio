@@ -86,6 +86,13 @@ test('research list opens its story on-page and links to the localized related p
   );
 });
 
+test('public pages have exactly one visible H1', async ({page}) => {
+  for (const path of ['/id', '/id/karya', '/id/riset', '/id/kontak', '/id/buku-tamu']) {
+    await page.goto(path);
+    await expect(page.locator('main h1')).toHaveCount(1);
+  }
+});
+
 test('guestbook displays form and empty state initially', async ({page}) => {
   await page.goto('/id/buku-tamu');
   await expect(page.getByRole('heading', {name: 'Tinggalkan pesan'})).toBeVisible();

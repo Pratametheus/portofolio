@@ -26,8 +26,19 @@ export default async function ContactPage({params}: {params: Promise<{locale: st
   return (
     <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
       <PageHeading title={t('title')} description={t('intro')} />
-      <section><SectionHead icon="contact" title={t('connectTitle')} /><div className="mt-5 grid gap-5 sm:grid-cols-2"><SocialCard variant="github" /><SocialCard variant="email" /></div></section>
-      <section className="mt-8 border-t border-border pt-8"><SectionHead icon="build" title={t('form.prepareTitle')} description={t('form.note')} /><div className="mt-5"><ContactDraftForm /></div></section>
+      <section>
+        <SectionHead icon="contact" title={t('connectTitle')} />
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          <SocialCard variant="github" />
+          <SocialCard variant="email" />
+        </div>
+      </section>
+      <section className="mt-12 border-t border-border pt-8">
+        <SectionHead icon="build" title={t('form.prepareTitle')} description={t('form.note')} />
+        <div className="mt-5">
+          <ContactDraftForm />
+        </div>
+      </section>
       <SiteFooter />
     </main>
   );

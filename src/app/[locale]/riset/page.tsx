@@ -57,13 +57,15 @@ export default async function ResearchPage({params}: {params: Promise<{locale: s
       {publication ? (
         <>
           <section aria-labelledby="publication-count">
-            <h2 id="publication-count" className="mb-4 font-display text-lg text-fg">{t('count', {n: achievements.length})}</h2>
+            <h2 id="publication-count" className="mb-4 font-mono text-xs uppercase tracking-wider text-fg-muted">
+              {t('count', {n: achievements.length})}
+            </h2>
             <PublicationListCard item={publication} href="#paper-story" />
           </section>
-          <section id="paper-story" className="mt-10 scroll-mt-8 border-t border-border pt-8">
-            <h2 className="font-display text-2xl text-fg">{t('paper.title')}</h2>
-            <p className="mt-2 text-xs text-fg-muted">{t('paper.meta')}</p>
-            <p className="mt-4 max-w-2xl text-[15px] leading-8 text-fg-muted">{t('paper.summary')}</p>
+          <section id="paper-story" className="mt-12 scroll-mt-8 border-t border-border pt-8">
+            <h2 className="font-display text-2xl font-semibold tracking-tight text-fg">{t('paper.title')}</h2>
+            <p className="mt-2 font-mono text-xs text-fg-muted">{t('paper.meta')}</p>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-fg-muted sm:text-[15px]">{t('paper.summary')}</p>
             <PaperStory item={publication} locale={locale} />
           </section>
         </>

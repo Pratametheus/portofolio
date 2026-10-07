@@ -44,7 +44,7 @@ export default async function DashboardPage({params}: {params: Promise<{locale: 
     <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
       <PageHeading title={nav('dashboard')} description={t('intro')} />
       {sections.map(({key, labels}, index) => (
-        <section key={key} className={index === 0 ? '' : 'mt-8 border-t border-border pt-8'}>
+        <section key={key} className={index === 0 ? '' : 'mt-12 border-t border-border pt-8'}>
           <SectionHead
             icon="dashboard"
             title={t(`${key}.title`)}
@@ -53,7 +53,7 @@ export default async function DashboardPage({params}: {params: Promise<{locale: 
                 href="https://github.com/Pratametheus"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent"
+                className="text-xs text-accent transition-colors hover:text-fg"
               >
                 {t('github.link')} <span aria-hidden="true">↗</span>
               </a>
@@ -64,13 +64,13 @@ export default async function DashboardPage({params}: {params: Promise<{locale: 
           </div>
           {key === 'github' ? (
             <>
-              <div className="mt-5">
+              <div className="mt-6">
                 <ConnectionState
                   title={t('github.calendarEmpty.title')}
                   description={t('github.calendarEmpty.description')}
                 />
               </div>
-              <div className="mt-8">
+              <div className="mt-10">
                 <SectionHead title={t('repos.title')} />
                 <RepoGrid caseStudies={getAllCaseStudies(locale)} locale={locale} />
               </div>

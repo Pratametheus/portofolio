@@ -51,7 +51,7 @@ export default async function AboutPage({params}: {params: Promise<{locale: stri
     <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
       <PageHeading title={t('title')} description={t('biography1')} />
 
-      <Stagger className="max-w-2xl space-y-5 text-sm leading-8 text-fg-muted">
+      <Stagger className="max-w-2xl space-y-4 text-sm leading-relaxed text-fg-muted sm:text-[15px]">
         <Reveal>
           <p>{t('biography2')}</p>
         </Reveal>
@@ -62,22 +62,22 @@ export default async function AboutPage({params}: {params: Promise<{locale: stri
           <p>{t('biography4')}</p>
         </Reveal>
         <Reveal>
-          <p className="text-fg-muted">
+          <p className="pt-2 text-fg-muted">
             {t('signoff')}
             <br />
-            <strong className="text-accent">Ferry Andhika Pratama</strong>
+            <strong className="font-medium text-fg">Ferry Andhika Pratama</strong>
           </p>
         </Reveal>
       </Stagger>
 
-      <section className="mt-8 border-t border-border pt-8">
+      <section className="mt-12 border-t border-border pt-8">
         <SectionHead icon="work" title={t('career.title')} description={t('career.description')} />
         <div className="mt-6">
           <Timeline entries={career} />
         </div>
       </section>
 
-      <section className="mt-8 border-t border-border pt-8">
+      <section className="mt-12 border-t border-border pt-8">
         <SectionHead icon="teach" title={t('education.title')} description={t('education.description')} />
         <div className="mt-6">
           <Timeline entries={education}>
@@ -90,7 +90,7 @@ export default async function AboutPage({params}: {params: Promise<{locale: stri
         </div>
       </section>
 
-      <div className="mt-8 border-t border-border pt-8">
+      <div className="mt-12 border-t border-border pt-8">
         <SkillList />
       </div>
 

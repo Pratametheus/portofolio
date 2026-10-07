@@ -30,7 +30,27 @@ export default async function LinksPage({params}: {params: Promise<{locale: stri
     <main className="mx-auto max-w-3xl px-6 py-10 lg:px-0 lg:py-12">
       <PageHeading title={t('title')} description={t('intro')} />
       <ul className="space-y-3">
-        {links.map((link) => <li key={link.url}><a href={link.url} target="_blank" rel="noopener noreferrer" className="group flex items-start gap-4 rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent"><Icon name="links" className="mt-0.5 size-5 shrink-0 text-accent" /><span className="min-w-0 flex-1"><span className="font-display text-lg text-fg group-hover:text-accent">{link.label} <span aria-hidden="true">↗</span></span><span className="mt-1.5 block text-sm leading-6 text-fg-muted">{link.description}</span></span><span className="rounded-full border border-border px-2 py-1 text-[9px] font-bold tracking-widest text-fg-muted">{link.badge}</span></a></li>)}
+        {links.map((link) => (
+          <li key={link.url}>
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-start gap-4 rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent"
+            >
+              <Icon name="links" className="mt-0.5 size-5 shrink-0 text-accent" />
+              <span className="min-w-0 flex-1">
+                <span className="font-display text-base font-semibold text-fg transition-colors group-hover:text-accent sm:text-lg">
+                  {link.label} <span aria-hidden="true">↗</span>
+                </span>
+                <span className="mt-1 block text-sm leading-relaxed text-fg-muted">{link.description}</span>
+              </span>
+              <span className="rounded border border-border px-2 py-0.5 font-mono text-[10px] text-fg-muted">
+                {link.badge}
+              </span>
+            </a>
+          </li>
+        ))}
       </ul>
       <SiteFooter />
     </main>
