@@ -9,14 +9,33 @@ import Nav from './nav';
 import ThemeToggle from './theme-toggle';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const DESKTOP_QUERY = '(min-width: 1024px)';
 
 export default function Sidebar({workCount}: {workCount?: number}) {
   const pathname = usePathname();
   const t = useTranslations();
   const [open, setOpen] = useState(false);
+  // Sengaja false agar SSR dan hidrasi pertama identik (tidak ada window di
+  // server); nilai benar disinkronkan useEffect matchMedia setelah mount.
+  const [desktop, setDesktop] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
   const previousPathnameRef = useRef(pathname);
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return;
+
+    const media = window.matchMedia(DESKTOP_QUERY);
+    const updateDesktop = () => setDesktop(media.matches);
+
+    updateDesktop();
+    media.addEventListener('change', updateDesktop);
+    return () => media.removeEventListener('change', updateDesktop);
+  }, []);
+
+  useEffect(() => {
+    if (desktop) setOpen(false);
+  }, [desktop]);
 
   useEffect(() => {
     if (previousPathnameRef.current === pathname) return;
@@ -25,7 +44,7 @@ export default function Sidebar({workCount}: {workCount?: number}) {
   }, [pathname]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || desktop) return;
 
     const drawer = drawerRef.current;
     const focusable = Array.from(drawer?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []);
@@ -61,6 +80,8 @@ export default function Sidebar({workCount}: {workCount?: number}) {
     triggerRef.current?.focus();
   }
 
+  const drawerOpen = open && !desktop;
+
   return (
     <header className="relative z-50 lg:sticky lg:top-8 lg:h-[calc(100dvh-64px)]">
       <div className="flex min-h-16 items-center justify-between border-b border-border px-6 lg:hidden">
@@ -70,7 +91,7 @@ export default function Sidebar({workCount}: {workCount?: number}) {
         <button
           ref={triggerRef}
           type="button"
-          aria-expanded={open}
+          aria-expanded={drawerOpen}
           aria-controls="sidebar-drawer"
           aria-label="Buka menu"
           onClick={() => setOpen((current) => !current)}
@@ -81,7 +102,7 @@ export default function Sidebar({workCount}: {workCount?: number}) {
         </button>
       </div>
 
-      {open ? (
+      {drawerOpen ? (
         <button
           type="button"
           aria-label="Tutup navigasi"
@@ -93,10 +114,12 @@ export default function Sidebar({workCount}: {workCount?: number}) {
       <div
         ref={drawerRef}
         id="sidebar-drawer"
-        role={open ? 'dialog' : undefined}
-        aria-modal={open || undefined}
+        role={drawerOpen ? 'dialog' : undefined}
+        aria-modal={drawerOpen || undefined}
+        aria-hidden={!desktop && !drawerOpen}
+        inert={!desktop && !drawerOpen}
         aria-label="Menu"
-        className={`absolute right-4 top-20 z-50 flex max-h-[calc(100dvh-96px)] w-[min(400px,calc(100vw-32px))] flex-col overflow-y-auto rounded-xl border border-border bg-bg p-5 transition-[opacity,transform] duration-200 ease-out ${open ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'} lg:static lg:pointer-events-auto lg:flex lg:max-h-full lg:w-auto lg:translate-y-0 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:opacity-100`}
+        className={`absolute right-4 top-20 z-50 flex max-h-[calc(100dvh-96px)] w-[min(400px,calc(100vw-32px))] flex-col overflow-y-auto rounded-xl border border-border bg-bg p-5 transition-[opacity,transform] duration-200 ease-out ${drawerOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'} lg:static lg:pointer-events-auto lg:flex lg:max-h-full lg:w-auto lg:translate-y-0 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:opacity-100`}
       >
         <div className="mb-5 flex flex-col items-start gap-3 pt-1 lg:pt-0">
           <div
