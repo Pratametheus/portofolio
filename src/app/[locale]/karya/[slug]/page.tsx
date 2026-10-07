@@ -101,7 +101,7 @@ export default async function CaseStudyPage({
         <TechBadgeRow slugs={stackSlugs} size={28} />
       </div>
 
-      <figure className="relative mt-8 aspect-[16/10] overflow-hidden rounded-2xl bg-surface-2">
+      <figure className="relative mt-8 aspect-[16/10] overflow-hidden rounded-xl border border-border bg-surface-2">
         <ParallaxY className="absolute -inset-4">
           <Image
             src={caseStudy.thumbnail.src}
@@ -117,30 +117,30 @@ export default async function CaseStudyPage({
       <article className="mt-8 max-w-2xl">
         {teaserA ? (
           <section className="border-b border-border py-6">
-            <h2 className="font-display text-xl text-fg">{teaserA.heading}</h2>
-            <p className="mt-3 text-[15px] leading-8 text-fg-muted">{firstParagraph(teaserA)}</p>
+            <h2 className="font-display text-lg font-semibold text-fg sm:text-xl">{teaserA.heading}</h2>
+            <p className="mt-2.5 text-sm leading-relaxed text-fg-muted sm:text-[15px]">{firstParagraph(teaserA)}</p>
           </section>
         ) : null}
         {teaserB ? (
           <section className="border-b border-border py-6">
-            <h2 className="font-display text-xl text-fg">{teaserB.heading}</h2>
-            <p className="mt-3 text-[15px] leading-8 text-fg-muted">{firstParagraph(teaserB)}</p>
+            <h2 className="font-display text-lg font-semibold text-fg sm:text-xl">{teaserB.heading}</h2>
+            <p className="mt-2.5 text-sm leading-relaxed text-fg-muted sm:text-[15px]">{firstParagraph(teaserB)}</p>
           </section>
         ) : null}
         <section className="border-b border-border py-6">
-          <h2 className="font-display text-xl text-fg">{t('work.detail.techTitle')}</h2>
-          <p className="mt-3 text-[15px] leading-8 text-fg-muted">{caseStudy.stack.join(' · ')}</p>
+          <h2 className="font-display text-lg font-semibold text-fg sm:text-xl">{t('work.detail.techTitle')}</h2>
+          <p className="mt-2.5 font-mono text-xs text-fg-muted sm:text-sm">{caseStudy.stack.join(' · ')}</p>
         </section>
         <section className="py-6">
-          <h2 className="font-display text-xl text-fg">{t('work.detail.fullCaseTitle')}</h2>
+          <h2 className="font-display text-lg font-semibold text-fg sm:text-xl">{t('work.detail.fullCaseTitle')}</h2>
           <div className="mt-6">
             <CaseStudyBody sections={caseStudy.sections} />
           </div>
         </section>
       </article>
 
-      <section className="mt-8 border-t border-border pt-8">
-        <h2 className="font-display text-xl text-fg">{t('work.detail.relatedTitle')}</h2>
+      <section className="mt-12 border-t border-border pt-8">
+        <h2 className="font-display text-lg font-semibold text-fg sm:text-xl">{t('work.detail.relatedTitle')}</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-2">
           {otherCaseStudies.map((cs) => (
             <WorkCard key={cs.slug} caseStudy={cs} locale={locale} />

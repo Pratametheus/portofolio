@@ -67,18 +67,18 @@ export function SkillList() {
             type="button"
             aria-pressed={active === group}
             onClick={() => setActive(group)}
-            className={`min-h-11 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs ${
+            className={`min-h-11 inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 font-mono text-xs transition-colors ${
               active === group
-                ? 'bg-accent text-on-accent border-accent'
-                : 'border-border text-fg-muted'
+                ? 'border-accent bg-accent text-on-accent'
+                : 'border-border text-fg-muted hover:border-accent/50 hover:text-fg'
             }`}
           >
             {t(GROUP_LABEL_KEY[group])}
-            <span>{countFor(group)}</span>
+            <span className="opacity-75">{countFor(group)}</span>
           </button>
         ))}
       </div>
-      <ul aria-live="polite" className="flex flex-wrap gap-2.5">
+      <ul aria-live="polite" className="flex flex-wrap gap-2">
         {visible.map((s) => (
           <li
             key={s.slug}
@@ -86,12 +86,12 @@ export function SkillList() {
               {
                 ['--brand' as string]: s.brandColor,
                 background:
-                  'color-mix(in srgb, var(--brand) 20%, var(--color-bg))',
+                  'color-mix(in srgb, var(--brand) 12%, var(--color-surface))',
                 borderColor:
-                  'color-mix(in srgb, var(--brand) 30%, var(--color-border))'
+                  'color-mix(in srgb, var(--brand) 24%, var(--color-border))'
               } as React.CSSProperties
             }
-            className="inline-flex items-center gap-2 rounded-3xl border px-3 py-1.5 text-sm text-fg"
+            className="inline-flex items-center gap-2 rounded-lg border px-2.5 py-1 text-xs font-medium text-fg"
           >
             <SkillIcon slug={s.slug} />
             {s.name}

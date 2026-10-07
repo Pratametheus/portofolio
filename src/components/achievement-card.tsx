@@ -14,36 +14,38 @@ export function AchievementCard({item}: {item: Achievement}) {
   const t = useTranslations();
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-border bg-surface">
+    <article className="overflow-hidden rounded-xl border border-border bg-surface">
       <PublicationCover size="grid" coverUrl={item.coverUrl} />
       <div className="p-5">
-        <h3 className="font-display text-[17px] leading-6 text-fg">{item.title}</h3>
-        <p className="mt-2.5 text-sm text-fg-muted">{item.issuer}</p>
-        <RecordTags
-          tags={[
-            t(ACHIEVEMENT_TYPE_LABEL_KEY[item.type]),
-            t(ACHIEVEMENT_CATEGORY_LABEL_KEY[item.category]),
-            'SINTA 2'
-          ]}
-        />
-        <div className="mt-4 flex justify-between border-y border-border py-3 text-[11px] text-fg-muted">
+        <h3 className="font-display text-base font-semibold leading-snug text-fg sm:text-[17px]">{item.title}</h3>
+        <p className="mt-2 text-sm text-fg-muted">{item.issuer}</p>
+        <div className="mt-3">
+          <RecordTags
+            tags={[
+              t(ACHIEVEMENT_TYPE_LABEL_KEY[item.type]),
+              t(ACHIEVEMENT_CATEGORY_LABEL_KEY[item.category]),
+              'SINTA 2'
+            ]}
+          />
+        </div>
+        <div className="mt-4 flex justify-between border-y border-border py-2.5 font-mono text-[11px] text-fg-muted">
           <span>{t('achievements.publishedYear', {year: item.year})}</span>
           {item.url ? (
             <a
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent"
+              className="text-accent transition-colors hover:text-fg"
             >
               DOI ↗
             </a>
           ) : null}
         </div>
         <details className="mt-3">
-          <summary className="inline-flex min-h-11 items-center cursor-pointer text-xs text-fg-muted transition-colors hover:text-accent">
+          <summary className="inline-flex min-h-11 cursor-pointer items-center text-xs font-medium text-fg-muted transition-colors hover:text-accent">
             {t('achievements.detailSummary')}
           </summary>
-          <p className="mt-2 text-sm leading-7 text-fg-muted">
+          <p className="mt-2 text-sm leading-relaxed text-fg-muted">
             {item.description}
           </p>
         </details>

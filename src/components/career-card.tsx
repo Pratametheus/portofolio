@@ -6,34 +6,34 @@ export function CareerCard({entry}: {entry: CareerEntry}) {
   const t = useTranslations();
 
   return (
-    <article className="flex gap-4 rounded-2xl border border-border bg-surface p-6">
-      <div className="flex shrink-0 items-center gap-2">
+    <article className="flex gap-4 rounded-xl border border-border bg-surface p-5 sm:p-6">
+      <div className="flex shrink-0 items-start gap-2 pt-0.5">
         {entry.logoUrl ? (
           <img
             src={entry.logoUrl}
             alt=""
             aria-hidden="true"
-            className="size-12 rounded-lg border border-border object-cover"
+            className="size-11 rounded-lg border border-border object-cover"
           />
         ) : null}
         <div
-          className="grid size-12 shrink-0 place-items-center rounded-lg border border-border bg-bg text-sm font-bold text-accent"
+          className="grid size-11 shrink-0 place-items-center rounded-lg border border-border bg-bg font-mono text-xs font-semibold text-accent"
           aria-hidden="true"
         >
           {entry.mark}
         </div>
       </div>
-      <div>
-        <h3 className="font-display text-[17px] text-fg">{entry.role}</h3>
-        <p className="mt-1.5 text-sm text-fg-muted">{entry.organization}</p>
-        <small className="mt-1.5 block text-xs text-fg-muted">
+      <div className="min-w-0 flex-1">
+        <h3 className="font-display text-base font-semibold text-fg sm:text-lg">{entry.role}</h3>
+        <p className="mt-1 text-sm text-fg-muted">{entry.organization}</p>
+        <span className="mt-1 block font-mono text-xs text-fg-muted">
           {`${entry.period} · ${entry.category}`}
-        </small>
-        <details className="mt-4">
-          <summary className="inline-flex min-h-11 items-center cursor-pointer text-xs text-fg-muted transition-colors hover:text-accent">
+        </span>
+        <details className="mt-3">
+          <summary className="inline-flex min-h-11 cursor-pointer items-center text-xs font-medium text-fg-muted transition-colors hover:text-accent">
             {t('about.career.detailSummary')}
           </summary>
-          <p className="mt-3 text-sm leading-7 text-fg-muted">{entry.description}</p>
+          <p className="mt-2 text-sm leading-relaxed text-fg-muted">{entry.description}</p>
         </details>
       </div>
     </article>

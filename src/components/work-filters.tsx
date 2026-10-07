@@ -13,7 +13,7 @@ const TOPIC_OPTIONS = ['Semua', 'Pendidikan', 'Keamanan', 'Penulisan'] as const;
 type TypeFilter = (typeof TYPE_OPTIONS)[number];
 type TopicFilter = (typeof TOPIC_OPTIONS)[number];
 
-const PILL_BASE = 'min-h-11 rounded-full border px-4 py-1.5 text-xs';
+const PILL_BASE = 'min-h-11 rounded-lg border px-3.5 py-1.5 font-mono text-xs transition-colors';
 
 function FilterRow<T extends string>({
   label,
@@ -30,7 +30,7 @@ function FilterRow<T extends string>({
 }) {
   return (
     <div role="group" aria-label={label} className="mb-3 flex flex-wrap items-center gap-2">
-      <span className="w-16 text-xs text-fg-muted">{label}</span>
+      <span className="w-16 font-mono text-xs text-fg-muted">{label}</span>
       {options.map((opt) => (
         <button
           key={opt}
@@ -39,8 +39,8 @@ function FilterRow<T extends string>({
           onClick={() => onChange(opt)}
           className={`${PILL_BASE} ${
             value === opt
-              ? 'bg-accent text-on-accent border-accent'
-              : 'border-border text-fg-muted'
+              ? 'border-accent bg-accent text-on-accent'
+              : 'border-border text-fg-muted hover:border-accent/50 hover:text-fg'
           }`}
         >
           {labelFor(opt)}

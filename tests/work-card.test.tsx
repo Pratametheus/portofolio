@@ -17,12 +17,13 @@ const cs = {
 } as any;
 
 describe('WorkCard', () => {
-  it('links the cover + title to the localised case study and shows topic · type', () => {
+  it('links the cover + title to the localised case study and shows topic · type without redundant arrow CTAs', () => {
     render(<WorkCard caseStudy={cs} locale="id" />);
     const links = screen.getAllByRole('link');
     expect(links.every((a) => a.getAttribute('href') === '/karya/city-courier')).toBe(true);
     expect(screen.getByRole('heading', {level: 3, name: 'City Courier'})).toBeInTheDocument();
     expect(screen.getByText(/work\.filters\.category\.keamanan · work\.filters\.type\.mobile/)).toBeInTheDocument();
+    expect(screen.queryByText('→')).toBeNull();
   });
 
   it('shows the featured label only when featured', () => {

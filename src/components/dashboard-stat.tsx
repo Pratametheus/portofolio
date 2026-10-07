@@ -17,9 +17,9 @@ export function DashboardStat({label}: {label: string}) {
 
 export function ConnectionState({title, description}: {title: string; description: string}) {
   return (
-    <div className="rounded-xl border border-dashed border-border p-6 text-fg-muted">
-      <h3 className="font-display text-base text-fg">{title}</h3>
-      <p className="mt-2 max-w-lg text-sm leading-7 text-fg-muted">{description}</p>
+    <div className="rounded-xl border border-border bg-surface p-6 text-fg-muted">
+      <h3 className="font-display text-base font-semibold text-fg">{title}</h3>
+      <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-fg-muted">{description}</p>
     </div>
   );
 }
