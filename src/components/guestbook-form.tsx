@@ -26,7 +26,7 @@ export function GuestbookForm() {
   }
 
   return (
-    <div className="mb-10 rounded-2xl border border-border bg-surface p-5 sm:p-6">
+    <div className="mb-10 rounded-xl border border-border bg-surface p-5 sm:p-6">
       <h2 className="font-display text-base font-semibold text-fg">
         {t('form.heading')}
       </h2>
@@ -100,7 +100,7 @@ export function GuestbookForm() {
         <label className="block text-sm text-fg-muted">
           <div className="flex items-center justify-between">
             <span>{t('form.messageLabel')}</span>
-            <span className="text-xs text-fg-muted">{charCount}/1000</span>
+            <span className="font-mono text-xs text-fg-muted">{charCount}/1000</span>
           </div>
           <textarea
             name="message"
@@ -121,7 +121,7 @@ export function GuestbookForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="inline-flex min-h-11 items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg bg-accent px-5 font-mono text-xs font-semibold text-on-accent transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {isPending ? t('form.submitting') : t('form.submit')}
         </button>

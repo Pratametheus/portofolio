@@ -45,23 +45,23 @@ export function GuestbookEntryList({
 
   return (
     <div className="space-y-4">
-      <h2 className="font-display text-lg text-fg">{t('count', {n: entries.length})}</h2>
-      <ul className="space-y-4">
+      <h2 className="font-mono text-xs uppercase tracking-wider text-fg-muted">{t('count', {n: entries.length})}</h2>
+      <ul className="space-y-3">
         {entries.map((entry) => (
           <li
             key={entry.id}
-            className="rounded-2xl border border-border bg-surface p-5 transition-colors hover:border-accent/40"
+            className="rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent/40"
           >
             <div className="flex items-start gap-3.5">
               <div
                 aria-hidden="true"
-                className="grid size-10 shrink-0 place-content-center rounded-xl border border-accent/30 bg-bg font-display text-xs font-semibold tracking-wider text-accent"
+                className="grid size-9 shrink-0 place-content-center rounded-lg border border-border bg-bg font-mono text-xs font-semibold text-accent"
               >
                 {getInitials(entry.name)}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <span className="font-display text-sm font-semibold text-fg">
                       {entry.name}
                     </span>
@@ -70,18 +70,18 @@ export function GuestbookEntryList({
                         href={entry.website}
                         target="_blank"
                         rel="noopener noreferrer nofollow"
-                        className="text-xs text-accent transition-colors hover:underline"
+                        className="text-xs text-accent transition-colors hover:text-fg"
                         title={t('form.websiteVisit')}
                       >
                         ↗
                       </a>
                     ) : null}
                   </div>
-                  <time className="text-xs text-fg-muted">
+                  <time className="font-mono text-xs text-fg-muted">
                     {formatDate(entry.createdAt, locale)}
                   </time>
                 </div>
-                <p className="mt-2.5 whitespace-pre-line text-sm leading-relaxed text-fg-muted">
+                <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-fg-muted">
                   {entry.message}
                 </p>
               </div>
