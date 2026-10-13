@@ -68,6 +68,19 @@ export default async function AboutPage({params}: {params: Promise<{locale: stri
             <strong className="font-medium text-fg">Ferry Andhika Pratama</strong>
           </p>
         </Reveal>
+        <Reveal>
+          <div className="pt-2">
+            <a
+              href="/cv.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2 font-mono text-xs font-medium text-fg transition-colors hover:border-accent hover:text-accent"
+            >
+              <span>{t('downloadResume')}</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </Reveal>
       </Stagger>
 
       <section className="mt-12 border-t border-border pt-8">
