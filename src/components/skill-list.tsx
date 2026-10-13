@@ -2,7 +2,9 @@
 
 import {useState} from 'react';
 import {useTranslations} from 'next-intl';
+import {motion} from 'motion/react';
 import {SectionHead} from './section-head';
+import {usePrefersReducedMotion} from '@/components/motion/use-reduced-motion';
 import {SKILLS, SKILL_GROUPS, type SkillGroupFilter} from '@/lib/skills';
 
 const GROUP_LABEL_KEY = {
@@ -46,6 +48,8 @@ function SkillIcon({slug}: {slug: string}) {
 export function SkillList() {
   const t = useTranslations();
   const [active, setActive] = useState<SkillGroupFilter>('Semua');
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+  const reduce = usePrefersReducedMotion();
 
   const visible = SKILLS.filter((s) => active === 'Semua' || s.group === active);
 
@@ -62,11 +66,14 @@ export function SkillList() {
         className="mb-6 mt-6 flex flex-wrap gap-2"
       >
         {SKILL_GROUPS.map((group) => (
-          <button
+          <motion.button
             key={group}
             type="button"
             aria-pressed={active === group}
             onClick={() => setActive(group)}
+            whileHover={reduce ? undefined : {scale: 1.04}}
+            whileTap={reduce ? undefined : {scale: 0.94}}
+            transition={{type: 'spring', stiffness: 500, damping: 25}}
             className={`min-h-11 inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 font-mono text-xs transition-colors ${
               active === group
                 ? 'border-accent bg-accent text-on-accent'
@@ -75,13 +82,18 @@ export function SkillList() {
           >
             {t(GROUP_LABEL_KEY[group])}
             <span>{countFor(group)}</span>
-          </button>
+          </motion.button>
         ))}
       </div>
       <ul aria-live="polite" className="flex flex-wrap gap-2">
         {visible.map((s) => (
-          <li
+          <motion.li
             key={s.slug}
+            layout={!reduce}
+            whileHover={reduce ? undefined : {scale: 1.08, y: -3}}
+            whileTap={reduce ? undefined : {scale: 0.92}}
+            transition={{type: 'spring', stiffness: 450, damping: 20}}
+            onClick={() => setSelectedSkill((cur) => (cur === s.slug ? null : s.slug))}
             style={
               {
                 ['--brand' as string]: s.brandColor,
@@ -91,11 +103,15 @@ export function SkillList() {
                   'color-mix(in srgb, var(--brand) 24%, var(--color-border))'
               } as React.CSSProperties
             }
-            className="inline-flex items-center gap-2 rounded-lg border px-2.5 py-1 text-xs font-medium text-fg"
+            className={`cursor-pointer select-none inline-flex items-center gap-2 rounded-lg border px-2.5 py-1 text-xs font-medium text-fg shadow-sm transition-[border-color,box-shadow,transform] duration-200 ${
+              selectedSkill === s.slug
+                ? 'ring-2 ring-accent border-accent'
+                : 'hover:border-accent/70'
+            }`}
           >
             <SkillIcon slug={s.slug} />
             {s.name}
-          </li>
+          </motion.li>
         ))}
       </ul>
     </section>
