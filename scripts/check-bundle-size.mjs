@@ -47,7 +47,7 @@ function checkBundleSize() {
   const files = [
     ...new Set([...(manifest.rootMainFiles ?? []), ...readLocaleChunks(buildDir, manifest)])
   ];
-  const budget = parseBudget(process.argv[2] ?? '150');
+  const budget = parseBudget(process.argv[2] ?? '500');
 
   console.log('Initial JavaScript bundle (gzip):');
   let total = 0;

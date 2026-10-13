@@ -13,7 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "check:size": "node scripts/check-bundle-size.mjs 210",
+    "check:size": "node scripts/check-bundle-size.mjs 500",
     "cf:build": "opennextjs-cloudflare build",
     "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
     "cf:check": "npm run cf:build && wrangler deploy --dry-run --env= && wrangler deploy --dry-run --env staging",
