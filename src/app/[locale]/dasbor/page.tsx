@@ -3,12 +3,16 @@ import {notFound} from 'next/navigation';
 import {hasLocale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {ConnectionState, DashboardStat, RepoGrid} from '@/components/dashboard-stat';
+import {ContributionCalendar} from '@/components/dashboard/contribution-calendar';
+import {WakaTimeStats} from '@/components/dashboard/wakatime-stats';
 import {PageHeading} from '@/components/page-heading';
 import {SectionHead} from '@/components/section-head';
 import {SiteFooter} from '@/components/site-footer';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies} from '@/lib/content';
 import {pageMetadata} from '@/lib/page-metadata';
+import {fetchGitHubContributions, fetchWakaTimeStats} from '@/lib/services/telemetry';
+import {getCloudflareContext} from '@opennextjs/cloudflare';
 
 export async function generateMetadata({params}: {params: Promise<{locale: string}>}): Promise<Metadata> {
   const {locale} = await params;
@@ -34,6 +38,22 @@ export default async function DashboardPage({params}: {params: Promise<{locale: 
     getTranslations({locale, namespace: 'nav'}),
     getTranslations({locale, namespace: 'dashboard'})
   ]);
+  let githubData = null;
+  let wakaData = null;
+
+  try {
+    const {env} = await getCloudflareContext({async: true});
+    const cfEnv = env as unknown as Record<string, string | undefined>;
+    const [gh, waka] = await Promise.all([
+      fetchGitHubContributions('Pratametheus', cfEnv.GITHUB_TOKEN),
+      fetchWakaTimeStats(cfEnv.WAKATIME_API_KEY)
+    ]);
+    githubData = gh;
+    wakaData = waka;
+  } catch {
+    // Graceful fallback when cloudflare context is not initialized (e.g. static tests)
+  }
+
   const sections = [
     {key: 'github', labels: ['github.stats.followers', 'github.stats.repositories', 'github.stats.stars']},
     {key: 'wakatime', labels: ['wakatime.stats.codingTime', 'wakatime.stats.topLanguage', 'wakatime.stats.dailyAverage']},
@@ -65,16 +85,25 @@ export default async function DashboardPage({params}: {params: Promise<{locale: 
           {key === 'github' ? (
             <>
               <div className="mt-6">
-                <ConnectionState
-                  title={t('github.calendarEmpty.title')}
-                  description={t('github.calendarEmpty.description')}
-                />
+                {githubData ? (
+                  <ContributionCalendar data={githubData} />
+                ) : (
+                  <ConnectionState
+                    title={t('github.calendarEmpty.title')}
+                    description={t('github.calendarEmpty.description')}
+                  />
+                )}
               </div>
               <div className="mt-10">
                 <SectionHead title={t('repos.title')} />
                 <RepoGrid caseStudies={getAllCaseStudies(locale)} locale={locale} />
               </div>
             </>
+          ) : null}
+          {key === 'wakatime' && wakaData ? (
+            <div className="mt-6">
+              <WakaTimeStats stats={wakaData} />
+            </div>
           ) : null}
         </section>
       ))}
