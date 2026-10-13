@@ -8,6 +8,7 @@ import {siteName, siteUrl} from '@/lib/site';
 import {themeInitScript, DEFAULT_THEME} from '@/lib/theme';
 import Sidebar from '@/components/sidebar';
 import {Noise} from '@/components/motion/noise';
+import {ClickSpark} from '@/components/effects/click-spark';
 import {bodyFont, jetbrainsMono} from '../fonts';
 import '../globals.css';
 
@@ -89,10 +90,12 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{__html: themeInitScript}} />
         <Noise />
         <NextIntlClientProvider messages={messages}>
-          <div className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16 lg:px-8">
-            <Sidebar workCount={getAllCaseStudies(routing.defaultLocale).length} />
-            <div className="min-w-0 pb-12 lg:pb-16">{children}</div>
-          </div>
+          <ClickSpark>
+            <div className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16 lg:px-8">
+              <Sidebar workCount={getAllCaseStudies(routing.defaultLocale).length} />
+              <div className="min-w-0 pb-12 lg:pb-16">{children}</div>
+            </div>
+          </ClickSpark>
         </NextIntlClientProvider>
       </body>
     </html>

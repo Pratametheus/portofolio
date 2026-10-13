@@ -2,6 +2,7 @@ import {useTranslations} from 'next-intl';
 import {getPathname} from '@/i18n/navigation';
 import {PublicationCover} from '@/components/publication-cover';
 import {RecordTags} from './record-tags';
+import {DecryptedText} from '@/components/effects/decrypted-text';
 import {ACHIEVEMENT_TYPE_LABEL_KEY, ACHIEVEMENT_CATEGORY_LABEL_KEY} from '@/lib/taxonomy-labels';
 import type {Achievement} from '@/lib/repositories/achievements';
 import type {Locale} from '@/content/types';
@@ -20,7 +21,7 @@ export function PublicationListCard({item, href}: {item: Achievement; href: stri
         </span>
         <h3 className="mt-1.5 font-display text-lg font-semibold text-fg">
           <a href={href} className="transition-colors hover:text-accent">
-            {item.title}
+            <DecryptedText text={item.title} />
           </a>
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-fg-muted">{item.description}</p>

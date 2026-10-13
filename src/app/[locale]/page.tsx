@@ -6,6 +6,7 @@ import {Reveal, Stagger} from '@/components/motion/reveal';
 import {SectionHead} from '@/components/section-head';
 import {SkillList} from '@/components/skill-list';
 import {WorkCard} from '@/components/work-card';
+import {TrueFocus} from '@/components/effects/true-focus';
 import {SiteFooter} from '@/components/site-footer';
 import {routing} from '@/i18n/routing';
 import {getAllCaseStudies} from '@/lib/content';
@@ -31,7 +32,7 @@ export default async function HomePage({params}: {params: Promise<{locale: strin
         </Reveal>
         <Reveal>
           <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-            {t('helloHeading')}
+            <TrueFocus sentence={t('helloHeading')} />
             <span className="text-accent">.</span>
           </h1>
         </Reveal>
