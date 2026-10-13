@@ -5,6 +5,7 @@ import {describe, expect, it, vi, beforeAll, afterAll, beforeEach} from 'vitest'
 import {
   submitGuestbookEntryAction,
   toggleGuestbookApprovalAction,
+  replyGuestbookEntryAction,
   softDeleteGuestbookAction
 } from '@/lib/actions/guestbook';
 import {validateGuestbookInput} from '@/lib/guestbook-validation';
@@ -169,6 +170,21 @@ describe('guestbook actions', () => {
       await permanentlyDeleteGuestbookAction(entry.id);
       expect(await listTrashedGuestbookEntries(testDb)).toHaveLength(0);
       expect(await listAdminGuestbookEntries(testDb)).toHaveLength(0);
+    });
+
+    it('sets admin reply and redirects to admin guestbook', async () => {
+      await createGuestbookEntry(testDb, {
+        name: 'User 3',
+        message: 'Pertanyaan untuk Ferry'
+      });
+
+      const [entry] = await listAdminGuestbookEntries(testDb);
+      const replyForm = fd({reply: 'Jawaban langsung dari Ferry!'});
+
+      await replyGuestbookEntryAction(entry.id, replyForm);
+
+      const [updated] = await listAdminGuestbookEntries(testDb);
+      expect(updated.adminReply).toBe('Jawaban langsung dari Ferry!');
     });
   });
 });

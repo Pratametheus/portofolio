@@ -10,6 +10,7 @@ import {
   listTrashedGuestbookEntries,
   getGuestbookEntry,
   setGuestbookApproval,
+  replyGuestbookEntry,
   softDeleteGuestbookEntry,
   restoreGuestbookEntry,
   hardDeleteGuestbookEntry
@@ -99,5 +100,31 @@ describe('guestbook repository', () => {
 
     expect(await listAdminGuestbookEntries(db)).toHaveLength(0);
     expect(await getGuestbookEntry(db, entry.id)).toBeNull();
+  });
+
+  it('adds and clears admin reply on guestbook entry', async () => {
+    await createGuestbookEntry(db, {
+      name: 'Tamu',
+      message: 'Halo Ferry, salam kenal!'
+    });
+
+    const [entry] = await listAdminGuestbookEntries(db);
+    expect(entry.adminReply).toBeNull();
+    expect(entry.repliedAt).toBeNull();
+
+    await replyGuestbookEntry(db, entry.id, 'Halo juga, terima kasih sudah mampir!');
+
+    const [updatedAdmin] = await listAdminGuestbookEntries(db);
+    expect(updatedAdmin.adminReply).toBe('Halo juga, terima kasih sudah mampir!');
+    expect(updatedAdmin.repliedAt).toBeDefined();
+
+    const [updatedPublic] = await listPublicGuestbookEntries(db);
+    expect(updatedPublic.adminReply).toBe('Halo juga, terima kasih sudah mampir!');
+    expect(updatedPublic.repliedAt).toBeDefined();
+
+    // Clearing reply
+    await replyGuestbookEntry(db, entry.id, '');
+    const [clearedAdmin] = await listAdminGuestbookEntries(db);
+    expect(clearedAdmin.adminReply).toBeNull();
   });
 });

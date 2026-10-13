@@ -15,6 +15,10 @@ const GUESTBOOK_MIGRATION_SQL = readFileSync(
   path.resolve(import.meta.dirname, '../../migrations/0003_create_guestbook_table.sql'),
   'utf-8'
 );
+const GUESTBOOK_REPLY_MIGRATION_SQL = readFileSync(
+  path.resolve(import.meta.dirname, '../../migrations/0004_add_guestbook_admin_reply.sql'),
+  'utf-8'
+);
 
 export async function createTestDb(): Promise<{
   db: D1Database;
@@ -70,6 +74,21 @@ export async function createTestDb(): Promise<{
     })
     .filter((stmt) => stmt.length > 0);
   for (const statement of guestbookStatements) {
+    await db.prepare(statement).run();
+  }
+
+  const replyStatements = GUESTBOOK_REPLY_MIGRATION_SQL
+    .replace(/\r\n/g, '\n')
+    .split(';')
+    .map((stmt) => {
+      return stmt
+        .split('\n')
+        .filter((line) => !line.trim().startsWith('--'))
+        .join(' ')
+        .trim();
+    })
+    .filter((stmt) => stmt.length > 0);
+  for (const statement of replyStatements) {
     await db.prepare(statement).run();
   }
 

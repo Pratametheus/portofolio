@@ -5,6 +5,7 @@ import {getCloudflareContext} from '@opennextjs/cloudflare';
 import {
   createGuestbookEntry,
   setGuestbookApproval,
+  replyGuestbookEntry,
   softDeleteGuestbookEntry
 } from '@/lib/repositories/guestbook';
 import {validateGuestbookInput} from '@/lib/guestbook-validation';
@@ -65,6 +66,17 @@ export async function toggleGuestbookApprovalAction(
   await assertAdminAuth();
   const {env} = await getCloudflareContext({async: true});
   await setGuestbookApproval(env.DB, id, !currentApproved);
+  redirect('/admin/guestbook');
+}
+
+export async function replyGuestbookEntryAction(
+  id: number,
+  formData: FormData
+): Promise<void> {
+  await assertAdminAuth();
+  const reply = String(formData.get('reply') ?? '').trim();
+  const {env} = await getCloudflareContext({async: true});
+  await replyGuestbookEntry(env.DB, id, reply.length > 0 ? reply : null);
   redirect('/admin/guestbook');
 }
 
