@@ -10,6 +10,7 @@ import {
 } from '@/lib/repositories/guestbook';
 import {validateGuestbookInput} from '@/lib/guestbook-validation';
 import {assertAdminAuth} from '@/lib/auth';
+import {sendGuestbookTelegramAlert} from '@/lib/telegram';
 
 export type GuestbookActionState = {
   success?: boolean;
@@ -47,6 +48,14 @@ export async function submitGuestbookEntryAction(
       message: validation.data.message,
       website: validation.data.website,
       isApproved: true
+    });
+
+    void sendGuestbookTelegramAlert({
+      name: validation.data.name,
+      message: validation.data.message,
+      website: validation.data.website,
+      botToken: (env as Record<string, any>).TELEGRAM_BOT_TOKEN,
+      chatId: (env as Record<string, any>).TELEGRAM_CHAT_ID
     });
 
     return {success: true};
