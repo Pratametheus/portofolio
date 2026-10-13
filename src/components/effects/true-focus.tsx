@@ -77,18 +77,20 @@ export function TrueFocus({
       ) : null}
 
       {words.map((word, idx) => (
-        <span
-          key={idx}
-          ref={(el) => {
-            wordRefs.current[idx] = el;
-          }}
-          className={`relative z-10 mr-2 inline-block transition-colors ${
-            idx === currentIndex ? 'text-fg font-semibold' : 'text-fg'
-          }`}
-          onMouseEnter={() => setCurrentIndex(idx)}
-        >
-          {word}
-        </span>
+        <React.Fragment key={idx}>
+          <span
+            ref={(el) => {
+              wordRefs.current[idx] = el;
+            }}
+            className={`relative z-10 inline-block transition-colors ${
+              idx === currentIndex ? 'text-fg font-semibold' : 'text-fg'
+            }`}
+            onMouseEnter={() => setCurrentIndex(idx)}
+          >
+            {word}
+          </span>
+          {idx < words.length - 1 ? ' ' : ''}
+        </React.Fragment>
       ))}
     </span>
   );

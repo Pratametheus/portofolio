@@ -74,7 +74,7 @@ export function SkillList() {
             }`}
           >
             {t(GROUP_LABEL_KEY[group])}
-            <span className="opacity-75">{countFor(group)}</span>
+            <span>{countFor(group)}</span>
           </button>
         ))}
       </div>
