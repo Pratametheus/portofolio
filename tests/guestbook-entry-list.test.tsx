@@ -39,4 +39,26 @@ describe('GuestbookEntryList', () => {
     expect(link).toHaveAttribute('rel', 'noopener noreferrer nofollow');
     expect(link).toHaveAttribute('target', '_blank');
   });
+
+  it('renders admin reply when present on entry', () => {
+    const entries = [
+      {
+        id: 2,
+        name: 'Sakura',
+        message: 'Keren!',
+        createdAt: '2026-10-02T12:00:00Z',
+        adminReply: 'Terima kasih banyak Sakura!',
+        repliedAt: '2026-10-02T13:00:00Z'
+      }
+    ];
+
+    render(
+      <NextIntlClientProvider locale="id" messages={id}>
+        <GuestbookEntryList entries={entries} locale="id" />
+      </NextIntlClientProvider>
+    );
+
+    expect(screen.getByText('Balasan dari Ferry')).toBeInTheDocument();
+    expect(screen.getByText('Terima kasih banyak Sakura!')).toBeInTheDocument();
+  });
 });

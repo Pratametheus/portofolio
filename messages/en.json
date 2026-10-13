@@ -199,6 +199,8 @@
     "emptyTitle": "No public notes yet",
     "empty": "No messages displayed yet. Be the first to leave a note!",
     "count": "{n} notes",
+    "adminReplyLabel": "Reply from Ferry",
+    "adminReplyBadge": "OWNER",
     "form": {
       "heading": "Leave a note",
       "nameLabel": "Name",

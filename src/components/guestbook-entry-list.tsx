@@ -84,6 +84,27 @@ export function GuestbookEntryList({
                 <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-fg-muted">
                   {entry.message}
                 </p>
+
+                {entry.adminReply ? (
+                  <div className="mt-3.5 rounded-lg border border-accent/25 bg-surface-2/60 p-3.5 sm:p-4">
+                    <div className="flex items-center gap-2">
+                      <span className="grid size-5 place-content-center rounded border border-accent/40 bg-bg font-mono text-[9px] font-bold text-accent">
+                        FA
+                      </span>
+                      <span className="font-display text-xs font-semibold text-accent">
+                        {t('adminReplyLabel')}
+                      </span>
+                      {entry.repliedAt ? (
+                        <time className="ml-auto font-mono text-[10px] text-fg-muted">
+                          {formatDate(entry.repliedAt, locale)}
+                        </time>
+                      ) : null}
+                    </div>
+                    <p className="mt-2 whitespace-pre-line text-xs leading-relaxed text-fg sm:text-sm">
+                      {entry.adminReply}
+                    </p>
+                  </div>
+                ) : null}
               </div>
             </div>
           </li>

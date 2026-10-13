@@ -4,6 +4,7 @@ import {useState} from 'react';
 import type {GuestbookAdminRow} from '@/lib/repositories/guestbook';
 import {
   toggleGuestbookApprovalAction,
+  replyGuestbookEntryAction,
   softDeleteGuestbookAction
 } from '@/lib/actions/guestbook';
 
@@ -112,6 +113,33 @@ export function GuestbookAdminList({entries}: {entries: GuestbookAdminRow[]}) {
                     </button>
                   </form>
                 </div>
+              </div>
+
+              <div className="mt-4 border-t border-border/60 pt-3">
+                {entry.adminReply ? (
+                  <div className="mb-2 rounded-lg border border-accent/30 bg-bg p-3 text-xs">
+                    <span className="font-semibold text-accent">Balasan Anda:</span>
+                    <p className="mt-1 text-fg">{entry.adminReply}</p>
+                    {entry.repliedAt ? (
+                      <span className="mt-1 block text-[10px] text-fg-muted">{entry.repliedAt}</span>
+                    ) : null}
+                  </div>
+                ) : null}
+                <form action={replyGuestbookEntryAction.bind(null, entry.id)} className="flex gap-2">
+                  <input
+                    type="text"
+                    name="reply"
+                    defaultValue={entry.adminReply ?? ''}
+                    placeholder="Tulis balasan untuk pengunjung ini…"
+                    className="flex-1 rounded-lg border border-border bg-bg px-3 py-1.5 text-xs text-fg focus:border-accent focus:outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="rounded-lg bg-accent px-3 py-1.5 font-mono text-xs font-medium text-on-accent hover:opacity-90"
+                  >
+                    {entry.adminReply ? 'Update Balasan' : 'Balas'}
+                  </button>
+                </form>
               </div>
             </li>
           ))}

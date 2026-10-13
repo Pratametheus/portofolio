@@ -199,6 +199,8 @@
     "emptyTitle": "Belum ada catatan publik",
     "empty": "Belum ada pesan yang ditampilkan. Jadilah yang pertama meninggalkan jejak!",
     "count": "{n} catatan",
+    "adminReplyLabel": "Balasan dari Ferry",
+    "adminReplyBadge": "PEMILIK",
     "form": {
       "heading": "Tinggalkan pesan",
       "nameLabel": "Nama",
